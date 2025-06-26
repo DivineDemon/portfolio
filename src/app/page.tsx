@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import ChatBot from "@/components/chat-bot";
 import AboutSection from "@/sections/about";
 import ContactSection from "@/sections/contact";
 import Footer from "@/sections/footer";
@@ -32,6 +33,7 @@ const Home = async () => {
       <AboutSection />
       <ContactSection />
       <Footer />
+      <ChatBot />
     </div>
   );
 };
