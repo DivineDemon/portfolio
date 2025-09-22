@@ -84,7 +84,7 @@ const AboutSection = () => {
               <Link
                 target="_blank"
                 href="https://slug.vercel.app/my-location"
-                className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-20 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-2 after:outline-gray-950/30 after:outline-offset-2 after:content-['']"
+                className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-20 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-gray-950/30 after:outline-offset-2 after:content-['']"
               >
                 <div className="-z-20 absolute inset-0 animate-ping rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 [animation-duration:2s]" />
                 <div className="-z-10 absolute inset-0 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400" />
