@@ -1,10 +1,9 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-
-import { motion } from "framer-motion";
 
 import bookImage from "@/assets/images/book-cover.png";
 import mapImage from "@/assets/images/map.png";
@@ -29,10 +28,7 @@ const AboutSection = () => {
         <div className="mt-20 flex flex-col gap-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
             <Card className="h-[320px] md:col-span-2 lg:col-span-1">
-              <CardHeader
-                title="My Reads"
-                description="What currently occupies my leisure time."
-              />
+              <CardHeader title="My Reads" description="What currently occupies my leisure time." />
               <div className="mx-auto mt-2 w-40 md:mt-0">
                 <Image src={bookImage} alt="book cover" />
               </div>
@@ -50,7 +46,7 @@ const AboutSection = () => {
                 </div>
               </div>
               <div className="mt-6 flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex flex-none -translate-x-1/2 animate-move-right gap-6 py-0.5 pr-6 [animation-duration:15s]">
+                <div className="-translate-x-1/2 flex flex-none animate-move-right gap-6 py-0.5 pr-6 [animation-duration:15s]">
                   {toolboxItems.map((item, idx) => (
                     <ToolboxItem key={idx} item={item} />
                   ))}
@@ -77,32 +73,22 @@ const AboutSection = () => {
                     drag
                     dragConstraints={constraintRef}
                   >
-                    <span className="font-medium text-gray-950">
-                      {hobby.title}
-                    </span>
+                    <span className="font-medium text-gray-950">{hobby.title}</span>
                     <span>{hobby.emoji}</span>
                   </motion.div>
                 ))}
               </div>
             </Card>
             <Card className="relative h-[320px] p-0 md:col-span-2 lg:col-span-1">
-              <Image
-                src={mapImage}
-                alt="map"
-                className="size-full object-cover object-left-top"
-              />
+              <Image src={mapImage} alt="map" className="size-full object-cover object-left-top" />
               <Link
                 target="_blank"
                 href="https://slug.vercel.app/my-location"
-                className="absolute left-1/2 top-1/2 size-20 -translate-x-1/2 -translate-y-1/2 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-2 after:outline-offset-2 after:outline-gray-950/30 after:content-['']"
+                className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-20 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-2 after:outline-gray-950/30 after:outline-offset-2 after:content-['']"
               >
-                <div className="absolute inset-0 -z-20 animate-ping rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 [animation-duration:2s]" />
-                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400" />
-                <Image
-                  src={smileMemoji}
-                  alt="smile-memoji"
-                  className="size-20"
-                />
+                <div className="-z-20 absolute inset-0 animate-ping rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 [animation-duration:2s]" />
+                <div className="-z-10 absolute inset-0 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400" />
+                <Image src={smileMemoji} alt="smile-memoji" className="size-20" />
               </Link>
             </Card>
           </div>

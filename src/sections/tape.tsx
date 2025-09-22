@@ -9,10 +9,8 @@ const TapeSection = () => {
           <div className="flex flex-none animate-move-left gap-4 py-3 [animation-duration:30s]">
             {words.map((word, idx) => (
               <div key={idx} className="inline-flex items-center gap-4">
-                <span className="text-sm font-bold uppercase text-gray-900">
-                  {word}
-                </span>
-                <StarIcon className="size-6 -rotate-12 text-gray-900" />
+                <span className="font-bold text-gray-900 text-sm uppercase">{word}</span>
+                <StarIcon className="-rotate-12 size-6 text-gray-900" />
               </div>
             ))}
           </div>

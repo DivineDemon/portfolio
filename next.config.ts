@@ -1,11 +1,19 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
+import type { NextConfig } from "next";
 import "./src/env.ts";
 
-/** @type {import("next").NextConfig} */
-const config = {
+interface WebpackConfig {
+  module?: {
+    rules?: Array<{
+      test?: RegExp;
+      issuer?: unknown;
+      resourceQuery?: RegExp | { not?: RegExp[] };
+      exclude?: RegExp;
+      use?: string[];
+    }>;
+  };
+}
+
+const config: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -14,48 +22,38 @@ const config = {
       },
     ],
   },
-  webpack(config: { module: { rules: any[] } }) {
-    const fileLoaderRule = config.module.rules.find(
-      (rule: { test: { test: (arg0: string) => any } }) =>
-        rule.test?.test?.(".svg")
-    );
+  typedRoutes: true,
+  webpack(config: WebpackConfig) {
+    const fileLoaderRule = config.module?.rules?.find((rule) => rule.test?.test?.(".svg"));
 
-    config.module.rules.push(
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/,
-      },
-      {
-        test: /\.svg$/i,
-        issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
-        use: {
-          loader: "@svgr/webpack",
-          options: {
-            svgoConfig: {
-              plugins: [
-                {
-                  name: "preset-default",
-                  params: {
-                    overrides: {
-                      removeViewBox: false,
-                    },
-                  },
-                },
-              ],
-            },
-          },
+    if (fileLoaderRule && config.module?.rules) {
+      config.module.rules.push(
+        {
+          ...fileLoaderRule,
+          test: /\.svg$/i,
+          resourceQuery: /url/,
         },
-      }
-    );
+        {
+          test: /\.svg$/i,
+          issuer: fileLoaderRule.issuer,
+          resourceQuery: {
+            not: [
+              ...(typeof fileLoaderRule.resourceQuery === "object" &&
+              fileLoaderRule.resourceQuery !== null &&
+              "not" in fileLoaderRule.resourceQuery
+                ? fileLoaderRule.resourceQuery.not || []
+                : []),
+              /url/,
+            ],
+          },
+          use: ["@svgr/webpack"],
+        },
+      );
 
-    fileLoaderRule.exclude = /\.svg$/i;
+      fileLoaderRule.exclude = /\.svg$/i;
+    }
 
     return config;
-  },
-  experimental: {
-    typedRoutes: true,
   },
   async headers() {
     return [

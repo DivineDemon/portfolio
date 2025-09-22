@@ -1,8 +1,7 @@
-import { type Metadata } from "next";
-import { Calistoga, Inter } from "next/font/google";
-
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { type Metadata } from "next";
+import { Calistoga, Inter } from "next/font/google";
 
 import "@/assets/css/globals.css";
 import { cn } from "@/lib/utils";
@@ -50,18 +49,10 @@ export const metadata: Metadata = {
   publisher: "Mushood Hanif",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "bg-gray-900 font-sans text-white antialiased",
-          inter.variable,
-          calistoga.variable
-        )}
-      >
+      <body className={cn("bg-gray-900 font-sans text-white antialiased", inter.variable, calistoga.variable)}>
         <Analytics />
         <SpeedInsights />
         <TRPCReactProvider>{children}</TRPCReactProvider>

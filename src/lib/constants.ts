@@ -3,12 +3,12 @@ import CSSIcon from "@/assets/icons/css3.svg";
 import GithubIcon from "@/assets/icons/github.svg";
 import HTMLIcon from "@/assets/icons/html5.svg";
 import ReactIcon from "@/assets/icons/react.svg";
-import JavScriptIcon from "@/assets/icons/square-js.svg";
+import SquareJsIcon from "@/assets/icons/square-js.svg";
 
 export const toolboxItems = [
   {
     title: "JavaScript",
-    iconType: JavScriptIcon,
+    iconType: SquareJsIcon,
   },
   {
     title: "HTML5",
@@ -32,7 +32,7 @@ export const toolboxItems = [
   },
   {
     title: "JavaScript",
-    iconType: JavScriptIcon,
+    iconType: SquareJsIcon,
   },
   {
     title: "HTML5",
@@ -138,14 +138,3 @@ export const words = [
   "Usable",
   "Reliable",
 ];
-
-export const SYSTEM_PROMPT = `
-You are an AI assistant for a RAG (Retrieval-Augmented Generation) chatbot on Mushood Hanif's Portfolio Website. Your purpose is to provide helpful, accurate responses by combining your knowledge with retrieved context information.
-
-Guidelines:
-1. Use the provided context from document retrieval to answer questions
-2. If context is insufficient, leverage your own knowledge
-3. Be concise and conversational
-4. Admit when you don't know something
-5. Maintain conversation context from chat history
-`;

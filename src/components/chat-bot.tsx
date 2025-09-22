@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
+import MDEditor from "@uiw/react-md-editor";
 import { BotMessageSquare, CircleX, Loader2, Send } from "lucide-react";
-import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import ReactMarkdown from "react-markdown";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ragAction } from "@/app/(server-actions)/rag-action";
@@ -13,13 +11,18 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
+interface ChatMessage {
+  role: "user" | "assistant" | "system";
+  content: string;
+}
+
 const ChatBot = () => {
   const popupRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
       content:
@@ -55,18 +58,16 @@ const ChatBot = () => {
     if (!query.trim()) return;
 
     setLoading(true);
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", content: query },
-      { role: "assistant", content: "" },
-    ]);
+    setMessages((prev) => [...prev, { role: "user", content: query }, { role: "assistant", content: "" }]);
+    const currentQuery = query;
     setQuery("");
 
     try {
-      const response: ReadableStream = await ragAction(query, messages);
+      const response: ReadableStream | null = await ragAction(currentQuery, messages);
 
       if (!response) {
         toast.error("No response body received");
+        setMessages((prev) => prev.slice(0, -1));
         return;
       }
 
@@ -79,59 +80,46 @@ const ChatBot = () => {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split("\n").filter((line) => line.trim());
 
-        const jsonObjects = chunk
-          .split("\n")
-          .filter((line) => line.trim())
-          .map((line) => {
-            try {
-              return JSON.parse(line);
-            } catch (e) {
-              console.error("JSON Parse Error:", e);
-              return null;
+        for (const line of lines) {
+          try {
+            const data = JSON.parse(line);
+            let content = "";
+
+            if (data.content) {
+              content = data.content;
+            } else if (data.message) {
+              content = data.message;
+            } else if (data.response) {
+              content = data.response;
+            } else if (typeof data === "string") {
+              content = data;
             }
-          })
-          .filter((json) => json !== null);
 
-        for (const jsonObj of jsonObjects) {
-          let content = "";
-
-          if (typeof jsonObj === "string") {
-            content = jsonObj;
-          } else if (jsonObj?.choices?.[0]?.delta?.content) {
-            const deltaContent = jsonObj.choices[0].delta.content;
-
-            if (typeof deltaContent === "string") {
-              content = deltaContent;
-            } else if (
-              typeof deltaContent === "object" &&
-              deltaContent?.response
-            ) {
-              content = deltaContent.response;
+            if (content) {
+              botMessage += content;
+              setMessages((prev) =>
+                prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
+              );
             }
-          } else if (jsonObj?.response) {
-            content = jsonObj.response;
-          }
-
-          if (content) {
-            botMessage += content;
-            setMessages((prev) =>
-              prev.map((msg, index) =>
-                index === prev.length - 1
-                  ? { ...msg, content: botMessage }
-                  : msg
-              )
-            );
+          } catch {
+            if (line.trim()) {
+              botMessage += line;
+              setMessages((prev) =>
+                prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
+              );
+            }
           }
         }
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Chat Failed!");
       setMessages((prev) => [
-        ...prev,
+        ...prev.slice(0, -1),
         {
           role: "assistant",
-          content: "Error processing request.",
+          content: "Error processing request. Please try again.",
         },
       ]);
     } finally {
@@ -140,7 +128,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed bottom-10 right-10 z-[1]">
+    <div className="fixed right-10 bottom-10 z-[1]">
       <button
         onClick={handleToggle}
         aria-expanded={isOpen}
@@ -148,10 +136,7 @@ const ChatBot = () => {
         className="chat-toggle-button flex size-14 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/10 p-4 backdrop-blur"
       >
         <BotMessageSquare
-          className={cn(
-            "size-full text-white transition-all duration-500 ease-in-out",
-            { "rotate-[360deg]": isOpen }
-          )}
+          className={cn("size-full text-white transition-all duration-500 ease-in-out", { "rotate-[360deg]": isOpen })}
         />
       </button>
 
@@ -164,14 +149,14 @@ const ChatBot = () => {
           }
         }}
         className={cn(
-          "absolute bottom-24 right-0 flex aspect-[9/16] w-72 flex-col items-start justify-between rounded-lg border border-white/15 bg-white/10 backdrop-blur transition-opacity duration-500 ease-in-out",
+          "absolute right-0 bottom-24 flex aspect-[9/16] w-72 flex-col items-start justify-between rounded-lg border border-white/15 bg-white/10 backdrop-blur transition-opacity duration-500 ease-in-out",
           {
             "pointer-events-auto opacity-100": isOpen,
             "pointer-events-none opacity-0": !isOpen,
-          }
+          },
         )}
       >
-        <div className="flex w-full items-center justify-center rounded-t-lg border-b border-white/15 py-2.5 pl-5 pr-2.5 text-white">
+        <div className="flex w-full items-center justify-center rounded-t-lg border-white/15 border-b py-2.5 pr-2.5 pl-5 text-white">
           <span className="flex-1 text-left font-semibold">Chat Bot</span>
           <Button
             type="button"
@@ -191,19 +176,26 @@ const ChatBot = () => {
             const isAssistant = message.role === "assistant";
 
             return (
-              <span
+              <div
                 key={idx}
                 className={cn("rounded-md bg-secondary px-3 py-1.5 text-xs", {
-                  "flex items-center": isAssistant && isLast && loading,
-                  "ml-auto w-2/3 bg-primary text-white": !isAssistant,
+                  "flex flex-col items-center justify-center": isAssistant && isLast && loading,
+                  "ml-auto w-3/4 bg-primary text-right text-white": !isAssistant,
                   "bg-secondary text-black": isAssistant,
                 })}
               >
-                <ReactMarkdown>{message.content as string}</ReactMarkdown>
-                {isAssistant && isLast && loading && (
-                  <Loader2 className="size-4 animate-spin" />
-                )}
-              </span>
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <MDEditor.Markdown
+                    source={message.content}
+                    style={{
+                      fontSize: "12px",
+                      backgroundColor: "transparent",
+                      color: isAssistant ? "inherit" : "white",
+                    }}
+                  />
+                </div>
+                {isAssistant && isLast && loading && <Loader2 className="size-4 animate-spin" />}
+              </div>
             );
           })}
           <div ref={messagesEndRef} />
@@ -214,7 +206,7 @@ const ChatBot = () => {
             e.stopPropagation();
             handleChat();
           }}
-          className="flex w-full items-center justify-center gap-2.5 border-t border-white/15 p-2.5"
+          className="flex w-full items-center justify-center gap-2.5 border-white/15 border-t p-2.5"
           onClick={(e) => e.stopPropagation()}
         >
           <Input
@@ -237,11 +229,7 @@ const ChatBot = () => {
               }
             }}
           >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </Button>
         </form>
       </div>

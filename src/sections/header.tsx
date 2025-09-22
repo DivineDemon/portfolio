@@ -15,8 +15,7 @@ const Header = () => {
           onClick={() => setSelected(0)}
           href="#home"
           className={cn("nav-item", {
-            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900":
-              selected === 0,
+            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900": selected === 0,
           })}
         >
           Home
@@ -25,8 +24,7 @@ const Header = () => {
           onClick={() => setSelected(1)}
           href="#projects"
           className={cn("nav-item", {
-            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900":
-              selected === 1,
+            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900": selected === 1,
           })}
         >
           Projects
@@ -35,8 +33,7 @@ const Header = () => {
           onClick={() => setSelected(2)}
           href="#about"
           className={cn("nav-item", {
-            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900":
-              selected === 2,
+            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900": selected === 2,
           })}
         >
           About
@@ -45,8 +42,7 @@ const Header = () => {
           onClick={() => setSelected(3)}
           href="#contact"
           className={cn("nav-item", {
-            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900":
-              selected === 3,
+            "bg-white text-gray-900 hover:bg-white/70 hover:text-gray-900": selected === 3,
           })}
         >
           Contact
