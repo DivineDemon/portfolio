@@ -1,6 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
 import grainImage from "@/assets/images/grain.jpg";
 
 const ContactSection = () => {
@@ -23,7 +22,7 @@ const ContactSection = () => {
                 className="inline-flex h-12 w-max items-center gap-2 rounded-xl border border-gray-900 bg-gray-900 px-6 text-white"
               >
                 <span className="font-semibold">Contact Me</span>
-                <ArrowUpRightIcon className="size-4" />
+                <ArrowUpRight />
               </Link>
             </div>
           </div>

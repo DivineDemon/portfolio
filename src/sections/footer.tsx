@@ -1,4 +1,4 @@
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
+import { ArrowUpRight } from "lucide-react";
 import { footerLinks } from "@/lib/constants";
 
 const Footer = () => {
@@ -12,7 +12,7 @@ const Footer = () => {
             {footerLinks.map((link, idx) => (
               <a key={idx} href={link.href} className="inline-flex items-center gap-1.5">
                 <span className="font-semibold">{link.title}</span>
-                <ArrowUpRightIcon className="size-4" />
+                <ArrowUpRight />
               </a>
             ))}
           </nav>

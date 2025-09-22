@@ -1,9 +1,7 @@
+import { ArrowUpRight, CircleCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
-import CheckCircleIcon from "@/assets/icons/check-circle.svg";
-import Github from "@/assets/icons/git.svg";
+import GithubIcon from "@/assets/icons/github.svg";
 import Card from "@/components/card";
 import SectionHeader from "@/components/section-header";
 
@@ -23,9 +21,10 @@ const ProjectsSection = ({ projects }: ProjectSectionProps) => {
         <div className="mt-6 flex w-full items-center justify-center">
           <Link
             href="https://github.com/DivineDemon"
-            className="flex gap-1 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 px-6 py-2 font-medium text-gray-950"
+            className="flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 px-6 py-3 font-medium text-black"
           >
-            View More on <Github className="size-6" />
+            View More on
+            <Image src={GithubIcon} alt="Github" className="size-6" />
           </Link>
         </div>
         <div className="mt-10 flex flex-col gap-20 md:mt-20">
@@ -49,7 +48,7 @@ const ProjectsSection = ({ projects }: ProjectSectionProps) => {
                   <ul className="mt-4 flex flex-col gap-4 md:mt-5">
                     {project.features.split(",").map((result, id) => (
                       <li key={id} className="flex gap-2 text-sm text-white/50 md:text-base">
-                        <CheckCircleIcon className="size-5 shrink-0 md:size-6" />
+                        <CircleCheck className="size-5 shrink-0 md:size-6" />
                         <span>{result}</span>
                       </li>
                     ))}
@@ -60,7 +59,7 @@ const ProjectsSection = ({ projects }: ProjectSectionProps) => {
                     className="mt-8 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-gray-950 md:w-auto"
                   >
                     <span>Visit Live Site</span>
-                    <ArrowUpRightIcon className="size-4" />
+                    <ArrowUpRight />
                   </a>
                 </div>
                 <div className="relative">

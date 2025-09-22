@@ -1,58 +1,44 @@
-import ChromeIcon from "@/assets/icons/chrome.svg";
-import CSSIcon from "@/assets/icons/css3.svg";
-import GithubIcon from "@/assets/icons/github.svg";
-import HTMLIcon from "@/assets/icons/html5.svg";
-import ReactIcon from "@/assets/icons/react.svg";
-import SquareJsIcon from "@/assets/icons/square-js.svg";
+import N8nIcon from "@/assets/icons/n8n.svg";
+import NeonIcon from "@/assets/icons/neon.svg";
+import NextIcon from "@/assets/icons/nextjs.svg";
+import PostgreSQLIcon from "@/assets/icons/postgresql.svg";
+import PrismaIcon from "@/assets/icons/prisma.svg";
+import PythonIcon from "@/assets/icons/python.svg";
+import TailwindIcon from "@/assets/icons/tailwindcss.svg";
+import TypeScriptIcon from "@/assets/icons/typescript.svg";
 
 export const toolboxItems = [
   {
-    title: "JavaScript",
-    iconType: SquareJsIcon,
+    title: "TypeScript",
+    iconSrc: TypeScriptIcon,
   },
   {
-    title: "HTML5",
-    iconType: HTMLIcon,
+    title: "Next.js",
+    iconSrc: NextIcon,
   },
   {
-    title: "CSS3",
-    iconType: CSSIcon,
+    title: "Tailwind CSS",
+    iconSrc: TailwindIcon,
   },
   {
-    title: "React",
-    iconType: ReactIcon,
+    title: "Prisma",
+    iconSrc: PrismaIcon,
   },
   {
-    title: "Chrome",
-    iconType: ChromeIcon,
+    title: "n8n",
+    iconSrc: N8nIcon,
   },
   {
-    title: "GitHub",
-    iconType: GithubIcon,
+    title: "Neon",
+    iconSrc: NeonIcon,
   },
   {
-    title: "JavaScript",
-    iconType: SquareJsIcon,
+    title: "PostgreSQL",
+    iconSrc: PostgreSQLIcon,
   },
   {
-    title: "HTML5",
-    iconType: HTMLIcon,
-  },
-  {
-    title: "CSS3",
-    iconType: CSSIcon,
-  },
-  {
-    title: "React",
-    iconType: ReactIcon,
-  },
-  {
-    title: "Chrome",
-    iconType: ChromeIcon,
-  },
-  {
-    title: "GitHub",
-    iconType: GithubIcon,
+    title: "Python",
+    iconSrc: PythonIcon,
   },
 ];
 

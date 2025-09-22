@@ -122,6 +122,8 @@
   }
 }
 
+@config "../../../tailwind.config.ts";
+
 * {
   scroll-behavior: smooth;
 }

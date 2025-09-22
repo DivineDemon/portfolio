@@ -1,4 +1,4 @@
-import StarIcon from "@/assets/icons/star.svg";
+import { Star } from "lucide-react";
 import { words } from "@/lib/constants";
 
 const TapeSection = () => {
@@ -10,7 +10,7 @@ const TapeSection = () => {
             {words.map((word, idx) => (
               <div key={idx} className="inline-flex items-center gap-4">
                 <span className="font-bold text-gray-900 text-sm uppercase">{word}</span>
-                <StarIcon className="-rotate-12 size-6 text-gray-900" />
+                <Star className="-rotate-12 size-6 text-gray-900" />
               </div>
             ))}
           </div>
