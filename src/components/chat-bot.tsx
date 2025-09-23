@@ -75,111 +75,25 @@ const ChatBot = () => {
       const decoder = new TextDecoder();
       let botMessage = "";
 
+      let _responseReceived = false;
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        const webhookPattern = /\[{"output":"([^"]+)"}\]/g;
-        const matches = chunk.match(webhookPattern);
 
-        if (matches) {
-          for (const match of matches) {
-            try {
-              const data = JSON.parse(match);
-              if (Array.isArray(data) && data.length > 0 && data[0].output) {
-                botMessage += data[0].output;
-                setMessages((prev) =>
-                  prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
-                );
-              }
-            } catch {
-              // Intentionally Empty
-            }
-          }
-        } else {
-          const lines = chunk.split("\n").filter((line) => line.trim());
+        const responsePattern = /\[{"output":"(.+?)"}\]/;
+        const match = chunk.match(responsePattern);
 
-          for (const line of lines) {
-            try {
-              if (line.includes(":")) {
-                const parts = line.split(":", 2);
-                if (parts.length === 2 && parts[1]) {
-                  const jsonPart = parts[1];
-                  let content = "";
-
-                  try {
-                    let jsonString = jsonPart;
-                    const commaIndex = jsonPart.indexOf(",");
-                    if (commaIndex > 0) {
-                      jsonString = jsonPart.substring(commaIndex + 1);
-                    }
-
-                    const data = JSON.parse(jsonString);
-
-                    if (Array.isArray(data) && data.length > 0) {
-                      const firstItem = data[0];
-                      if (firstItem.output) {
-                        content = firstItem.output;
-                      } else if (firstItem.content) {
-                        content = firstItem.content;
-                      } else if (firstItem.message) {
-                        content = firstItem.message;
-                      } else if (firstItem.response) {
-                        content = firstItem.response;
-                      }
-                    } else if (data.output) {
-                      content = data.output;
-                    } else if (data.content) {
-                      content = data.content;
-                    } else if (data.message) {
-                      content = data.message;
-                    } else if (data.response) {
-                      content = data.response;
-                    }
-                  } catch {
-                    content = jsonPart;
-                  }
-
-                  if (content) {
-                    botMessage += content;
-                    setMessages((prev) =>
-                      prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
-                    );
-                  }
-                }
-              } else {
-                const data = JSON.parse(line);
-                let content = "";
-
-                if (data.content) {
-                  content = data.content;
-                } else if (data.message) {
-                  content = data.message;
-                } else if (data.response) {
-                  content = data.response;
-                } else if (data.output) {
-                  content = data.output;
-                } else if (typeof data === "string") {
-                  content = data;
-                }
-
-                if (content) {
-                  botMessage += content;
-                  setMessages((prev) =>
-                    prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
-                  );
-                }
-              }
-            } catch {
-              if (line.trim()) {
-                botMessage += line;
-                setMessages((prev) =>
-                  prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
-                );
-              }
-            }
-          }
+        if (match && match[1]) {
+          botMessage = match[1].replace(/\\"/g, '"');
+          setMessages((prev) =>
+            prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
+          );
+          setLoading(false);
+          _responseReceived = true;
+          break;
         }
       }
     } catch (_error) {
