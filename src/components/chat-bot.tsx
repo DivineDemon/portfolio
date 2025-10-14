@@ -88,7 +88,7 @@ const ChatBot = () => {
         const match = chunk.match(responsePattern);
 
         if (match && match[1]) {
-          botMessage = match[1].replace(/\\"/g, '"');
+          botMessage = match[1].replace(/\\"/g, '"').replace(/\\n/g, "\n");
           setMessages((prev) =>
             prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
           );
