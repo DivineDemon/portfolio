@@ -2,12 +2,7 @@
 
 import { env } from "@/env";
 
-interface ChatMessage {
-  role: "user" | "assistant" | "system";
-  content: string;
-}
-
-export async function ragAction(query: string, chatHistory: ChatMessage[]) {
+export async function ragAction(query: string, sessionId: number) {
   try {
     const response = await fetch(env.WORKFLOW_URL, {
       method: "POST",
@@ -16,7 +11,7 @@ export async function ragAction(query: string, chatHistory: ChatMessage[]) {
       },
       body: JSON.stringify({
         query,
-        chatHistory,
+        sessionId,
       }),
     });
 
@@ -25,7 +20,7 @@ export async function ragAction(query: string, chatHistory: ChatMessage[]) {
     }
 
     return response.body;
-  } catch (_error) {
+  } catch {
     throw new Error("Failed to get response from chatbot workflow");
   }
 }

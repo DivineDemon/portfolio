@@ -29,6 +29,7 @@ const ChatBot = () => {
         "Hello! I am Mushood's AI assistant. You can ask me anything about Mushood's portfolio, projects, or skills. How can I help you today?",
     },
   ]);
+  const [sessionId] = useState<number>(() => Math.floor(Math.random() * 1000000000));
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,7 +64,7 @@ const ChatBot = () => {
     setQuery("");
 
     try {
-      const response: ReadableStream | null = await ragAction(currentQuery, messages);
+      const response: ReadableStream | null = await ragAction(currentQuery, sessionId);
 
       if (!response) {
         toast.error("No response body received");
@@ -96,7 +97,7 @@ const ChatBot = () => {
           break;
         }
       }
-    } catch (_error) {
+    } catch {
       toast.error("Chat Failed!");
       setMessages((prev) => [
         ...prev.slice(0, -1),
@@ -163,7 +164,7 @@ const ChatBot = () => {
                 key={idx}
                 className={cn("rounded-md bg-secondary px-3 py-1.5 text-xs", {
                   "flex flex-col items-center justify-center": isAssistant && isLast && loading,
-                  "ml-auto w-3/4 bg-primary text-right text-white": !isAssistant,
+                  "ml-auto w-fit max-w-3/4 bg-primary text-right text-white": !isAssistant,
                   "bg-secondary text-black": isAssistant,
                 })}
               >
