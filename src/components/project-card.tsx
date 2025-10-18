@@ -25,7 +25,7 @@ const ProjectCard = ({ project, id }: ProjectCardProps) => {
         <div className="lg:grid lg:grid-cols-2 lg:gap-16">
           <div className="lg:pb-16">
             <div className="inline-flex gap-2 bg-gradient-to-r from-emerald-300 to-sky-400 bg-clip-text font-bold text-sm text-transparent uppercase tracking-widest">
-              <span>{project.company}</span>
+              <span>{project.companies.name}</span>
               <span>&bull;</span>
               <span>{project.start_year}</span>
             </div>

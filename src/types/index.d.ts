@@ -55,18 +55,29 @@ declare module "*.webp" {
 }
 
 declare type ProjectProps = {
-  link: string;
+  id: number;
   image: string | null;
   features: string;
-  id: number;
-  company: string;
+  link: string;
   start_year: number;
   project_name: string;
+  company_id: number;
+  companies: {
+    id: number;
+    name: string;
+    hq: string;
+    founded: number;
+    industry: string;
+    revenue: string;
+    size: string;
+    ceo_name: string;
+    ceo_title: string;
+  };
 };
 
 declare type TestimonialProps = {
-  image: string | null;
   id: number;
+  image: string | null;
   company: string;
   content: string;
   designation: string;
