@@ -32,7 +32,7 @@ const ProjectCard = ({ project, id }: ProjectCardProps) => {
             <h3 className="mt-2 font-serif text-2xl md:mt-5 md:text-4xl">{project.project_name}</h3>
             <hr className="mt-4 border-white/5 border-t-2 md:mt-5" />
             <ul className="mt-4 flex flex-col gap-4 md:mt-5">
-              {project.features.split(",").map((result, id) => (
+              {JSON.parse(project.features).map((result: string, id: number) => (
                 <li key={id} className="flex gap-2 text-sm text-white/50 md:text-base">
                   <CircleCheck className="size-5 shrink-0 md:size-6" />
                   <span>{result}</span>
