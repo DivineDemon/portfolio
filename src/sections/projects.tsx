@@ -6,9 +6,13 @@ import SectionHeader from "@/components/section-header";
 
 interface ProjectSectionProps {
   projects: ProjectProps[];
+  caseStudiesData: Array<{
+    projectId: number;
+    caseStudy: CaseStudyProps | null;
+  }>;
 }
 
-const ProjectsSection = ({ projects }: ProjectSectionProps) => {
+const ProjectsSection = ({ projects, caseStudiesData }: ProjectSectionProps) => {
   return (
     <section id="projects" className="pb-16 lg:py-24">
       <div className="container">
@@ -27,9 +31,10 @@ const ProjectsSection = ({ projects }: ProjectSectionProps) => {
           </Link>
         </div>
         <div className="mt-10 flex flex-col gap-20 md:mt-20">
-          {projects.map((project, idx) => (
-            <ProjectCard key={idx} project={project} id={idx} />
-          ))}
+          {projects.map((project, idx) => {
+            const caseStudyData = caseStudiesData.find((cs) => cs.projectId === project.id)?.caseStudy;
+            return <ProjectCard key={idx} project={project} id={idx} caseStudyData={caseStudyData} />;
+          })}
         </div>
       </div>
     </section>

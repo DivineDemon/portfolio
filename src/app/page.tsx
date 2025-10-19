@@ -23,11 +23,20 @@ const Home = async () => {
     return notFound();
   }
 
+  const caseStudiesData = await Promise.all(
+    projects.map(async (project) => {
+      const caseStudy = await api.caseStudy.getCaseStudyByProjectId({
+        projectId: project.id,
+      });
+      return { projectId: project.id, caseStudy };
+    }),
+  );
+
   return (
     <div>
       <Header />
       <HeroSection />
-      <ProjectsSection projects={projects} />
+      <ProjectsSection projects={projects} caseStudiesData={caseStudiesData} />
       <TapeSection />
       <TestimonialsSection testimonials={testimonials} />
       <AboutSection />
