@@ -9,9 +9,28 @@ export const caseStudyRouter = createTRPCRouter({
         where: {
           project_id: input.projectId,
         },
-        include: {
+        select: {
+          id: true,
+          project_id: true,
+          title: true,
+          description: true,
+          challenge: true,
+          results: true,
+          onboarding_improved: true,
+          retention_increase: true,
+          time_spent_increase: true,
+          research: true,
+          architecture: true,
+          wireframing: true,
+          testing: true,
+          design: true,
+          tech_stack_urls: true,
+          ceo_statement: true,
+          conclusion: true,
+          images: true,
           projects: {
-            include: {
+            select: {
+              project_name: true,
               companies: {
                 select: {
                   name: true,
@@ -24,9 +43,6 @@ export const caseStudyRouter = createTRPCRouter({
                   ceo_title: true,
                 },
               },
-            },
-            select: {
-              project_name: true,
             },
           },
         },
