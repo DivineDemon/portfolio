@@ -4,7 +4,7 @@ import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import Card from "./card";
-import CaseStudy from "./case-study";
+import CaseStudyWrapper from "./case-study-wrapper";
 
 interface ProjectCardProps {
   project: ProjectProps;
@@ -58,7 +58,7 @@ const ProjectCard = ({ project, id }: ProjectCardProps) => {
           </div>
         </div>
       </Card>
-      <CaseStudy open={open} project={project} onOpenChange={setOpen} />
+      <CaseStudyWrapper open={open} projectId={project.id} onOpenChange={setOpen} />
     </>
   );
 };
