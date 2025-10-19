@@ -40,14 +40,14 @@ const AboutSection = () => {
               />
               <div className="flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
                 <div className="flex flex-none animate-move-left gap-6 py-0.5 pr-6 [animation-duration:30s]">
-                  {toolboxItems.map((item, idx) => (
+                  {[...toolboxItems, ...toolboxItems].map((item, idx) => (
                     <ToolboxItem key={idx} item={item} />
                   ))}
                 </div>
               </div>
               <div className="mt-6 flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="-translate-x-1/2 flex flex-none animate-move-right gap-6 py-0.5 pr-6 [animation-duration:15s]">
-                  {toolboxItems.map((item, idx) => (
+                <div className="flex flex-none animate-move-right gap-6 py-0.5 pr-6 [animation-duration:15s]">
+                  {[...toolboxItems, ...toolboxItems].map((item, idx) => (
                     <ToolboxItem key={idx} item={item} />
                   ))}
                 </div>

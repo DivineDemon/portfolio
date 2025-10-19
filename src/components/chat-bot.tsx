@@ -14,6 +14,8 @@ import { Input } from "./ui/input";
 interface ChatMessage {
   role: "user" | "assistant" | "system";
   content: string;
+  id?: number;
+  isLoading?: boolean;
 }
 
 const ChatBot = () => {
@@ -26,10 +28,10 @@ const ChatBot = () => {
     {
       role: "assistant",
       content:
-        "Hello! I am Mushood's AI assistant. You can ask me anything about Mushood's portfolio, projects, or skills. How can I help you today?",
+        "Hey there! 👋 I'm Mushood's AI sidekick, and I'm super excited to chat with you! Ask me anything about his portfolio, projects, skills, or work experience - I'm here to help! 🚀",
+      id: 1,
     },
   ]);
-  const [sessionId] = useState<number>(() => Math.floor(Math.random() * 1000000000));
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,24 +61,42 @@ const ChatBot = () => {
     if (!query.trim()) return;
 
     setLoading(true);
-    setMessages((prev) => [...prev, { role: "user", content: query }, { role: "assistant", content: "" }]);
     const currentQuery = query;
     setQuery("");
 
+    const updatedMessages = [
+      ...messages,
+      {
+        role: "user" as const,
+        content: currentQuery,
+        id: Date.now() + 1,
+      },
+    ];
+    setMessages(updatedMessages);
+
+    const loadingMessageId = Date.now();
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: "",
+        id: loadingMessageId,
+        isLoading: true,
+      },
+    ]);
+
     try {
-      const response: ReadableStream | null = await ragAction(currentQuery, sessionId);
+      const response: ReadableStream | null = await ragAction(updatedMessages);
 
       if (!response) {
         toast.error("No response body received");
-        setMessages((prev) => prev.slice(0, -1));
+        setMessages((prev) => prev.filter((msg) => msg.id !== loadingMessageId));
         return;
       }
 
       const reader = response.getReader();
       const decoder = new TextDecoder();
-      let botMessage = "";
-
-      let _responseReceived = false;
+      let streamingContent = "";
 
       while (true) {
         const { value, done } = await reader.read();
@@ -84,28 +104,50 @@ const ChatBot = () => {
 
         const chunk = decoder.decode(value, { stream: true });
 
-        const responsePattern = /\[{"output":"(.+?)"}\]/;
-        const match = chunk.match(responsePattern);
+        try {
+          const parsed = JSON.parse(chunk);
+          const data = parsed[0];
 
-        if (match && match[1]) {
-          botMessage = match[1].replace(/\\"/g, '"').replace(/\\n/g, "\n");
-          setMessages((prev) =>
-            prev.map((msg, index) => (index === prev.length - 1 ? { ...msg, content: botMessage } : msg)),
-          );
-          setLoading(false);
-          _responseReceived = true;
-          break;
+          if (data.type === "chunk") {
+            streamingContent += data.content;
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === loadingMessageId ? { ...msg, content: streamingContent, isLoading: false } : msg,
+              ),
+            );
+          } else if (data.type === "complete") {
+            setLoading(false);
+            break;
+          }
+        } catch {
+          const responsePattern = /\[{"output":"(.+?)"}\]/;
+          const match = chunk.match(responsePattern);
+
+          if (match && match[1]) {
+            const botMessage = match[1].replace(/\\"/g, '"').replace(/\\n/g, "\n");
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === loadingMessageId ? { ...msg, content: botMessage, isLoading: false } : msg,
+              ),
+            );
+            setLoading(false);
+            break;
+          }
         }
       }
     } catch {
       toast.error("Chat Failed!");
-      setMessages((prev) => [
-        ...prev.slice(0, -1),
-        {
-          role: "assistant",
-          content: "Error processing request. Please try again.",
-        },
-      ]);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === loadingMessageId
+            ? {
+                ...msg,
+                content: "Error processing request. Please try again.",
+                isLoading: false,
+              }
+            : msg,
+        ),
+      );
     } finally {
       setLoading(false);
     }
@@ -156,29 +198,39 @@ const ChatBot = () => {
         </div>
         <div className="flex h-[calc(100%-113px)] w-full flex-col items-start justify-start gap-2.5 overflow-y-auto p-2.5">
           {messages.map((message, idx) => {
-            const isLast = idx === messages.length - 1;
             const isAssistant = message.role === "assistant";
+            const isMessageLoading = message.isLoading;
 
             return (
               <div
-                key={idx}
+                key={message.id || idx}
                 className={cn("rounded-md bg-secondary px-3 py-1.5 text-xs", {
-                  "flex flex-col items-center justify-center": isAssistant && isLast && loading,
+                  "flex flex-col items-center justify-center": isAssistant && isMessageLoading,
                   "ml-auto w-fit max-w-3/4 bg-primary text-right text-white": !isAssistant,
                   "bg-secondary text-black": isAssistant,
                 })}
               >
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <MDEditor.Markdown
-                    source={message.content}
-                    style={{
-                      fontSize: "12px",
-                      backgroundColor: "transparent",
-                      color: isAssistant ? "inherit" : "white",
-                    }}
-                  />
-                </div>
-                {isAssistant && isLast && loading && <Loader2 className="size-4 animate-spin" />}
+                {isMessageLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="flex space-x-1">
+                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]"></div>
+                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]"></div>
+                      <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400"></div>
+                    </div>
+                    <span className="text-gray-500 text-xs">AI is thinking...</span>
+                  </div>
+                ) : (
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <MDEditor.Markdown
+                      source={message.content}
+                      style={{
+                        fontSize: "12px",
+                        backgroundColor: "transparent",
+                        color: isAssistant ? "inherit" : "white",
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             );
           })}
