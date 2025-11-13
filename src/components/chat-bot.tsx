@@ -154,7 +154,7 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="fixed right-10 bottom-10 z-[1]">
+    <div className="fixed right-5 bottom-5 z-[1] md:right-10 md:bottom-10">
       <button
         onClick={handleToggle}
         aria-expanded={isOpen}
@@ -175,7 +175,7 @@ const ChatBot = () => {
           }
         }}
         className={cn(
-          "absolute right-0 bottom-24 flex aspect-[9/16] w-72 flex-col items-start justify-between rounded-lg border border-white/15 bg-white/10 backdrop-blur transition-opacity duration-500 ease-in-out",
+          "absolute right-0 bottom-16 flex aspect-[9/16] w-72 flex-col items-start justify-between rounded-lg border border-white/15 bg-white/10 backdrop-blur transition-opacity duration-500 ease-in-out md:bottom-24",
           {
             "pointer-events-auto opacity-100": isOpen,
             "pointer-events-none opacity-0": !isOpen,
