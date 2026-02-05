@@ -12,6 +12,7 @@ import Card from "@/components/card";
 import CardHeader from "@/components/card-header";
 import SectionHeader from "@/components/section-header";
 import ToolboxItem from "@/components/toolbox-item";
+import { Marquee } from "@/components/ui/marquee";
 import { hobbies, toolboxItems } from "@/lib/constants";
 
 const AboutSection = () => {
@@ -38,20 +39,23 @@ const AboutSection = () => {
                 title="My Toolbox"
                 description="Explore the technologies and tools I use to craft exceptional digital experiences."
               />
-              <div className="flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex flex-none animate-move-left gap-6 py-0.5 pr-6 [animation-duration:30s]">
-                  {[...toolboxItems, ...toolboxItems].map((item, idx) => (
-                    <ToolboxItem key={idx} item={item} />
-                  ))}
-                </div>
-              </div>
-              <div className="mt-6 flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex flex-none animate-move-right gap-6 py-0.5 pr-6 [animation-duration:15s]">
-                  {[...toolboxItems, ...toolboxItems].map((item, idx) => (
-                    <ToolboxItem key={idx} item={item} />
-                  ))}
-                </div>
-              </div>
+              <Marquee
+                pauseOnHover
+                className="mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] [--gap:1.5rem]"
+              >
+                {toolboxItems.map((item, idx) => (
+                  <ToolboxItem key={idx} item={item} />
+                ))}
+              </Marquee>
+              <Marquee
+                reverse
+                pauseOnHover
+                className="mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] [--gap:1.5rem]"
+              >
+                {toolboxItems.map((item, idx) => (
+                  <ToolboxItem key={idx} item={item} />
+                ))}
+              </Marquee>
             </Card>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-5 lg:grid-cols-3">
@@ -65,7 +69,7 @@ const AboutSection = () => {
                 {hobbies.map((hobby, idx) => (
                   <motion.div
                     key={idx}
-                    className="absolute inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 px-6 py-1.5"
+                    className="absolute inline-flex items-center gap-2 rounded-full bg-linear-to-r from-emerald-300 to-sky-400 px-6 py-1.5"
                     style={{
                       left: hobby.left,
                       top: hobby.top,
@@ -80,14 +84,14 @@ const AboutSection = () => {
               </div>
             </Card>
             <Card className="relative h-[320px] p-0 md:col-span-2 lg:col-span-1">
-              <Image src={mapImage} alt="map" className="size-full object-cover object-left-top" />
+              <Image src={mapImage} alt="map" className="size-full object-cover object-top-left" />
               <Link
                 target="_blank"
                 href="https://slug.vercel.app/my-location"
-                className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 size-20 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-gray-950/30 after:outline-offset-2 after:content-['']"
+                className="absolute top-1/2 left-1/2 size-20 -translate-x-1/2 -translate-y-1/2 rounded-full after:absolute after:inset-0 after:rounded-full after:outline after:outline-gray-950/30 after:outline-offset-2 after:content-['']"
               >
-                <div className="-z-20 absolute inset-0 animate-ping rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 [animation-duration:2s]" />
-                <div className="-z-10 absolute inset-0 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400" />
+                <div className="animation-duration-[2s] absolute inset-0 -z-20 animate-ping rounded-full bg-linear-to-r from-emerald-300 to-sky-400" />
+                <div className="absolute inset-0 -z-10 rounded-full bg-linear-to-r from-emerald-300 to-sky-400" />
                 <Image src={smileMemoji} alt="smile-memoji" className="size-20" />
               </Link>
             </Card>

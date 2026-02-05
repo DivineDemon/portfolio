@@ -5,6 +5,7 @@ import { Calistoga, Inter } from "next/font/google";
 
 import "@/assets/css/globals.css";
 import { cn } from "@/lib/utils";
+import Header from "@/sections/header";
 import { TRPCReactProvider } from "@/trpc/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -55,7 +56,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={cn("bg-gray-900 font-sans text-white antialiased", inter.variable, calistoga.variable)}>
         <Analytics />
         <SpeedInsights />
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Header />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );

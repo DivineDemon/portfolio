@@ -24,7 +24,7 @@ const ProjectsSection = ({ projects, caseStudiesData }: ProjectSectionProps) => 
         <div className="mt-6 flex w-full items-center justify-center">
           <Link
             href="https://github.com/DivineDemon"
-            className="flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-300 to-sky-400 px-6 py-3 font-medium text-black"
+            className="flex items-center justify-center gap-2.5 rounded-full bg-linear-to-r from-emerald-300 to-sky-400 px-6 py-3 font-medium text-black"
           >
             View More on
             <Image src={GithubIcon} alt="Github" className="size-6" />
@@ -32,8 +32,8 @@ const ProjectsSection = ({ projects, caseStudiesData }: ProjectSectionProps) => 
         </div>
         <div className="mt-10 flex flex-col gap-20 md:mt-20">
           {projects.map((project, idx) => {
-            const caseStudyData = caseStudiesData.find((cs) => cs.projectId === project.id)?.caseStudy;
-            return <ProjectCard key={idx} project={project} id={idx} caseStudyData={caseStudyData} />;
+            const hasCaseStudy = !!caseStudiesData.find((cs) => cs.projectId === project.id)?.caseStudy;
+            return <ProjectCard key={idx} project={project} id={idx} hasCaseStudy={hasCaseStudy} />;
           })}
         </div>
       </div>

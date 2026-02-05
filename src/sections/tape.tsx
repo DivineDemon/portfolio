@@ -10,7 +10,7 @@ const TapeSection = () => {
             {words.map((word, idx) => (
               <div key={idx} className="inline-flex items-center gap-4">
                 <span className="font-bold text-gray-900 text-sm uppercase">{word}</span>
-                <Star className="-rotate-12 size-6 text-gray-900" />
+                <Star className="size-6 -rotate-12 text-gray-900" />
               </div>
             ))}
           </div>

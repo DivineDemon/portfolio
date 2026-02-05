@@ -15,7 +15,9 @@ export async function ragAction(messages: ChatMessage[]): Promise<ReadableStream
       throw new Error("No user message found");
     }
 
-    const queryEmbedding = await generateEmbedding(latestMessage.content);
+    const queryEmbedding = await generateEmbedding(latestMessage.content, {
+      taskType: "RETRIEVAL_QUERY",
+    });
 
     const similarDocuments = await api.document.searchSimilarDocuments({
       queryEmbedding,

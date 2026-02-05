@@ -1,13 +1,24 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import { env } from "@/env";
 
-const genAI = new GoogleGenerativeAI(env.GOOGLE_GENERATIVE_AI_API_KEY);
+export const EMBEDDING_DIMENSIONS = 3072;
+const ai = new GoogleGenAI({ apiKey: env.GOOGLE_GENERATIVE_AI_API_KEY });
+export type EmbeddingTaskType = "RETRIEVAL_DOCUMENT" | "RETRIEVAL_QUERY";
 
-export async function generateEmbedding(text: string): Promise<number[]> {
+export async function generateEmbedding(text: string, options?: { taskType?: EmbeddingTaskType }): Promise<number[]> {
   try {
-    const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
-    const result = await model.embedContent(text);
-    return result.embedding.values;
+    const response = await ai.models.embedContent({
+      model: "gemini-embedding-001",
+      contents: text,
+      config: {
+        taskType: options?.taskType ?? "RETRIEVAL_DOCUMENT",
+      },
+    });
+    const values = response.embeddings?.[0]?.values;
+    if (!values) {
+      throw new Error("No embedding in response");
+    }
+    return values;
   } catch (error) {
     throw new Error(`Failed to generate embedding: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
@@ -18,8 +29,6 @@ export async function generateResponse(
   context: string,
 ): Promise<ReadableStream<Uint8Array>> {
   try {
-    const model = genAI.getGenerativeModel({ model: env.GEMINI_MODEL });
-
     const history = messages
       .slice(0, -1)
       .filter((msg) => msg.role !== "system")
@@ -54,14 +63,17 @@ User: ${currentMessage.content}
 
 Respond in a friendly, conversational way. If the context doesn't contain relevant information, be playful about it and gently guide them to ask about Mushood's portfolio, projects, skills, or work experience.`;
 
-    const result = await model.generateContentStream(prompt);
+    const response = await ai.models.generateContentStream({
+      model: env.GEMINI_MODEL,
+      contents: prompt,
+    });
 
     const encoder = new TextEncoder();
-    const stream = new ReadableStream({
+    return new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of result.stream) {
-            const chunkText = chunk.text();
+          for await (const chunk of response) {
+            const chunkText = chunk.text;
             if (chunkText) {
               const formattedResponse = JSON.stringify([
                 {
@@ -84,8 +96,6 @@ Respond in a friendly, conversational way. If the context doesn't contain releva
         }
       },
     });
-
-    return stream;
   } catch {
     throw new Error("Failed to generate response");
   }

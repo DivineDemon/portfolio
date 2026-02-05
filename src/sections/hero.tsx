@@ -8,7 +8,7 @@ import HeroOrbit from "@/components/hero-orbit";
 const HeroSection = () => {
   return (
     <div id="home" className="relative z-0 overflow-x-clip py-32 md:py-48 lg:py-60">
-      <div className="-z-30 absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)]">
+      <div className="absolute inset-0 -z-30 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)]">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: `url(${grainImage.src})` }} />
         <div className="hero-ring size-[620px]" />
         <div className="hero-ring size-[820px]" />

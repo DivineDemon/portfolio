@@ -7,7 +7,7 @@ const ContactSection = () => {
     <div id="contact" className="pt-12 pb-16 lg:pt-20 lg:pb-24">
       <div className="container">
         <div className="relative z-0 overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-300 to-sky-400 px-10 py-8 text-center text-gray-900 md:text-left">
-          <div className="-z-10 absolute inset-0 opacity-5" style={{ backgroundImage: `url(${grainImage.src})` }} />
+          <div className="absolute inset-0 -z-10 opacity-5" style={{ backgroundImage: `url(${grainImage.src})` }} />
           <div className="flex flex-col items-center gap-8 md:flex-row md:gap-16">
             <div>
               <h2 className="font-serif text-2xl md:text-3xl">Let&apos;s create something amazing together</h2>

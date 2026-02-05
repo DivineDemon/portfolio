@@ -2,6 +2,16 @@
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
+## RAG / Embeddings
+
+The chat uses **gemini-embedding-001** for embeddings. The `documents.embedding` column must be `vector(3072)` in PostgreSQL. If you previously used another model (e.g. text-embedding-004 with 768 dimensions), run:
+
+```sql
+ALTER TABLE documents ALTER COLUMN embedding TYPE vector(3072);
+```
+
+Then re-embed and update all existing document rows; query embeddings are generated with `RETRIEVAL_QUERY` and document embeddings with `RETRIEVAL_DOCUMENT`.
+
 ## What's next? How do I make an app with this?
 
 We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
