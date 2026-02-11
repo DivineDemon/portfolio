@@ -1,26 +1,35 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "@/assets/css/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { type Metadata } from "next";
-import { Calistoga, Inter } from "next/font/google";
-
-import "@/assets/css/globals.css";
+import Contact from "@/components/global/contact";
+import Footer from "@/components/global/footer";
+import Navbar from "@/components/global/navbar";
+import ThemeProvider from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
-import Header from "@/sections/header";
-import { TRPCReactProvider } from "@/trpc/react";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const calistoga = Calistoga({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-serif",
-  weight: ["400"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Mushood Hanif",
+  title: {
+    default:
+      "Mushood Hanif | Senior Full-Stack Software Engineer & SaaS Architect",
+    template: "%s | Mushood Hanif",
+  },
   description:
-    "I specialize in transforming designs into functional, high-performing web applications. Let's discuss your next project.",
+    "Senior Full-Stack Software Engineer and SaaS Architect specializing in scalable SaaS platforms, AI-powered automation systems, Next.js, Node.js, and high-performance product engineering.",
   abstract:
-    "I specialize in transforming designs into functional, high-performing web applications. Let's discuss your next project.",
+    "SaaS Architect and AI Automation Engineer building scalable, high-performance platforms with modern TypeScript ecosystems.",
   alternates: {
     canonical: "https://mushoodhanif.com",
   },
@@ -28,38 +37,84 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "Mushood Hanif",
+    title: "Senior Full-Stack Software Engineer | SaaS & AI Systems Architect",
     description:
-      "I specialize in transforming designs into functional, high-performing web applications. Let's discuss your next project.",
+      "Building scalable SaaS platforms, AI automation systems, and high-performance web applications using Next.js, Node.js, and modern cloud infrastructure.",
     url: "https://mushoodhanif.com",
     siteName: "Mushood Hanif",
     images: [
       {
         url: "https://mushoodhanif.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Mushood Hanif - Senior Software Engineer & SaaS Architect",
       },
     ],
     type: "website",
   },
-  keywords:
-    "Frontend Developer, Developer, Software, Software Engineer, Fullstack Developer, Engineer, Web Apps, Websites, Design, Development",
+  twitter: {
+    card: "summary_large_image",
+    title: "Senior Full-Stack Software Engineer | SaaS & AI Architect",
+    description:
+      "Scalable SaaS, AI automation, and high-performance product engineering with modern TypeScript ecosystems.",
+    images: ["https://mushoodhanif.com/og-image.png"],
+  },
+  keywords: [
+    "Senior Full-Stack Software Engineer",
+    "SaaS Architect",
+    "AI Automation Engineer",
+    "Next.js Developer",
+    "React Developer",
+    "TypeScript Engineer",
+    "Node.js Backend Developer",
+    "Multi-Tenant SaaS Development",
+    "AI Integration Developer",
+    "n8n Expert",
+    "Product Engineer",
+    "Scalable Web Applications",
+    "Software Architect Pakistan",
+    "Remote SaaS Engineer",
+  ],
   publisher: "Mushood Hanif",
+  category: "Technology",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <body className={cn("bg-gray-900 font-sans text-white antialiased", inter.variable, calistoga.variable)}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(geistSans.variable, geistMono.variable, "antialiased")}
+      >
         <Analytics />
         <SpeedInsights />
-        <TRPCReactProvider>
-          <Header />
+        <ThemeProvider
+          enableSystem
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <Toaster richColors duration={1500} />
           {children}
-        </TRPCReactProvider>
+          <Contact />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

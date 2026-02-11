@@ -1,46 +1,23 @@
-import { notFound } from "next/navigation";
+import DitherSplitter from "@/components/global/dither-splitter";
+import About from "@/components/landing/about";
+import Hero from "@/components/landing/hero";
+import Projects from "@/components/landing/projects";
+import Services from "@/components/landing/services";
+import Skills from "@/components/landing/skills";
+import Testimonials from "@/components/landing/testimonials";
 
-import ChatBot from "@/components/chat-bot";
-import AboutSection from "@/sections/about";
-import ContactSection from "@/sections/contact";
-import Footer from "@/sections/footer";
-import HeroSection from "@/sections/hero";
-import ProjectsSection from "@/sections/projects";
-import TapeSection from "@/sections/tape";
-import TestimonialsSection from "@/sections/testimonials";
-import { api } from "@/trpc/server";
-
-const Home = async () => {
-  const projects = await api.project.getProjects();
-  const testimonials = await api.testimonial.getTestimonials();
-
-  if (!projects) {
-    return notFound();
-  }
-
-  if (!testimonials) {
-    return notFound();
-  }
-
-  const caseStudiesData = await Promise.all(
-    projects.map(async (project) => {
-      const caseStudy = await api.caseStudy.getCaseStudyByProjectId({
-        projectId: project.id,
-      });
-      return { projectId: project.id, caseStudy };
-    }),
-  );
-
+const Home = () => {
   return (
-    <div>
-      <HeroSection />
-      <ProjectsSection projects={projects} caseStudiesData={caseStudiesData} />
-      <TapeSection />
-      <TestimonialsSection testimonials={testimonials} />
-      <AboutSection />
-      <ContactSection />
-      <Footer />
-      <ChatBot />
+    <div className="w-full min-h-screen flex flex-col items-start justify-start">
+      <Hero />
+      <About />
+      <Skills />
+      <DitherSplitter />
+      <Services />
+      <DitherSplitter />
+      <Projects />
+      <DitherSplitter />
+      <Testimonials />
     </div>
   );
 };
