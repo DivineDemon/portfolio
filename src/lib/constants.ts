@@ -100,3 +100,10 @@ export const services = [
     ],
   },
 ];
+
+export const navItems = [
+  { label: "Services", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "Contact", href: "/#contact" },
+];

@@ -5,22 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { navItems } from "@/lib/constants";
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-
-const NAV_ITEMS = [
-  { label: "Services", href: "/#services" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Testimonials", href: "/#testimonials" },
-  { label: "Contact", href: "/#contact" },
-] as const;
 
 const Navbar = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -41,7 +36,7 @@ const Navbar = () => {
           />
         </Link>
         <div className="flex flex-1 items-center justify-end gap-2.5 text-sm max-md:hidden">
-          {NAV_ITEMS.map(({ label, href }) => (
+          {navItems.map(({ label, href }) => (
             <Link
               key={label}
               href={href}
@@ -63,23 +58,32 @@ const Navbar = () => {
                 <MenuIcon className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="flex flex-col">
-              <SheetHeader>
-                <SheetTitle className="sr-only">Navigation</SheetTitle>
+            <SheetContent
+              side="right"
+              className="flex flex-col space-y-0 gap-0"
+            >
+              <SheetHeader className="border-b">
+                <SheetTitle>Navigation</SheetTitle>
+                <SheetDescription>
+                  Navigate to the sections of the website.
+                </SheetDescription>
               </SheetHeader>
-              <div className="flex flex-1 flex-col gap-1 pt-6">
-                {NAV_ITEMS.map(({ label, href }) => (
+              <div className="flex flex-1 flex-col items-start justify-start">
+                {navItems.map(({ label, href }) => (
                   <Link
                     key={label}
                     href={href}
-                    className="rounded-lg px-4 py-3 text-base transition-colors hover:bg-muted hover:font-medium"
+                    className="w-full p-4 border-b last:border-b-0 text-sm font-medium transition-all duration-300 hover:bg-muted"
                     onClick={() => setSheetOpen(false)}
                   >
                     {label}
                   </Link>
                 ))}
               </div>
-              <div className="border-t pt-4">
+              <div className="border-t p-4 flex items-center justify-between">
+                <span className="w-full text-left text-sm font-medium">
+                  Theme
+                </span>
                 <AnimatedThemeToggler size="icon-sm" variant="ghost" />
               </div>
             </SheetContent>
