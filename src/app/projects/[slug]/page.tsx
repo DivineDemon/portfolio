@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
+import { SITE_URL } from "@/lib/constants";
 import { server } from "@/lib/elysia/server";
 import { cn } from "@/lib/utils";
 
@@ -85,17 +86,38 @@ export async function generateMetadata({
       : raw
   ) as Project | null;
   if (!project) return { title: "Project not found" };
+  const title = project.seoTitle ?? project.title;
+  const description = project.seoDescription ?? project.tagline;
+  const canonical = `${SITE_URL}/projects/${slug}`;
   return {
-    title: project.seoTitle ?? project.title,
-    description: project.seoDescription ?? project.tagline,
+    title,
+    description,
     keywords: project.keywords?.length ? project.keywords : undefined,
+    alternates: { canonical },
     openGraph: {
-      title: project.seoTitle ?? project.title,
-      description: project.seoDescription ?? project.tagline,
+      title,
+      description,
+      url: canonical,
+      type: "article",
       images: project.coverImage
-        ? [{ url: project.coverImage, alt: project.title }]
+        ? [
+            {
+              url: project.coverImage,
+              alt: project.title,
+              width: 1200,
+              height: 630,
+            },
+          ]
         : undefined,
+      siteName: "Mushood Hanif",
     },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: project.coverImage ? [project.coverImage] : undefined,
+    },
+    robots: { index: true, follow: true },
   };
 }
 

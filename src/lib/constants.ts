@@ -1,3 +1,6 @@
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mushoodhanif.com";
+
 import Cursor from "@/assets/img/tech/cursor.svg";
 import Docker from "@/assets/img/tech/docker.svg";
 import FastAPI from "@/assets/img/tech/fastapi.svg";
