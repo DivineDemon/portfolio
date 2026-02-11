@@ -28,7 +28,7 @@ const Hero = () => {
               <Grip className="size-3.5" />
               Builder
             </p>
-            <h2 className="text-4xl font-bold tracking-tight">
+            <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
               I Build Scalable SaaS & AI Systems That Drive Measurable Business
               Growth.
             </h2>

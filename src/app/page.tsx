@@ -8,7 +8,7 @@ import Testimonials from "@/components/landing/testimonials";
 
 const Home = () => {
   return (
-    <div className="w-full min-h-screen flex flex-col items-start justify-start">
+    <>
       <Hero />
       <About />
       <Skills />
@@ -18,7 +18,7 @@ const Home = () => {
       <Projects />
       <DitherSplitter />
       <Testimonials />
-    </div>
+    </>
   );
 };
 

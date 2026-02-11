@@ -55,7 +55,7 @@ const Contact = () => {
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <div className="w-full relative min-h-[60vh]">
+      <div className="w-full relative min-h-[70vh] md:min-h-[60vh]">
         <div className="absolute inset-0 invert dark:invert-0 w-full h-full">
           <Silk
             speed={5}
@@ -65,7 +65,7 @@ const Contact = () => {
             noiseIntensity={1.5}
           />
         </div>
-        <div className="absolute inset-0 w-full max-w-2/3 mx-auto flex flex-col items-center justify-center py-12 px-4">
+        <div className="absolute inset-0 w-full max-w-[90%] md:max-w-2/3 mx-auto flex flex-col items-center justify-center py-12 px-4">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full max-w-md flex flex-col gap-6"
