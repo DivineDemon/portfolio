@@ -7,63 +7,53 @@ datasource db {
   provider = "postgresql"
 }
 
-model case_studies {
-  id                  Int      @id @default(autoincrement())
-  project_id          Int      @unique(map: "case_studies_project_id_unique")
-  title               String
-  description         String
-  challenge           String
-  results             String
-  onboarding_improved String
-  retention_increase  String
-  time_spent_increase String
-  research            String
-  architecture        String
-  wireframing         String
-  testing             String
-  design              String
-  tech_stack_urls     String
-  ceo_statement       String
-  conclusion          String
-  images              String?
-  projects            projects @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "case_studies_project_id_projects_id_fk")
-}
-
-model companies {
-  id        Int        @id @default(autoincrement())
-  hq        String
-  founded   Int
-  industry  String
-  revenue   String
-  size      String
-  ceo_name  String
-  ceo_title String
-  name      String
-  projects  projects[]
-}
-
 model documents {
-  id         BigInt                 @id @default(autoincrement())
+  id         BigInt                       @id @default(autoincrement())
   text       String
-  metadata   Json?                  @default("{}")
-  embedding  Unsupported("vector")?
-  created_at DateTime?              @default(now()) @db.Timestamptz(6)
-  updated_at DateTime?              @default(now()) @db.Timestamptz(6)
+  metadata   Json?                        @default("{}")
+  embedding  Unsupported("vector(3072)")?
+  created_at DateTime?                    @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?                    @default(now()) @db.Timestamptz(6)
 
   @@index([created_at], map: "idx_documents_created_at")
   @@index([metadata], map: "idx_documents_metadata", type: Gin)
 }
 
 model projects {
-  image        String?
-  features     String        @default(dbgenerated("ARRAY[]::text[]"))
-  link         String
-  id           Int           @id @default(autoincrement())
-  start_year   Int
-  project_name String
-  company_id   Int
-  case_studies case_studies?
-  companies    companies     @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "projects_company_id_companies_id_fk")
+  id               Int      @id @default(autoincrement())
+  slug             String   @unique
+  title            String
+  tagline          String
+  industry         String?
+  projectType      String?
+  status           String?
+  role             String
+  engagementModel  String?
+  teamSize         Int?
+  durationInMonths Int?
+  problem          String   @db.Text
+  context          String?  @db.Text
+  strategy         String   @db.Text
+  architecture     String   @db.Text
+  execution        String   @db.Text
+  challenges       String?  @db.Text
+  solution         String   @db.Text
+  measurableImpact String   @db.Text
+  metrics          Json?
+  techStack        String[]
+  infrastructure   String[]
+  integrations     String[]
+  coverImage       String
+  galleryImages    String[]
+  demoUrl          String?
+  repositoryUrl    String?
+  seoTitle         String?
+  seoDescription   String?
+  keywords         String[]
+  featured         Boolean  @default(false)
+  published        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model testimonials {

@@ -13,7 +13,10 @@ const serviceIcons: Record<string, LucideIcon> = {
 const Services = () => {
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <div className="w-full flex flex-col items-center justify-center">
+      <div
+        id="services"
+        className="w-full flex flex-col items-center justify-center"
+      >
         <h2 className="text-2xl font-semibold tracking-tight p-5 text-left w-full border-b font-mono">
           Services
         </h2>

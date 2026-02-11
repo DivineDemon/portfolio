@@ -1,0 +1,284 @@
+import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import type { projects } from "@/generated/prisma/client";
+import { server } from "@/lib/elysia/server";
+import { cn } from "@/lib/utils";
+
+type Project = projects;
+
+function CaseStudySection({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("p-5 border-b last:border-b-0", className)}>
+      <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+        {title}
+      </h2>
+      <div className="font-mono text-sm leading-relaxed text-foreground space-y-3">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function Paragraphs({ text }: { text: string }) {
+  const blocks = text.trim().split(/\n\n+/).filter(Boolean);
+  return (
+    <>
+      {blocks.map((block) => {
+        const trimmed = block.trim();
+        return <p key={trimmed}>{trimmed}</p>;
+      })}
+    </>
+  );
+}
+
+function BulletList({ text }: { text: string }) {
+  const items = text.trim().split(/\n/).filter(Boolean);
+  return (
+    <ul className="list-disc list-inside space-y-1.5 text-muted-foreground">
+      {items.map((item) => {
+        const text = item.replace(/^[-•]\s*/, "").trim();
+        return <li key={text}>{text}</li>;
+      })}
+    </ul>
+  );
+}
+
+function TagList({ items }: { items: string[] }) {
+  if (!items?.length) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {items.map((item) => (
+        <span
+          key={item}
+          className="rounded-md border border-border bg-muted/50 px-2.5 py-1 font-mono text-xs text-muted-foreground"
+        >
+          {item}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const raw = await server.project({ slug }).get();
+  const project = (
+    raw && typeof raw === "object" && "data" in raw
+      ? (raw as { data: Project | null }).data
+      : raw
+  ) as Project | null;
+  if (!project) return { title: "Project not found" };
+  return {
+    title: project.seoTitle ?? project.title,
+    description: project.seoDescription ?? project.tagline,
+    keywords: project.keywords?.length ? project.keywords : undefined,
+    openGraph: {
+      title: project.seoTitle ?? project.title,
+      description: project.seoDescription ?? project.tagline,
+      images: project.coverImage
+        ? [{ url: project.coverImage, alt: project.title }]
+        : undefined,
+    },
+  };
+}
+
+export default async function ProjectCaseStudyPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const raw = await server.project({ slug }).get();
+  const project = (
+    raw && typeof raw === "object" && "data" in raw
+      ? (raw as { data: Project | null }).data
+      : raw
+  ) as Project | null;
+
+  if (!project) notFound();
+
+  const metaItems: string[] = [];
+  if (project.industry) metaItems.push(project.industry);
+  metaItems.push(project.role);
+  if (project.durationInMonths != null)
+    metaItems.push(
+      `${project.durationInMonths} month${project.durationInMonths !== 1 ? "s" : ""}`,
+    );
+  if (project.teamSize != null) metaItems.push(`Team of ${project.teamSize}`);
+
+  const executionItems =
+    project.execution?.trim().split(/\n/).filter(Boolean) ?? [];
+
+  return (
+    <article className="min-h-screen">
+      <MaxWidthWrapper parentBorder="border-b">
+        <header className="relative w-full">
+          <Image
+            priority
+            width={1000}
+            height={1000}
+            alt={project.title}
+            className="object-cover"
+            src={project.coverImage}
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
+            <div className="mx-auto max-w-3xl border-0 px-0">
+              <h1 className="font-mono text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                {project.title}
+              </h1>
+              <p className="mt-2 font-mono text-base text-muted-foreground md:text-lg">
+                {project.tagline}
+              </p>
+              {metaItems.length > 0 && (
+                <p className="mt-3 font-mono text-xs text-muted-foreground md:text-sm">
+                  {metaItems.join(" · ")}
+                </p>
+              )}
+            </div>
+          </div>
+        </header>
+      </MaxWidthWrapper>
+      <MaxWidthWrapper parentBorder="border-b" showPlusIcons={false}>
+        <div className="mx-auto max-w-3xl border-0 p-5 flex items-center justify-start">
+          <Link
+            href="/#projects"
+            className="inline-flex items-center font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="size-4 mr-2.5" /> Back to projects
+          </Link>
+        </div>
+      </MaxWidthWrapper>
+      <MaxWidthWrapper parentBorder="border-b" showPlusIcons={false}>
+        <div className="mx-auto max-w-3xl border-0">
+          <CaseStudySection title="Problem">
+            <Paragraphs text={project.problem} />
+          </CaseStudySection>
+          {project.context?.trim() && (
+            <CaseStudySection title="Context">
+              <Paragraphs text={project.context} />
+            </CaseStudySection>
+          )}
+          <CaseStudySection title="Strategy">
+            <Paragraphs text={project.strategy} />
+          </CaseStudySection>
+          <CaseStudySection title="Architecture">
+            <Paragraphs text={project.architecture} />
+          </CaseStudySection>
+          <CaseStudySection title="Execution">
+            {executionItems.length > 1 ? (
+              <BulletList text={project.execution} />
+            ) : (
+              <Paragraphs text={project.execution} />
+            )}
+          </CaseStudySection>
+          {project.challenges?.trim() && (
+            <CaseStudySection title="Challenges">
+              <Paragraphs text={project.challenges} />
+            </CaseStudySection>
+          )}
+          <CaseStudySection title="Solution">
+            <Paragraphs text={project.solution} />
+          </CaseStudySection>
+          <CaseStudySection title="Measurable impact">
+            <Paragraphs text={project.measurableImpact} />
+          </CaseStudySection>
+          <section className="border-b border-border p-5">
+            <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              Tech & infrastructure
+            </h2>
+            <div className="space-y-4">
+              {project.techStack?.length > 0 && (
+                <div>
+                  <TagList items={project.techStack} />
+                </div>
+              )}
+              {project.infrastructure?.length > 0 && (
+                <div>
+                  <p className="font-mono text-xs text-muted-foreground mb-2">
+                    Infrastructure
+                  </p>
+                  <TagList items={project.infrastructure} />
+                </div>
+              )}
+              {project.integrations?.length > 0 && (
+                <div>
+                  <p className="font-mono text-xs text-muted-foreground mb-2">
+                    Integrations
+                  </p>
+                  <TagList items={project.integrations} />
+                </div>
+              )}
+            </div>
+          </section>
+          {(project.demoUrl || project.repositoryUrl) && (
+            <section className="flex flex-wrap gap-3 py-8">
+              {project.demoUrl && (
+                <Button variant="default" size="sm" asChild>
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View demo
+                  </a>
+                </Button>
+              )}
+              {project.repositoryUrl && (
+                <Button variant="outline" size="sm" asChild>
+                  <a
+                    href={project.repositoryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Repository
+                  </a>
+                </Button>
+              )}
+            </section>
+          )}
+          {project.galleryImages?.length > 0 && (
+            <section className="border-t border-border py-8">
+              <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+                Gallery
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {project.galleryImages.map((src) => (
+                  <div
+                    key={src}
+                    className="relative aspect-video overflow-hidden rounded-lg border border-border bg-muted"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${project.title} screenshot`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </MaxWidthWrapper>
+    </article>
+  );
+}

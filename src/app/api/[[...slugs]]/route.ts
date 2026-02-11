@@ -1,8 +1,10 @@
 import { Elysia } from "elysia";
 import type { ErrorResponse } from "./api-error";
+import { project } from "./project";
 import { testimonial } from "./testimonial";
 
 export const app = new Elysia({ prefix: "/api" })
+  .use(project)
   .use(testimonial)
   .onError(({ code, error }) => {
     const message =

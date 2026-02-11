@@ -21,11 +21,11 @@ const MaxWidthWrapper = ({
           (parentBorder === "border-y" || parentBorder === "border-t") && (
             <>
               <Plus
-                className="size-8 absolute -top-[16.5px] -left-[16.5px] z-50 text-muted-foreground"
+                className="size-8 absolute -top-[16.5px] -left-[16.5px] z-40 text-muted-foreground"
                 strokeWidth={1}
               />
               <Plus
-                className="size-8 absolute -top-[16.5px] -right-[16.5px] z-50 text-muted-foreground"
+                className="size-8 absolute -top-[16.5px] -right-[16.5px] z-40 text-muted-foreground"
                 strokeWidth={1}
               />
             </>
@@ -35,11 +35,11 @@ const MaxWidthWrapper = ({
           (parentBorder === "border-y" || parentBorder === "border-b") && (
             <>
               <Plus
-                className="size-8 absolute -bottom-[16.5px] -right-[16.5px] z-50 text-muted-foreground"
+                className="size-8 absolute -bottom-[16.5px] -right-[16.5px] z-40 text-muted-foreground"
                 strokeWidth={1}
               />
               <Plus
-                className="size-8 absolute -bottom-[16.5px] -left-[16.5px] z-50 text-muted-foreground"
+                className="size-8 absolute -bottom-[16.5px] -left-[16.5px] z-40 text-muted-foreground"
                 strokeWidth={1}
               />
             </>

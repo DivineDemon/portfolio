@@ -55,7 +55,10 @@ const Contact = () => {
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <div className="w-full relative min-h-[70vh] md:min-h-[60vh]">
+      <div
+        id="contact"
+        className="w-full relative min-h-[70vh] md:min-h-[60vh]"
+      >
         <div className="absolute inset-0 invert dark:invert-0 w-full h-full">
           <Silk
             speed={5}

@@ -1,19 +1,11 @@
 import Image from "next/image";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import type { testimonials } from "@/generated/prisma/client";
 import { server } from "@/lib/elysia/server";
 import { cn } from "@/lib/utils";
 import { Marquee } from "../ui/marquee";
 
-type Testimonial = {
-  id: number;
-  client_name: string;
-  designation: string;
-  company: string;
-  content: string;
-  image: string | null;
-};
-
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({ testimonial }: { testimonial: testimonials }) {
   const initial = testimonial.client_name.trim().slice(0, 1).toUpperCase();
 
   return (
@@ -50,7 +42,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </p>
         </div>
       </div>
-      <p className="font-mono text-sm leading-relaxed text-foreground">
+      <p
+        className="font-mono text-sm leading-relaxed text-foreground line-clamp-3"
+        title={testimonial.content}
+      >
         {testimonial.content}
       </p>
     </article>
@@ -65,7 +60,10 @@ const Testimonials = async () => {
       <h2 className="text-2xl font-semibold tracking-tight p-5 text-left w-full border-b font-mono">
         Testimonials
       </h2>
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5">
+      <div
+        id="testimonials"
+        className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5"
+      >
         <Marquee pauseOnHover>
           {testimonials.data?.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
