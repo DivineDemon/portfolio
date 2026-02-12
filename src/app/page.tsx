@@ -39,13 +39,13 @@ const Home = () => {
         {safeJsonLdStringify(homePageJsonLd)}
       </script>
       <Hero />
-      <About />
-      <Skills />
-      <DitherSplitter />
       <Services />
       <DitherSplitter />
       <Projects />
       <Testimonials />
+      <DitherSplitter />
+      <About />
+      <Skills />
       <Contact />
     </>
   );

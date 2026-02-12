@@ -3,7 +3,10 @@ import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 const About = () => {
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <div className="w-full flex flex-col items-center justify-center gap-5 p-5 font-mono text-sm">
+      <div
+        id="about"
+        className="w-full flex flex-col items-center justify-center gap-5 p-5 font-mono text-sm"
+      >
         <span className="w-full text-left">
           I am a Senior Full-Stack Software Engineer and Product Architect
           specializing in scalable SaaS development, AI-powered automation

@@ -22,11 +22,6 @@ function ProjectCard({ project }: { project: projects }) {
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {project.industry && (
-          <span className="absolute left-3 top-3 rounded-md border border-border/80 bg-background/90 px-2 py-1 font-mono text-xs text-muted-foreground backdrop-blur-sm">
-            {project.industry}
-          </span>
-        )}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="font-mono text-lg font-semibold text-foreground transition-colors group-hover:text-foreground/90">
@@ -35,8 +30,13 @@ function ProjectCard({ project }: { project: projects }) {
         <p className="line-clamp-2 font-mono text-sm leading-relaxed text-muted-foreground">
           {project.tagline}
         </p>
+        {project.industry && (
+          <span className="mt-auto w-fit rounded border border-border/60 bg-muted/50 px-2 py-0.5 font-mono text-xs text-muted-foreground">
+            Industry: {project.industry}
+          </span>
+        )}
         {project.techStack && project.techStack.length > 0 && (
-          <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
+          <div className="flex flex-wrap gap-1.5 pt-">
             {project.techStack.slice(0, 5).map((tech) => (
               <span
                 key={tech}
