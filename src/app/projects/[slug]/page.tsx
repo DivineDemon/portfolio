@@ -1,10 +1,9 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Earth, Github } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import DitherSplitter from "@/components/global/dither-splitter";
-import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
 import { SITE_URL } from "@/lib/constants";
@@ -314,6 +313,9 @@ export default async function ProjectCaseStudyPage({
             <div className="space-y-4">
               {project.techStack?.length > 0 && (
                 <div>
+                  <p className="font-mono text-xs text-muted-foreground mb-2">
+                    Tech Stack
+                  </p>
                   <TagList items={project.techStack} />
                 </div>
               )}
@@ -336,33 +338,27 @@ export default async function ProjectCaseStudyPage({
             </div>
           </section>
           {(project.demoUrl || project.repositoryUrl) && (
-            <section className="flex flex-wrap gap-3 py-8">
+            <section className="w-full flex flex-col items-center justify-center p-5 gap-2.5">
               {project.demoUrl && (
-                <Button variant="default" size="sm" asChild>
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View demo
-                  </a>
-                </Button>
+                <div className="w-full flex items-center justify-center gap-2.5">
+                  <Earth className="size-4" />
+                  <span className="flex-1 text-left text-sm text-blue-300">
+                    {project.demoUrl}
+                  </span>
+                </div>
               )}
               {project.repositoryUrl && (
-                <Button variant="outline" size="sm" asChild>
-                  <a
-                    href={project.repositoryUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Repository
-                  </a>
-                </Button>
+                <div className="w-full flex items-center justify-center gap-2.5">
+                  <Github className="size-4" />
+                  <span className="flex-1 text-left text-sm text-blue-300">
+                    {project.repositoryUrl}
+                  </span>
+                </div>
               )}
             </section>
           )}
           {project.galleryImages?.length > 0 && (
-            <section className="border-t border-border py-8">
+            <section className="border-y border-border p-5">
               <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
                 Gallery
               </h2>
