@@ -65,7 +65,7 @@ const Projects = async () => {
         <h2 className="w-full border-b p-5 text-left font-mono text-2xl font-semibold tracking-tight">
           Projects
         </h2>
-        <div className="relative grid w-full grid-cols-2 items-center justify-center gap-5 p-5">
+        <div className="relative grid w-full grid-cols-1 md:grid-cols-2 items-center justify-center gap-5 p-5">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
