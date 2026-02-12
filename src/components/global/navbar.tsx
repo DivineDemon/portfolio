@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { navItems } from "@/lib/constants";
-import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 import { Button } from "../ui/button";
 import {
   Sheet,
@@ -80,17 +79,8 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
-              <div className="border-t p-4 flex items-center justify-between">
-                <span className="w-full text-left text-sm font-medium">
-                  Theme
-                </span>
-                <AnimatedThemeToggler size="icon-sm" variant="ghost" />
-              </div>
             </SheetContent>
           </Sheet>
-        </div>
-        <div className="max-md:hidden">
-          <AnimatedThemeToggler size="icon-sm" variant="ghost" />
         </div>
       </nav>
     </MaxWidthWrapper>

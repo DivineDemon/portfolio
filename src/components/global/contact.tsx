@@ -64,7 +64,7 @@ const Contact = () => {
             speed={5}
             scale={1}
             rotation={0}
-            color="#7B7481"
+            color="#3D5DBA"
             noiseIntensity={1.5}
           />
         </div>

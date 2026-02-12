@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DitherSplitter from "@/components/global/dither-splitter";
 import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
@@ -160,24 +161,24 @@ export default async function ProjectCaseStudyPage({
             className="object-cover"
             src={project.coverImage}
           />
-          <div className="absolute inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
-            <div className="mx-auto max-w-3xl border-0 px-0">
-              <h1 className="font-mono text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                {project.title}
-              </h1>
-              <p className="mt-2 font-mono text-base text-muted-foreground md:text-lg">
-                {project.tagline}
-              </p>
-              {metaItems.length > 0 && (
-                <p className="mt-3 font-mono text-xs text-muted-foreground md:text-sm">
-                  {metaItems.join(" · ")}
-                </p>
-              )}
-            </div>
-          </div>
         </header>
       </MaxWidthWrapper>
+      <MaxWidthWrapper>
+        <div className="mx-auto max-w-3xl border-0 p-5 w-full flex flex-col items-center justify-center">
+          <h1 className="w-full text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
+            {project.title}
+          </h1>
+          <p className="mt-2 w-full text-left font-mono text-sm text-muted-foreground md:text-lg">
+            {project.tagline}
+          </p>
+          {metaItems.length > 0 && (
+            <p className="mt-3 w-full text-left font-mono text-xs text-muted-foreground md:text-sm">
+              {metaItems.join(" · ")}
+            </p>
+          )}
+        </div>
+      </MaxWidthWrapper>
+      <DitherSplitter />
       <MaxWidthWrapper parentBorder="border-b" showPlusIcons={false}>
         <div className="mx-auto max-w-3xl border-0 p-5 flex items-center justify-start">
           <Link
