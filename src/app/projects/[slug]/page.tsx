@@ -235,7 +235,7 @@ export default async function ProjectCaseStudyPage({
       <script type="application/ld+json">
         {safeJsonLdStringify(projectJsonLd)}
       </script>
-      <MaxWidthWrapper parentBorder="border-b">
+      <MaxWidthWrapper parentBorder="border-none">
         <header className="relative w-full">
           <Image
             priority
@@ -247,7 +247,7 @@ export default async function ProjectCaseStudyPage({
           />
         </header>
       </MaxWidthWrapper>
-      <MaxWidthWrapper>
+      <MaxWidthWrapper parentBorder="border-y">
         <div className="mx-auto max-w-3xl border-0 p-5 w-full flex flex-col items-center justify-center">
           <h1 className="w-full text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
             {project.title}
@@ -263,7 +263,7 @@ export default async function ProjectCaseStudyPage({
         </div>
       </MaxWidthWrapper>
       <DitherSplitter />
-      <MaxWidthWrapper parentBorder="border-b" showPlusIcons={false}>
+      <MaxWidthWrapper parentBorder="border-b" showPlusIcons={true}>
         <div className="mx-auto max-w-3xl border-0 p-5 flex items-center justify-start">
           <Link
             href="/#projects"
@@ -273,7 +273,7 @@ export default async function ProjectCaseStudyPage({
           </Link>
         </div>
       </MaxWidthWrapper>
-      <MaxWidthWrapper parentBorder="border-b" showPlusIcons={false}>
+      <MaxWidthWrapper parentBorder="border-none">
         <div className="mx-auto max-w-3xl border-0">
           <CaseStudySection title="Problem">
             <Paragraphs text={project.problem} />
@@ -386,6 +386,7 @@ export default async function ProjectCaseStudyPage({
           )}
         </div>
       </MaxWidthWrapper>
+      <DitherSplitter />
     </article>
   );
 }
