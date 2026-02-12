@@ -8,6 +8,12 @@ import Navbar from "@/components/global/navbar";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_URL } from "@/lib/constants";
+import {
+  PERSON_SCHEMA_ID,
+  safeJsonLdStringify,
+  toAbsoluteUrl,
+  WEBSITE_SCHEMA_ID,
+} from "@/lib/json-ld";
 import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
@@ -19,6 +25,39 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const rootJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": PERSON_SCHEMA_ID,
+      name: "Mushood Hanif",
+      url: SITE_URL,
+      image: toAbsoluteUrl("/og-image.png"),
+      jobTitle: "Founder and Builder",
+      description:
+        "Founder and Builder specializing in scalable SaaS platforms, AI-powered automation systems, Next.js, Node.js, and high-performance product engineering.",
+      knowsAbout: [
+        "SaaS Architecture",
+        "AI Automation",
+        "Next.js",
+        "Node.js",
+        "TypeScript",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": WEBSITE_SCHEMA_ID,
+      url: SITE_URL,
+      name: "Mushood Hanif",
+      description:
+        "Portfolio of Mushood Hanif focused on scalable SaaS and AI-powered systems.",
+      inLanguage: "en-US",
+      publisher: { "@id": PERSON_SCHEMA_ID },
+    },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -104,6 +143,9 @@ export default function RootLayout({
       <body
         className={cn(geistSans.variable, geistMono.variable, "antialiased")}
       >
+        <script type="application/ld+json">
+          {safeJsonLdStringify(rootJsonLd)}
+        </script>
         <Analytics />
         <SpeedInsights />
         <ThemeProvider

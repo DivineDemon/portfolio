@@ -9,6 +9,12 @@ import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
 import { SITE_URL } from "@/lib/constants";
 import { server } from "@/lib/elysia/server";
+import {
+  PERSON_SCHEMA_ID,
+  safeJsonLdStringify,
+  toAbsoluteUrl,
+  WEBSITE_SCHEMA_ID,
+} from "@/lib/json-ld";
 import { cn } from "@/lib/utils";
 
 type Project = projects;
@@ -74,6 +80,21 @@ function TagList({ items }: { items: string[] }) {
       ))}
     </div>
   );
+}
+
+function toIsoDate(value: unknown): string | undefined {
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString();
+    }
+  }
+
+  return undefined;
 }
 
 export async function generateMetadata({
@@ -150,9 +171,70 @@ export default async function ProjectCaseStudyPage({
 
   const executionItems =
     project.execution?.trim().split(/\n/).filter(Boolean) ?? [];
+  const canonical = `${SITE_URL}/projects/${slug}`;
+  const title = project.seoTitle ?? project.title;
+  const description = project.seoDescription ?? project.tagline;
+  const publishedAt = toIsoDate(project.createdAt);
+  const updatedAt = toIsoDate(project.updatedAt);
+  const imageUrl = toAbsoluteUrl(project.coverImage);
+  const aboutItems = [project.industry, project.projectType]
+    .filter((value): value is string => Boolean(value))
+    .map((value) => ({ "@type": "Thing", name: value }));
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonical}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Projects",
+            item: `${SITE_URL}/#projects`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: project.title,
+            item: canonical,
+          },
+        ],
+      },
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: title,
+        description,
+        url: canonical,
+        mainEntityOfPage: canonical,
+        isPartOf: {
+          "@id": WEBSITE_SCHEMA_ID,
+        },
+        image: [imageUrl],
+        author: { "@id": PERSON_SCHEMA_ID },
+        publisher: { "@id": PERSON_SCHEMA_ID },
+        ...(publishedAt ? { datePublished: publishedAt } : {}),
+        ...(updatedAt ? { dateModified: updatedAt } : {}),
+        ...(project.keywords?.length
+          ? { keywords: project.keywords.join(", ") }
+          : {}),
+        ...(aboutItems.length ? { about: aboutItems } : {}),
+      },
+    ],
+  };
 
   return (
     <article className="min-h-screen">
+      <script type="application/ld+json">
+        {safeJsonLdStringify(projectJsonLd)}
+      </script>
       <MaxWidthWrapper parentBorder="border-b">
         <header className="relative w-full">
           <Image
