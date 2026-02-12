@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Marquee } from "@/components/ui/marquee";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
 import { server } from "@/lib/elysia/server";
@@ -11,7 +10,7 @@ function ProjectCard({ project }: { project: projects }) {
     <Link
       href={`/projects/${project.slug}`}
       className={cn(
-        "group flex min-w-[300px] max-w-[340px] shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm",
+        "group flex col-span-1 h-full shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm",
         "transition-all duration-200 hover:border-border/80 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
       )}
     >
@@ -66,14 +65,10 @@ const Projects = async () => {
         <h2 className="w-full border-b p-5 text-left font-mono text-2xl font-semibold tracking-tight">
           Projects
         </h2>
-        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5">
-          <Marquee pauseOnHover>
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </Marquee>
-          <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
-          <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
+        <div className="relative grid w-full grid-cols-2 items-center justify-center gap-5 p-5">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
         </div>
       </MaxWidthWrapper>
     </section>

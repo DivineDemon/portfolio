@@ -342,17 +342,23 @@ export default async function ProjectCaseStudyPage({
               {project.demoUrl && (
                 <div className="w-full flex items-center justify-center gap-2.5">
                   <Earth className="size-4" />
-                  <span className="flex-1 text-left text-sm text-blue-300">
+                  <Link
+                    href={project.demoUrl}
+                    className="flex-1 text-left text-sm text-blue-300"
+                  >
                     {project.demoUrl}
-                  </span>
+                  </Link>
                 </div>
               )}
               {project.repositoryUrl && (
                 <div className="w-full flex items-center justify-center gap-2.5">
                   <Github className="size-4" />
-                  <span className="flex-1 text-left text-sm text-blue-300">
+                  <Link
+                    href={project.repositoryUrl}
+                    className="flex-1 text-left text-sm text-blue-300"
+                  >
                     {project.repositoryUrl}
-                  </span>
+                  </Link>
                 </div>
               )}
             </section>
