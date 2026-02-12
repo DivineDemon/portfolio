@@ -28,7 +28,7 @@ interface MarqueeProps extends ComponentPropsWithoutRef<"div"> {
   vertical?: boolean;
   /**
    * Number of times to repeat the content
-   * @default 4
+   * @default 2
    */
   repeat?: number;
 }
@@ -39,7 +39,7 @@ export function Marquee({
   pauseOnHover = false,
   children,
   vertical = false,
-  repeat = 4,
+  repeat = 2,
   ...props
 }: MarqueeProps) {
   return (
@@ -59,8 +59,9 @@ export function Marquee({
           <div
             key={slotKey}
             className={cn("flex shrink-0 justify-around gap-(--gap)", {
-              "animate-marquee flex-row": !vertical,
-              "animate-marquee-vertical flex-col": vertical,
+              "animate-marquee motion-reduce:animate-none flex-row": !vertical,
+              "animate-marquee-vertical motion-reduce:animate-none flex-col":
+                vertical,
               "group-hover:paused": pauseOnHover,
               "direction-[reverse]": reverse,
             })}

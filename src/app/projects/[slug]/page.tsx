@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 
 type Project = projects;
 
+export const revalidate = 3600;
+
 function CaseStudySection({
   title,
   children,

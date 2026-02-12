@@ -3,7 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export const project = new Elysia({ prefix: "/project" })
   .get("/", async () => {
-    return await prisma.projects.findMany();
+    return await prisma.projects.findMany({
+      where: {
+        published: true,
+      },
+    });
   })
   .get(
     "/:slug",

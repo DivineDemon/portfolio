@@ -14,9 +14,7 @@ const Hero = () => {
             colorNum={4}
             waveSpeed={0.05}
             waveFrequency={3}
-            mouseRadius={0.3}
             waveAmplitude={0.3}
-            enableMouseInteraction
             disableAnimation={false}
             waveColor={[0.5, 0.5, 0.5]}
           />

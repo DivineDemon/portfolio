@@ -58,7 +58,7 @@ const Projects = async () => {
   const rawProjects = Array.isArray(res)
     ? res
     : (res as { data?: projects[] })?.data;
-  const projects = (rawProjects ?? []).filter((p) => p.published);
+  const projects = rawProjects ?? [];
 
   return (
     <section id="projects" className="scroll-mt-20">

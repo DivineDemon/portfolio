@@ -2,7 +2,14 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { ForwardedRef } from "react";
-import { forwardRef, useLayoutEffect, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Color, type Mesh } from "three";
 
 const hexToNormalizedRGB = (hex: string): number[] => {
@@ -116,7 +123,11 @@ const Silk = ({
   noiseIntensity = 1.5,
   rotation = 0,
 }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const meshRef = useRef<Mesh | null>(null);
+  const [isInView, setIsInView] = useState(true);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const uniforms = useMemo(
     () => ({
@@ -130,10 +141,52 @@ const Silk = ({
     [speed, scale, noiseIntensity, color, rotation],
   );
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = () => setPrefersReducedMotion(media.matches);
+    handleChange();
+    media.addEventListener("change", handleChange);
+    return () => media.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const handleVisibility = () =>
+      setIsDocumentVisible(document.visibilityState === "visible");
+    handleVisibility();
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof IntersectionObserver === "undefined")
+      return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 },
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const canAnimate = isInView && isDocumentVisible && !prefersReducedMotion;
+
   return (
-    <Canvas dpr={[1, 2]} frameloop="always">
-      <SilkPlane ref={meshRef} uniforms={uniforms} />
-    </Canvas>
+    <div ref={containerRef} className="h-full w-full">
+      <Canvas
+        dpr={[1, 1.25]}
+        frameloop={canAnimate ? "always" : "never"}
+        gl={{
+          antialias: false,
+          preserveDrawingBuffer: false,
+          powerPreference: "low-power",
+        }}
+      >
+        <SilkPlane ref={meshRef} uniforms={uniforms} />
+      </Canvas>
+    </div>
   );
 };
 
