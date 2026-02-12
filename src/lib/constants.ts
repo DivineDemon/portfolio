@@ -45,12 +45,12 @@ export const services = [
   {
     id: 1,
     icon: "Layers",
-    title: "SaaS Architecture & Product Engineering",
+    title: "Product Engineering",
     description:
       "Designing and building scalable, multi-tenant SaaS platforms from the ground up. From product definition to production infrastructure, I architect systems with long-term maintainability, performance, and security in mind.Whether you're launching a new platform or restructuring an existing one, I build the technical foundation that supports scale — not just version one.",
     includes: [
       "Multi-tenant architecture & RBAC",
-      "High-performance Next.js & React applications",
+      "High-performance Next.js apps",
       "Backend systems in Node.js / Python",
       "PostgreSQL schema design & optimization",
       "Event-driven and serverless workflows",
@@ -73,7 +73,7 @@ export const services = [
   {
     id: 3,
     icon: "Gauge",
-    title: "System Optimization & Technical Leadership",
+    title: "Technical Leadership",
     description:
       "Improving performance, structure, and execution across growing engineering teams. When products scale, complexity compounds.I step in to restructure frontend architecture, optimize backend performance, establish engineering standards, and align product execution with business outcomes.",
     includes: [
@@ -87,16 +87,16 @@ export const services = [
   {
     id: 4,
     icon: "Rocket",
-    title: "End-to-End Product Ownership",
+    title: "E2E Product Ownership",
     description:
       "From concept to production — with full accountability. I operate across strategy, engineering, and execution to ensure products don't just ship — they perform.This means defining technical direction, aligning stakeholders, structuring delivery pipelines, and maintaining architectural integrity from day one. I take ownership of the outcome, not just the implementation.",
     includes: [
-      "Product scoping & technical feasibility analysis",
-      "Architecture decision-making & system design",
+      "Scoping & technical feasibility analysis",
+      "Architectural system design",
       "Roadmap structuring & execution planning",
-      "Cross-functional coordination (design, backend, frontend, ops)",
+      "Cross-functional coordination",
       "Delivery oversight & iterative optimization",
-      "Post-launch performance and scalability refinement",
+      "Post-launch scalability refinement",
     ],
   },
 ];

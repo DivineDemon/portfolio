@@ -21,6 +21,7 @@ const Navbar = () => {
 
   return (
     <MaxWidthWrapper
+      showPlusIcons={false}
       parentBorder="border-b"
       className="sticky top-0 z-50 bg-background/10 backdrop-blur-md"
     >
