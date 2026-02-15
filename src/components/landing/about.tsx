@@ -15,10 +15,10 @@ const About = () => {
         <span className="w-full text-left">
           Over the past 5+ years, I have led the design and delivery of
           production-grade platforms across FinTech, healthcare, real estate,
-          and AI-driven products. My work spans frontend architecture with
-          Next.js and React, backend systems in Node.js and Python, and
-          multi-tenant SaaS infrastructures built for scale, security, and
-          long-term maintainability.
+          and AI-driven products. My work spans modern frontends (Next.js,
+          React), robust backends (Node.js, Python), and SaaS platforms that
+          scale with your business — without costly rewrites — with security and
+          long-term maintainability built in.
         </span>
         <span className="w-full text-left">
           I operate beyond feature delivery.
@@ -29,17 +29,21 @@ const About = () => {
         <div className="w-full flex flex-col items-center justify-center gap-1.5">
           <span className="w-full text-left">That means:</span>
           <ul className="list-disc list-inside w-full text-left">
-            <li>Architecting multi-tenant, high-performance SaaS platforms.</li>
             <li>
-              Translating business objectives into resilient technical systems.
+              Designing scalable SaaS platforms that handle growth without
+              expensive rewrites.
             </li>
             <li>
-              Leading cross-functional teams while maintaining architectural
-              integrity.
+              Turning business objectives into systems that stay reliable as you
+              scale.
             </li>
             <li>
-              Building AI-powered automation pipelines using OpenAI, LangChain,
-              and n8n.
+              Leading cross-functional teams so delivery stays on track and
+              systems stay coherent.
+            </li>
+            <li>
+              Building AI and automation that cut manual work and cost (OpenAI,
+              LangChain, n8n).
             </li>
           </ul>
         </div>
@@ -53,7 +57,8 @@ const About = () => {
           structured execution, and systems built to compound over time.
         </span>
         <span className="w-full text-left">
-          Complex requirements don't intimidate me, They become architecture.
+          Complex requirements don't intimidate me — they become systems that
+          work for the business.
         </span>
       </div>
     </MaxWidthWrapper>
