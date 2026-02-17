@@ -85,6 +85,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    other: {
+      "msvalidate.01": "A1C10078467FC563779FE013C977698A",
+    },
+  },
   icons: {
     icon: "/logo.svg",
   },
