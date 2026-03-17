@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 type Project = projects;
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 function CaseStudySection({
   title,

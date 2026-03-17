@@ -13,7 +13,7 @@ import {
   WEBSITE_SCHEMA_ID,
 } from "@/lib/json-ld";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 const Home = () => {
   const homePageJsonLd = {
