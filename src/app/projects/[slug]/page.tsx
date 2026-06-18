@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseStudyMarkdown } from "@/components/case-study/markdown";
 import DitherSplitter from "@/components/global/dither-splitter";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { projects } from "@/generated/prisma/client";
@@ -38,30 +39,6 @@ function CaseStudySection({
         {children}
       </div>
     </section>
-  );
-}
-
-function Paragraphs({ text }: { text: string }) {
-  const blocks = text.trim().split(/\n\n+/).filter(Boolean);
-  return (
-    <>
-      {blocks.map((block) => {
-        const trimmed = block.trim();
-        return <p key={trimmed}>{trimmed}</p>;
-      })}
-    </>
-  );
-}
-
-function BulletList({ text }: { text: string }) {
-  const items = text.trim().split(/\n/).filter(Boolean);
-  return (
-    <ul className="list-disc list-inside space-y-1.5 text-muted-foreground">
-      {items.map((item) => {
-        const text = item.replace(/^[-•]\s*/, "").trim();
-        return <li key={text}>{text}</li>;
-      })}
-    </ul>
   );
 }
 
@@ -168,8 +145,6 @@ export default async function ProjectCaseStudyPage({
     );
   if (project.teamSize != null) metaItems.push(`Team of ${project.teamSize}`);
 
-  const executionItems =
-    project.execution?.trim().split(/\n/).filter(Boolean) ?? [];
   const canonical = `${SITE_URL}/projects/${slug}`;
   const title = project.seoTitle ?? project.title;
   const description = project.seoDescription ?? project.tagline;
@@ -275,36 +250,32 @@ export default async function ProjectCaseStudyPage({
       <MaxWidthWrapper parentBorder="border-none">
         <div className="mx-auto max-w-3xl border-0">
           <CaseStudySection title="Problem">
-            <Paragraphs text={project.problem} />
+            <CaseStudyMarkdown content={project.problem} />
           </CaseStudySection>
           {project.context?.trim() && (
             <CaseStudySection title="Context">
-              <Paragraphs text={project.context} />
+              <CaseStudyMarkdown content={project.context} />
             </CaseStudySection>
           )}
           <CaseStudySection title="Strategy">
-            <Paragraphs text={project.strategy} />
+            <CaseStudyMarkdown content={project.strategy} />
           </CaseStudySection>
           <CaseStudySection title="Architecture">
-            <Paragraphs text={project.architecture} />
+            <CaseStudyMarkdown content={project.architecture} />
           </CaseStudySection>
           <CaseStudySection title="Execution">
-            {executionItems.length > 1 ? (
-              <BulletList text={project.execution} />
-            ) : (
-              <Paragraphs text={project.execution} />
-            )}
+            <CaseStudyMarkdown content={project.execution} />
           </CaseStudySection>
           {project.challenges?.trim() && (
             <CaseStudySection title="Challenges">
-              <Paragraphs text={project.challenges} />
+              <CaseStudyMarkdown content={project.challenges} />
             </CaseStudySection>
           )}
           <CaseStudySection title="Solution">
-            <Paragraphs text={project.solution} />
+            <CaseStudyMarkdown content={project.solution} />
           </CaseStudySection>
           <CaseStudySection title="Measurable impact">
-            <Paragraphs text={project.measurableImpact} />
+            <CaseStudyMarkdown content={project.measurableImpact} />
           </CaseStudySection>
           <section className="border-b border-border p-5">
             <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
