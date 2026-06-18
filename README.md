@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mushood Hanif — Portfolio
+
+Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16, featuring project case studies, testimonials, a contact form, and SEO-optimized landing pages.
+
+## Features
+
+- **Landing page** — Hero, services, featured projects, testimonials, about, skills, and contact sections
+- **Project case studies** — Dynamic `/projects/[slug]` pages with markdown content, metrics, and tech stack tags
+- **API layer** — [Elysia](https://elysiajs.com) routes mounted under `/api` with type-safe Eden client
+- **Database** — PostgreSQL via Prisma (projects and testimonials)
+- **Contact form** — Server action powered by EmailJS
+- **On-demand revalidation** — Webhook endpoint to refresh cached pages after content updates
+- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, and optional Google Analytics
+
+## Tech Stack
+
+| Layer | Technologies |
+| --- | --- |
+| Framework | Next.js 16, React 19, TypeScript |
+| Styling | Tailwind CSS 4, shadcn/ui, Geist font |
+| API | Elysia, Eden Treaty |
+| Database | PostgreSQL, Prisma 7 |
+| Forms & validation | React Hook Form, Zod |
+| 3D / visuals | Three.js, React Three Fiber |
+| Tooling | Biome, Bun |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- [Bun](https://bun.sh) (recommended) or Node.js 20+
+- PostgreSQL database (e.g. [Neon](https://neon.tech))
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
+```
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+# Database
+DATABASE_URL="postgresql://..."
+
+# Site
+NEXT_PUBLIC_SITE_URL="https://mushoodhanif.com"
+NEXT_PUBLIC_API_URL="http://localhost:3000"
+
+# Contact form (EmailJS)
+EMAILJS_SERVICE_ID=""
+EMAILJS_TEMPLATE_ID=""
+EMAILJS_PUBLIC_KEY=""
+EMAILJS_PRIVATE_KEY=""
+
+# Optional
+NEXT_PUBLIC_GA_MEASUREMENT_ID=""
+REVALIDATE_SECRET=""
+```
+
+### Database Setup
+
+```bash
+bunx prisma migrate deploy
+bunx prisma generate
+```
+
+### Development
+
+```bash
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `bun dev` | Start the development server |
+| `bun run build` | Production build |
+| `bun start` | Start the production server |
+| `bun run typecheck` | Run TypeScript checks |
+| `bun run lint` | Lint and fix with Biome |
+| `bun run format` | Format code with Biome |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                  # Next.js App Router pages and API routes
+│   ├── api/              # Elysia API + revalidation webhook
+│   └── projects/[slug]/  # Project case study pages
+├── components/
+│   ├── case-study/       # Markdown rendering for case studies
+│   ├── global/           # Navbar, footer, contact
+│   ├── landing/          # Homepage sections
+│   └── ui/               # shadcn/ui components
+├── lib/                  # Utilities, Prisma client, EmailJS, JSON-LD
+└── generated/prisma/     # Prisma client output
+prisma/
+├── schema.prisma
+└── migrations/
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/api/project` | GET | List published projects |
+| `/api/project/:slug` | GET | Fetch a project by slug |
+| `/api/testimonial` | GET | List testimonials |
+| `/api/revalidate` | POST | On-demand ISR revalidation (requires `REVALIDATE_SECRET`) |
 
-## Deploy on Vercel
+### Revalidation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Send a `POST` to `/api/revalidate` with a Bearer token or `x-revalidate-secret` header:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+{ "type": "project", "slug": "my-project" }
+```
+
+```json
+{ "type": "testimonial" }
+```
+
+## Deployment
+
+Optimized for [Vercel](https://vercel.com). Set environment variables in the project dashboard, connect a PostgreSQL database, and deploy. Pages use ISR with a 5-minute revalidation window (`revalidate = 300`).
+
+## License
+
+[GNU GPL v3](LICENSE.txt)
