@@ -2,6 +2,7 @@ import Image from "next/image";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { testimonials } from "@/generated/prisma/client";
 import { server } from "@/lib/elysia/server";
+import { filterPublicTestimonials } from "@/lib/testimonials";
 import { cn } from "@/lib/utils";
 import { Marquee } from "../ui/marquee";
 
@@ -53,7 +54,8 @@ function TestimonialCard({ testimonial }: { testimonial: testimonials }) {
 }
 
 const Testimonials = async () => {
-  const testimonials = await server.testimonial.get();
+  const response = await server.testimonial.get();
+  const testimonials = filterPublicTestimonials(response.data ?? []);
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
@@ -65,7 +67,7 @@ const Testimonials = async () => {
         className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5"
       >
         <Marquee pauseOnHover>
-          {testimonials.data?.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </Marquee>

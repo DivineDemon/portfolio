@@ -1,12 +1,20 @@
-import { ArrowLeft, Earth, Github } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseStudySection } from "@/components/case-study/case-study-section";
+import { ClientTestimonial } from "@/components/case-study/client-testimonial";
+import { DemoCta } from "@/components/case-study/demo-cta";
+import { EngagementMeta } from "@/components/case-study/engagement-meta";
+import { FullGallery, InlineGallery } from "@/components/case-study/gallery";
 import { CaseStudyMarkdown } from "@/components/case-study/markdown";
+import { MetricsSnapshot } from "@/components/case-study/metrics-snapshot";
+import { RepositoryLink } from "@/components/case-study/repository-link";
+import { TechnicalDetailsAccordion } from "@/components/case-study/technical-details-accordion";
+import type { Project } from "@/components/case-study/types";
 import DitherSplitter from "@/components/global/dither-splitter";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
-import type { projects } from "@/generated/prisma/client";
 import { SITE_URL } from "@/lib/constants";
 import { server } from "@/lib/elysia/server";
 import {
@@ -15,48 +23,8 @@ import {
   toAbsoluteUrl,
   WEBSITE_SCHEMA_ID,
 } from "@/lib/json-ld";
-import { cn } from "@/lib/utils";
-
-type Project = projects;
 
 export const revalidate = 300;
-
-function CaseStudySection({
-  title,
-  children,
-  className,
-}: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <section className={cn("p-5 border-b last:border-b-0", className)}>
-      <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-        {title}
-      </h2>
-      <div className="font-mono text-sm leading-relaxed text-foreground space-y-3">
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function TagList({ items }: { items: string[] }) {
-  if (!items?.length) return null;
-  return (
-    <div className="flex flex-wrap gap-2">
-      {items.map((item) => (
-        <span
-          key={item}
-          className="rounded-md border border-border bg-muted/50 px-2.5 py-1 font-mono text-xs text-muted-foreground"
-        >
-          {item}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 function toIsoDate(value: unknown): string | undefined {
   if (value instanceof Date) {
@@ -73,22 +41,28 @@ function toIsoDate(value: unknown): string | undefined {
   return undefined;
 }
 
+async function getProject(slug: string): Promise<Project | null> {
+  const raw = await server.project({ slug }).get();
+  return (
+    raw && typeof raw === "object" && "data" in raw
+      ? (raw as { data: Project | null }).data
+      : raw
+  ) as Project | null;
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const raw = await server.project({ slug }).get();
-  const project = (
-    raw && typeof raw === "object" && "data" in raw
-      ? (raw as { data: Project | null }).data
-      : raw
-  ) as Project | null;
+  const project = await getProject(slug);
   if (!project) return { title: "Project not found" };
+
   const title = project.seoTitle ?? project.title;
-  const description = project.seoDescription ?? project.tagline;
+  const description = project.seoDescription ?? project.headlineResult;
   const canonical = `${SITE_URL}/projects/${slug}`;
+
   return {
     title,
     description,
@@ -127,33 +101,22 @@ export default async function ProjectCaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const raw = await server.project({ slug }).get();
-  const project = (
-    raw && typeof raw === "object" && "data" in raw
-      ? (raw as { data: Project | null }).data
-      : raw
-  ) as Project | null;
+  const project = await getProject(slug);
 
   if (!project) notFound();
 
-  const metaItems: string[] = [];
-  if (project.industry) metaItems.push(project.industry);
-  metaItems.push(project.role);
-  if (project.durationInMonths != null)
-    metaItems.push(
-      `${project.durationInMonths} month${project.durationInMonths !== 1 ? "s" : ""}`,
-    );
-  if (project.teamSize != null) metaItems.push(`Team of ${project.teamSize}`);
-
   const canonical = `${SITE_URL}/projects/${slug}`;
   const title = project.seoTitle ?? project.title;
-  const description = project.seoDescription ?? project.tagline;
+  const description = project.seoDescription ?? project.headlineResult;
   const publishedAt = toIsoDate(project.createdAt);
   const updatedAt = toIsoDate(project.updatedAt);
   const imageUrl = toAbsoluteUrl(project.coverImage);
-  const aboutItems = [project.industry, project.projectType]
-    .filter((value): value is string => Boolean(value))
-    .map((value) => ({ "@type": "Thing", name: value }));
+  const aboutItems = project.industry
+    ? [{ "@type": "Thing", name: project.industry }]
+    : [];
+  const galleryImages = project.galleryImages ?? [];
+  const galleryCaptions = project.galleryCaptions ?? [];
+
   const projectJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -222,28 +185,36 @@ export default async function ProjectCaseStudyPage({
         </header>
       </MaxWidthWrapper>
       <MaxWidthWrapper parentBorder="border-y">
-        <div className="mx-auto max-w-3xl border-0 p-5 w-full flex flex-col items-center justify-center">
-          <h1 className="w-full text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
-            {project.title}
-          </h1>
-          <p className="mt-2 w-full text-left font-mono text-sm text-muted-foreground md:text-lg">
-            {project.tagline}
-          </p>
-          {metaItems.length > 0 && (
-            <p className="mt-3 w-full text-left font-mono text-xs text-muted-foreground md:text-sm">
-              {metaItems.join(" · ")}
-            </p>
+        <div className="mx-auto max-w-3xl border-0">
+          {project.clientTestimonial?.trim() && (
+            <ClientTestimonial content={project.clientTestimonial} />
           )}
+          <div className="flex w-full flex-col items-center justify-center p-5">
+            <h1 className="w-full text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
+              {project.title}
+            </h1>
+            <p className="mt-2 w-full text-left font-mono text-sm text-muted-foreground md:text-lg">
+              {project.headlineResult}
+            </p>
+            {project.industry && (
+              <p className="mt-3 w-full text-left font-mono text-xs text-muted-foreground md:text-sm">
+                {project.industry}
+              </p>
+            )}
+          </div>
+          <MetricsSnapshot metrics={project.metrics} />
+          <EngagementMeta project={project} />
+          {project.demoUrl && <DemoCta demoUrl={project.demoUrl} />}
         </div>
       </MaxWidthWrapper>
       <DitherSplitter />
       <MaxWidthWrapper parentBorder="border-b" showPlusIcons={true}>
-        <div className="mx-auto max-w-3xl border-0 p-5 flex items-center justify-start">
+        <div className="mx-auto flex max-w-3xl items-center justify-start border-0 p-5">
           <Link
             href="/#projects"
-            className="inline-flex items-center font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            <ArrowLeft className="size-4 mr-2.5" /> Back to projects
+            <ArrowLeft className="mr-2.5 size-4" /> Back to projects
           </Link>
         </div>
       </MaxWidthWrapper>
@@ -252,110 +223,49 @@ export default async function ProjectCaseStudyPage({
           <CaseStudySection title="Problem">
             <CaseStudyMarkdown content={project.problem} />
           </CaseStudySection>
-          {project.context?.trim() && (
-            <CaseStudySection title="Context">
-              <CaseStudyMarkdown content={project.context} />
+          {project.situation?.trim() && (
+            <CaseStudySection title="Situation">
+              <CaseStudyMarkdown content={project.situation} />
             </CaseStudySection>
           )}
-          <CaseStudySection title="Strategy">
-            <CaseStudyMarkdown content={project.strategy} />
-          </CaseStudySection>
-          <CaseStudySection title="Architecture">
-            <CaseStudyMarkdown content={project.architecture} />
-          </CaseStudySection>
-          <CaseStudySection title="Execution">
-            <CaseStudyMarkdown content={project.execution} />
-          </CaseStudySection>
-          {project.challenges?.trim() && (
-            <CaseStudySection title="Challenges">
-              <CaseStudyMarkdown content={project.challenges} />
+          {project.beforeAfter?.trim() && (
+            <CaseStudySection title="Before & After">
+              <CaseStudyMarkdown content={project.beforeAfter} />
             </CaseStudySection>
           )}
-          <CaseStudySection title="Solution">
-            <CaseStudyMarkdown content={project.solution} />
+          <CaseStudySection title="Approach">
+            <CaseStudyMarkdown content={project.approach} />
           </CaseStudySection>
-          <CaseStudySection title="Measurable impact">
-            <CaseStudyMarkdown content={project.measurableImpact} />
-          </CaseStudySection>
-          <section className="border-b border-border p-5">
-            <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-              Tech & infrastructure
-            </h2>
-            <div className="space-y-4">
-              {project.techStack?.length > 0 && (
-                <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-2">
-                    Tech Stack
-                  </p>
-                  <TagList items={project.techStack} />
-                </div>
-              )}
-              {project.infrastructure?.length > 0 && (
-                <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-2">
-                    Infrastructure
-                  </p>
-                  <TagList items={project.infrastructure} />
-                </div>
-              )}
-              {project.integrations?.length > 0 && (
-                <div>
-                  <p className="font-mono text-xs text-muted-foreground mb-2">
-                    Integrations
-                  </p>
-                  <TagList items={project.integrations} />
-                </div>
-              )}
-            </div>
-          </section>
-          {(project.demoUrl || project.repositoryUrl) && (
-            <section className="w-full flex flex-col items-center justify-center p-5 gap-2.5">
-              {project.demoUrl && (
-                <div className="w-full flex items-center justify-center gap-2.5">
-                  <Earth className="size-4" />
-                  <Link
-                    href={project.demoUrl}
-                    className="flex-1 text-left text-sm text-blue-300"
-                  >
-                    {project.demoUrl}
-                  </Link>
-                </div>
-              )}
-              {project.repositoryUrl && (
-                <div className="w-full flex items-center justify-center gap-2.5">
-                  <Github className="size-4" />
-                  <Link
-                    href={project.repositoryUrl}
-                    className="flex-1 text-left text-sm text-blue-300"
-                  >
-                    {project.repositoryUrl}
-                  </Link>
-                </div>
-              )}
-            </section>
+          {project.whatMadeThisHard?.trim() && (
+            <CaseStudySection title="What Made This Hard">
+              <CaseStudyMarkdown content={project.whatMadeThisHard} />
+            </CaseStudySection>
           )}
-          {project.galleryImages?.length > 0 && (
-            <section className="border-y border-border p-5">
-              <h2 className="font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-                Gallery
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {project.galleryImages.map((src) => (
-                  <div
-                    key={src}
-                    className="relative aspect-video overflow-hidden rounded-lg border border-border bg-muted"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${project.title} screenshot`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
+          {project.businessOutcome?.trim() && (
+            <CaseStudySection title="Business Outcome">
+              <CaseStudyMarkdown content={project.businessOutcome} />
+            </CaseStudySection>
+          )}
+          <CaseStudySection title="Results">
+            <CaseStudyMarkdown content={project.results} />
+          </CaseStudySection>
+          {galleryImages.length > 0 && (
+            <InlineGallery
+              images={galleryImages}
+              captions={galleryCaptions}
+              title={project.title}
+            />
+          )}
+          <TechnicalDetailsAccordion project={project} />
+          {galleryImages.length > 0 && (
+            <FullGallery
+              images={galleryImages}
+              captions={galleryCaptions}
+              title={project.title}
+            />
+          )}
+          {project.repositoryUrl && (
+            <RepositoryLink repositoryUrl={project.repositoryUrl} />
           )}
         </div>
       </MaxWidthWrapper>

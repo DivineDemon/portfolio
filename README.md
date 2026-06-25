@@ -19,7 +19,7 @@ Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built 
 | Framework | Next.js 16, React 19, TypeScript |
 | Styling | Tailwind CSS 4, shadcn/ui, Geist font |
 | API | Elysia, Eden Treaty |
-| Database | PostgreSQL, Prisma 7 |
+| Database | PostgreSQL, Prisma 7 (schema in `portfolio-backend`) |
 | Forms & validation | React Hook Form, Zod |
 | 3D / visuals | Three.js, React Three Fiber |
 | Tooling | Biome, Bun |
@@ -62,10 +62,20 @@ REVALIDATE_SECRET=""
 
 ### Database Setup
 
+Schema and migrations live in [`portfolio-backend`](../portfolio-backend). Clone that repo alongside this one, then:
+
 ```bash
-bunx prisma migrate deploy
-bunx prisma generate
+# Apply migrations (portfolio-backend only)
+cd ../portfolio-backend
+bun install
+bun run db:migrate
+
+# Generate the Prisma client for this app
+cd ../portfolio
+bun run db:generate
 ```
+
+`postinstall` runs `db:generate` automatically when `portfolio-backend` is present as a sibling directory.
 
 ### Development
 
@@ -85,6 +95,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `bun run typecheck` | Run TypeScript checks |
 | `bun run lint` | Lint and fix with Biome |
 | `bun run format` | Format code with Biome |
+| `bun run db:generate` | Generate Prisma client from `portfolio-backend` schema |
 
 ## Project Structure
 
@@ -99,10 +110,9 @@ src/
 │   ├── landing/          # Homepage sections
 │   └── ui/               # shadcn/ui components
 ├── lib/                  # Utilities, Prisma client, EmailJS, JSON-LD
-└── generated/prisma/     # Prisma client output
-prisma/
-├── schema.prisma
-└── migrations/
+└── generated/prisma/     # Prisma client output (generated from portfolio-backend)
+scripts/
+└── generate-prisma.mjs   # Pulls schema from portfolio-backend and runs prisma generate
 ```
 
 ## API

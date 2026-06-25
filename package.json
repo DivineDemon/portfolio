@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc -b --noEmit",
     "format": "biome format --write",
-    "postinstall": "prisma generate",
+    "postinstall": "node scripts/generate-prisma.mjs",
+    "db:generate": "node scripts/generate-prisma.mjs",
     "lint": "biome check --write --unsafe"
   },
   "dependencies": {

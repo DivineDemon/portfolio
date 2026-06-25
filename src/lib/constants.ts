@@ -47,10 +47,10 @@ export const services = [
     icon: "Layers",
     title: "Product Engineering",
     description:
-      "I design scalable SaaS platforms that handle growth without expensive rewrites. From product definition to production, I build systems with long-term maintainability, performance, and security in mind. Whether you're launching a new platform or restructuring an existing one, you get a foundation that supports scale — not just version one.",
+      "Scale without expensive rewrites. I design SaaS platforms that grow with your business — from product definition to production, with long-term maintainability, performance, and security built in. Whether you're launching a new platform or restructuring an existing one, you get a foundation that supports scale, not just version one.",
     includes: [
-      "Scalable multi-tenant setups & access control",
-      "Fast, reliable web apps (Next.js)",
+      "Fast, reliable web apps that keep users productive (Next.js)",
+      "Scalable multi-tenant setups and access control",
       "Backend systems in Node.js / Python",
       "Database design that scales with usage",
       "Event-driven and serverless workflows",
@@ -61,13 +61,13 @@ export const services = [
     icon: "Bot",
     title: "AI & Automation Systems",
     description:
-      "Turning manual processes into intelligent automation that cuts cost and saves time. I design AI-powered workflows that eliminate operational friction and create compounding advantages. From document ingestion to intelligent scoring and decision pipelines, you get systems that reduce cost and increase precision.",
+      "Cut costs and save time. I turn manual processes into intelligent automation that eliminates operational friction and compounds over time. From document ingestion to intelligent scoring and decision pipelines, you get systems that reduce cost, increase precision, and free your team for higher-value work.",
     includes: [
-      "OpenAI & LLM integrations",
+      "Production-grade automation that replaces repetitive work (n8n)",
+      "OpenAI and LLM integrations",
       "LangChain-based pipelines",
-      "Production-grade automation (n8n)",
       "AI-assisted data processing",
-      "Intelligent lead scoring & automation",
+      "Intelligent lead scoring and workflow automation",
     ],
   },
   {
@@ -75,10 +75,10 @@ export const services = [
     icon: "Gauge",
     title: "Technical Leadership",
     description:
-      "Helping engineering teams ship faster and with less friction as products grow. When complexity compounds, I step in to improve performance, clarify structure, and align execution with business outcomes — so your team can scale without burning out or rewriting everything.",
+      "Ship faster with less friction. I help engineering teams keep pace as products grow — improving performance, clarifying structure, and aligning execution with business outcomes. Your team scales without burning out or rewriting everything when complexity compounds.",
     includes: [
-      "Performance optimization",
-      "Architecture refactoring",
+      "Performance optimization that protects user experience",
+      "Architecture refactoring that reduces future delivery risk",
       "Frontend system standardization",
       "Engineering mentorship",
       "Product-technical alignment",
@@ -89,13 +89,13 @@ export const services = [
     icon: "Rocket",
     title: "E2E Product Ownership",
     description:
-      "From concept to production — with full accountability. I operate across strategy, engineering, and execution so products don't just ship — they deliver results. That means clear direction, aligned stakeholders, structured delivery, and a system that holds up from day one. I own the outcome, not just the implementation.",
+      "Deliver results from concept to production — with full accountability. I operate across strategy, engineering, and execution so products don't just ship, they move the business forward. That means clear direction, aligned stakeholders, structured delivery, and a system that holds up from day one. I own the outcome, not just the implementation.",
     includes: [
-      "Scoping & feasibility analysis",
+      "Scoping and feasibility analysis",
       "System design that supports growth",
-      "Roadmap structuring & execution planning",
+      "Roadmap structuring and execution planning",
       "Cross-functional coordination",
-      "Delivery oversight & iterative optimization",
+      "Delivery oversight and iterative optimization",
       "Post-launch scalability refinement",
     ],
   },
