@@ -19,7 +19,7 @@ Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built 
 | Framework | Next.js 16, React 19, TypeScript |
 | Styling | Tailwind CSS 4, shadcn/ui, Geist font |
 | API | Elysia, Eden Treaty |
-| Database | PostgreSQL, Prisma 7 (schema in `portfolio-backend`) |
+| Database | PostgreSQL, Prisma 7 (`prisma db pull` + `prisma generate`) |
 | Forms & validation | React Hook Form, Zod |
 | 3D / visuals | Three.js, React Three Fiber |
 | Tooling | Biome, Bun |
@@ -62,20 +62,21 @@ REVALIDATE_SECRET=""
 
 ### Database Setup
 
-Schema and migrations live in [`portfolio-backend`](../portfolio-backend). Clone that repo alongside this one, then:
+Schema and migrations are owned by [`portfolio-backend`](../portfolio-backend). After backend migrations are applied, sync the local schema and generate the client in this app:
 
 ```bash
-# Apply migrations (portfolio-backend only)
-cd ../portfolio-backend
-bun install
-bun run db:migrate
+bunx prisma db pull
+bunx prisma generate
+```
 
-# Generate the Prisma client for this app
-cd ../portfolio
+Or use the npm scripts:
+
+```bash
+bun run db:pull
 bun run db:generate
 ```
 
-`postinstall` runs `db:generate` automatically when `portfolio-backend` is present as a sibling directory.
+`postinstall` runs `prisma generate` only. Run `db:pull` whenever `portfolio-backend` applies a new migration.
 
 ### Development
 
@@ -95,7 +96,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `bun run typecheck` | Run TypeScript checks |
 | `bun run lint` | Lint and fix with Biome |
 | `bun run format` | Format code with Biome |
-| `bun run db:generate` | Generate Prisma client from `portfolio-backend` schema |
+| `bun run db:pull` | Introspect the database and update `prisma/schema.prisma` |
+| `bun run db:generate` | Generate Prisma client to `src/generated/prisma` |
 
 ## Project Structure
 
@@ -110,9 +112,9 @@ src/
 │   ├── landing/          # Homepage sections
 │   └── ui/               # shadcn/ui components
 ├── lib/                  # Utilities, Prisma client, EmailJS, JSON-LD
-└── generated/prisma/     # Prisma client output (generated from portfolio-backend)
-scripts/
-└── generate-prisma.mjs   # Pulls schema from portfolio-backend and runs prisma generate
+└── generated/prisma/     # Prisma client output
+prisma/
+└── schema.prisma         # Synced via `db pull` (no migrations in this app)
 ```
 
 ## API

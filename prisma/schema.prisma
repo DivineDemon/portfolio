@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model projects {
+  id                Int      @id @default(autoincrement())
+  slug              String   @unique
+  title             String
+  headlineResult    String
+  industry          String?
+  role              String
+  engagementModel   String?
+  teamSize          Int?
+  durationInMonths  Int?
+  problem           String
+  situation         String?
+  approach          String
+  architecture      String
+  execution         String
+  whatMadeThisHard  String?
+  whatWeBuilt       String
+  results           String
+  metrics           Json?
+  techStack         String[]
+  infrastructure    String[]
+  integrations      String[]
+  coverImage        String
+  galleryImages     String[]
+  demoUrl           String?
+  repositoryUrl     String?
+  seoTitle          String?
+  seoDescription    String?
+  keywords          String[]
+  featured          Boolean  @default(false)
+  published         Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime
+  clientTestimonial String?
+  businessOutcome   String?
+  beforeAfter       String?
+  engagementType    String?
+  cardOutcome       String?
+  displayOrder      Int?
+  isLive            Boolean  @default(false)
+  galleryCaptions   String[] @default([])
+}
+
+model testimonials {
+  image       String?
+  id          Int     @id @default(autoincrement())
+  company     String
+  content     String
+  designation String
+  client_name String
+}
