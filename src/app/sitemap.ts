@@ -3,8 +3,13 @@ import { SITE_URL } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [projects] = await Promise.all([
+  const [projects, workflows] = await Promise.all([
     prisma.projects.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+    }),
+    prisma.n8n_workflows.findMany({
       where: { published: true },
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
@@ -18,6 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const workflowEntries: MetadataRoute.Sitemap = workflows.map((w) => ({
+    url: `${SITE_URL}/workflows/${w.slug}`,
+    lastModified: w.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   const staticEntries: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
@@ -27,5 +39,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticEntries, ...projectEntries];
+  return [...staticEntries, ...projectEntries, ...workflowEntries];
 }

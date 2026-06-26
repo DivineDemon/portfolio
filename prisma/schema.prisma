@@ -8,14 +8,15 @@ datasource db {
 }
 
 model clients {
-  id          Int        @id @default(autoincrement())
-  image       String?
-  company     String
-  content     String
-  designation String
-  clientName  String
-  feedback    String?
-  projects    projects[]
+  id            Int             @id @default(autoincrement())
+  image         String?
+  company       String
+  content       String
+  designation   String
+  clientName    String
+  feedback      String?
+  n8n_workflows n8n_workflows[]
+  projects      projects[]
 }
 
 model projects {
@@ -60,4 +61,29 @@ model projects {
   galleryCaptions  String[] @default([])
   clientId         Int?
   client           clients? @relation(fields: [clientId], references: [id])
+}
+
+model n8n_workflows {
+  id             Int      @id @default(autoincrement())
+  slug           String   @unique
+  title          String
+  headlineResult String
+  problem        String
+  approach       String
+  results        String
+  workflowJson   Json
+  integrations   String[]
+  metrics        Json?
+  coverImage     String
+  cardOutcome    String?
+  displayOrder   Int?
+  featured       Boolean  @default(false)
+  published      Boolean  @default(false)
+  seoTitle       String?
+  seoDescription String?
+  keywords       String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  clientId       Int?
+  clients        clients? @relation(fields: [clientId], references: [id])
 }

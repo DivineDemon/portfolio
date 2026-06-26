@@ -1,6 +1,14 @@
-import type { clients, projects } from "@/generated/prisma/client";
+import type {
+  clients,
+  n8n_workflows,
+  projects,
+} from "@/generated/prisma/client";
 
 export type Project = projects & {
+  client?: clients | null;
+};
+
+export type Workflow = Omit<n8n_workflows, "workflowJson"> & {
   client?: clients | null;
 };
 

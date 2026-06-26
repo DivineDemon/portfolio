@@ -8,6 +8,10 @@ type RevalidatePayload =
       slug: string;
     }
   | {
+      type: "workflow";
+      slug: string;
+    }
+  | {
       type: "client";
       slugs?: string[];
     };
@@ -65,6 +69,25 @@ export async function POST(request: NextRequest) {
       type: payload.type,
       slug: payload.slug,
       paths: ["/", `/projects/${payload.slug}`],
+    });
+  }
+
+  if (payload.type === "workflow") {
+    if (!payload.slug || typeof payload.slug !== "string") {
+      return NextResponse.json(
+        { message: "Missing or invalid slug for workflow revalidation" },
+        { status: 400 },
+      );
+    }
+
+    revalidatePath("/");
+    revalidatePath(`/workflows/${payload.slug}`);
+
+    return NextResponse.json({
+      revalidated: true,
+      type: payload.type,
+      slug: payload.slug,
+      paths: ["/", `/workflows/${payload.slug}`],
     });
   }
 

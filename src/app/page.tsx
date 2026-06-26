@@ -6,6 +6,7 @@ import Projects from "@/components/landing/projects";
 import Services from "@/components/landing/services";
 import Skills from "@/components/landing/skills";
 import Testimonials from "@/components/landing/testimonials";
+import Workflows from "@/components/landing/workflows";
 import { SITE_URL } from "@/lib/constants";
 import {
   PERSON_SCHEMA_ID,
@@ -42,6 +43,7 @@ const Home = () => {
       <Services />
       <DitherSplitter />
       <Projects />
+      <Workflows />
       <Testimonials />
       <DitherSplitter />
       <About />
