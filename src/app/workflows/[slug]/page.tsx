@@ -179,7 +179,7 @@ export default async function WorkflowCaseStudyPage({
           />
         </header>
       </MaxWidthWrapper>
-      <MaxWidthWrapper parentBorder="border-y">
+      <MaxWidthWrapper parentBorder="border-t">
         <div className="mx-auto max-w-3xl border-0">
           {workflow.client?.content?.trim() && (
             <ClientTestimonial client={workflow.client} />
@@ -200,12 +200,6 @@ export default async function WorkflowCaseStudyPage({
           <MetricsSnapshot metrics={workflow.metrics} />
         </div>
       </MaxWidthWrapper>
-      <MaxWidthWrapper parentBorder="border-b">
-        <div className="p-5">
-          <WorkflowCanvas slug={slug} />
-        </div>
-      </MaxWidthWrapper>
-      <DitherSplitter />
       <MaxWidthWrapper parentBorder="border-b" showPlusIcons={true}>
         <div className="mx-auto flex max-w-3xl items-center justify-start border-0 p-5">
           <Link
@@ -216,6 +210,12 @@ export default async function WorkflowCaseStudyPage({
           </Link>
         </div>
       </MaxWidthWrapper>
+      <MaxWidthWrapper parentBorder="border-b">
+        <div className="p-5">
+          <WorkflowCanvas slug={slug} />
+        </div>
+      </MaxWidthWrapper>
+      <DitherSplitter />
       <MaxWidthWrapper parentBorder="border-none">
         <div className="mx-auto max-w-3xl border-0">
           {workflow.problem?.trim() && (
