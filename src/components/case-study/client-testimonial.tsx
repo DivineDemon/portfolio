@@ -5,9 +5,7 @@ export function ClientTestimonial({ content }: { content: string }) {
 
   return (
     <section className="border-b bg-muted/20 p-5">
-      <blockquote className="border-l-2 border-foreground/20 pl-4">
-        <CaseStudyMarkdown content={content} />
-      </blockquote>
+      <CaseStudyMarkdown content={content} />
     </section>
   );
 }

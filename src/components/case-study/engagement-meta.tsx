@@ -51,7 +51,7 @@ export function EngagementMeta({ project }: { project: Project }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 border-b px-5 py-3">
+    <div className="flex flex-wrap items-center gap-2 border-b px-5 py-3 capitalize">
       {metaItems.length > 0 && (
         <p className="font-mono text-xs text-muted-foreground md:text-sm">
           {metaItems.join(" · ")}

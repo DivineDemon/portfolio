@@ -1,11 +1,10 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaseStudySection } from "@/components/case-study/case-study-section";
 import { ClientTestimonial } from "@/components/case-study/client-testimonial";
-import { DemoCta } from "@/components/case-study/demo-cta";
 import { EngagementMeta } from "@/components/case-study/engagement-meta";
 import { FullGallery, InlineGallery } from "@/components/case-study/gallery";
 import { CaseStudyMarkdown } from "@/components/case-study/markdown";
@@ -190,21 +189,31 @@ export default async function ProjectCaseStudyPage({
             <ClientTestimonial content={project.clientTestimonial} />
           )}
           <div className="flex w-full flex-col items-center justify-center p-5">
-            <h1 className="w-full text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
-              {project.title}
-            </h1>
+            <div className="w-full flex items-center justify-center">
+              <h1 className="flex-1 text-left font-mono text-2xl font-bold tracking-tight text-foreground md:text-4xl">
+                {project.title}
+              </h1>
+              <div className="flex items-center justify-center gap-2.5">
+                {project.industry && (
+                  <p className="px-3 py-1 rounded-full bg-primary/20 text-primary w-full text-left font-mono text-xs md:text-sm">
+                    {project.industry}
+                  </p>
+                )}
+                <Link
+                  href={project.demoUrl ?? ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="size-5" />
+                </Link>
+              </div>
+            </div>
             <p className="mt-2 w-full text-left font-mono text-sm text-muted-foreground md:text-lg">
               {project.headlineResult}
             </p>
-            {project.industry && (
-              <p className="mt-3 w-full text-left font-mono text-xs text-muted-foreground md:text-sm">
-                {project.industry}
-              </p>
-            )}
           </div>
           <MetricsSnapshot metrics={project.metrics} />
           <EngagementMeta project={project} />
-          {project.demoUrl && <DemoCta demoUrl={project.demoUrl} />}
         </div>
       </MaxWidthWrapper>
       <DitherSplitter />
