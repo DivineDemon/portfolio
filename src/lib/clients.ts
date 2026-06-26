@@ -1,4 +1,4 @@
-import type { testimonials } from "@/generated/prisma/client";
+import type { clients } from "@/generated/prisma/client";
 
 const EXCLUDED_CLIENT_NAMES = ["farrukh iminov"];
 
@@ -11,21 +11,21 @@ function normalizeContent(content: string): string {
 }
 
 /** Public-site filter: drop irrelevant entries and duplicate quotes. */
-export function filterPublicTestimonials(
-  items: testimonials[],
-): testimonials[] {
+export function filterPublicClients(items: clients[]): clients[] {
   const seenContent = new Set<string>();
 
-  return items.filter((testimonial) => {
+  return items.filter((client) => {
+    if (!client.content?.trim()) {
+      return false;
+    }
+
     if (
-      EXCLUDED_CLIENT_NAMES.includes(
-        normalizeClientName(testimonial.client_name),
-      )
+      EXCLUDED_CLIENT_NAMES.includes(normalizeClientName(client.clientName))
     ) {
       return false;
     }
 
-    const contentKey = normalizeContent(testimonial.content);
+    const contentKey = normalizeContent(client.content);
     if (seenContent.has(contentKey)) {
       return false;
     }

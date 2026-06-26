@@ -185,8 +185,8 @@ export default async function ProjectCaseStudyPage({
       </MaxWidthWrapper>
       <MaxWidthWrapper parentBorder="border-y">
         <div className="mx-auto max-w-3xl border-0">
-          {project.clientTestimonial?.trim() && (
-            <ClientTestimonial content={project.clientTestimonial} />
+          {project.client?.content?.trim() && (
+            <ClientTestimonial client={project.client} />
           )}
           <div className="flex w-full flex-col items-center justify-center p-5">
             <div className="w-full flex items-center justify-center">

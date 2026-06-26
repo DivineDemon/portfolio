@@ -44,6 +44,9 @@ export const project = new Elysia({ prefix: "/project" })
           slug: params.slug,
           published: true,
         },
+        include: {
+          client: true,
+        },
       });
     },
     {

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
-import type { testimonials } from "@/generated/prisma/client";
+import type { clients } from "@/generated/prisma/client";
+import { filterPublicClients } from "@/lib/clients";
 import { server } from "@/lib/elysia/server";
-import { filterPublicTestimonials } from "@/lib/testimonials";
 import { cn } from "@/lib/utils";
 import { Marquee } from "../ui/marquee";
 
-function TestimonialCard({ testimonial }: { testimonial: testimonials }) {
-  const initial = testimonial.client_name.trim().slice(0, 1).toUpperCase();
+function TestimonialCard({ client }: { client: clients }) {
+  const initial = client.clientName.trim().slice(0, 1).toUpperCase();
 
   return (
     <article
@@ -17,12 +17,12 @@ function TestimonialCard({ testimonial }: { testimonial: testimonials }) {
       )}
     >
       <div className="mb-4 flex items-center gap-3 border-b border-border/80 pb-4">
-        {testimonial.image ? (
+        {client.image ? (
           <Image
             alt="dp"
             width={40}
             height={40}
-            src={testimonial.image}
+            src={client.image}
             className="size-10 shrink-0 rounded-full border border-border object-cover"
           />
         ) : (
@@ -35,27 +35,27 @@ function TestimonialCard({ testimonial }: { testimonial: testimonials }) {
         )}
         <div className="min-w-0 flex-1">
           <p className="truncate font-mono text-sm font-medium text-foreground">
-            {testimonial.client_name}
+            {client.clientName}
           </p>
           <p className="truncate font-mono text-xs text-muted-foreground">
-            {testimonial.designation}
-            {testimonial.company && ` · ${testimonial.company}`}
+            {client.designation}
+            {client.company && ` · ${client.company}`}
           </p>
         </div>
       </div>
       <p
         className="font-mono text-sm leading-relaxed text-foreground line-clamp-3"
-        title={testimonial.content}
+        title={client.content}
       >
-        {testimonial.content}
+        {client.content}
       </p>
     </article>
   );
 }
 
 const Testimonials = async () => {
-  const response = await server.testimonial.get();
-  const testimonials = filterPublicTestimonials(response.data ?? []);
+  const response = await server.client.get();
+  const clients = filterPublicClients(response.data ?? []);
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
@@ -67,8 +67,8 @@ const Testimonials = async () => {
         className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5"
       >
         <Marquee pauseOnHover>
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          {clients.map((client) => (
+            <TestimonialCard key={client.id} client={client} />
           ))}
         </Marquee>
         <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />

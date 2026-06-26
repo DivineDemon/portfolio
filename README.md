@@ -1,13 +1,13 @@
 # Mushood Hanif — Portfolio
 
-Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16, featuring project case studies, testimonials, a contact form, and SEO-optimized landing pages.
+Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16, featuring project case studies, client testimonials, a contact form, and SEO-optimized landing pages.
 
 ## Features
 
-- **Landing page** — Hero, services, featured projects, testimonials, about, skills, and contact sections
-- **Project case studies** — Dynamic `/projects/[slug]` pages with markdown content, metrics, and tech stack tags
+- **Landing page** — Hero, services, featured projects, testimonials carousel, about, skills, and contact sections
+- **Project case studies** — Dynamic `/projects/[slug]` pages with markdown content, linked client testimonials, metrics, and tech stack tags
 - **API layer** — [Elysia](https://elysiajs.com) routes mounted under `/api` with type-safe Eden client
-- **Database** — PostgreSQL via Prisma (projects and testimonials)
+- **Database** — PostgreSQL via Prisma (projects and clients)
 - **Contact form** — Server action powered by EmailJS
 - **On-demand revalidation** — Webhook endpoint to refresh cached pages after content updates
 - **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, and optional Google Analytics
@@ -107,7 +107,7 @@ src/
 │   ├── api/              # Elysia API + revalidation webhook
 │   └── projects/[slug]/  # Project case study pages
 ├── components/
-│   ├── case-study/       # Markdown rendering for case studies
+│   ├── case-study/       # Case study sections (incl. client testimonial)
 │   ├── global/           # Navbar, footer, contact
 │   ├── landing/          # Homepage sections
 │   └── ui/               # shadcn/ui components
@@ -122,8 +122,8 @@ prisma/
 | Endpoint | Method | Description |
 | --- | --- | --- |
 | `/api/project` | GET | List published projects |
-| `/api/project/:slug` | GET | Fetch a project by slug |
-| `/api/testimonial` | GET | List testimonials |
+| `/api/project/:slug` | GET | Fetch a project by slug (includes linked `client`) |
+| `/api/client` | GET | List clients (used by homepage testimonials carousel) |
 | `/api/revalidate` | POST | On-demand ISR revalidation (requires `REVALIDATE_SECRET`) |
 
 ### Revalidation
@@ -135,8 +135,10 @@ Send a `POST` to `/api/revalidate` with a Bearer token or `x-revalidate-secret` 
 ```
 
 ```json
-{ "type": "testimonial" }
+{ "type": "client", "slugs": ["my-project", "another-project"] }
 ```
+
+The `slugs` array is optional for client revalidation. When provided, linked case study pages are revalidated in addition to the homepage.
 
 ## Deployment
 

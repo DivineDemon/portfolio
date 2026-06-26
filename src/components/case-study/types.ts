@@ -1,6 +1,8 @@
-import type { projects } from "@/generated/prisma/client";
+import type { clients, projects } from "@/generated/prisma/client";
 
-export type Project = projects;
+export type Project = projects & {
+  client?: clients | null;
+};
 
 export type ProjectMetricValue = string | number | boolean | string[] | null;
 
@@ -18,3 +20,5 @@ export const ENGAGEMENT_TYPE_LABELS: Record<EngagementType, string> = {
   "open-source": "Open Source",
   "internal-tool": "Internal Tool",
 };
+
+export type { clients as Client };

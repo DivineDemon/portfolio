@@ -1,11 +1,11 @@
 import { Elysia } from "elysia";
 import type { ErrorResponse } from "./api-error";
+import { client } from "./client";
 import { project } from "./project";
-import { testimonial } from "./testimonial";
 
 export const app = new Elysia({ prefix: "/api" })
   .use(project)
-  .use(testimonial)
+  .use(client)
   .onError(({ code, error }) => {
     const message =
       error instanceof Error ? error.message : "An unknown error occurred";

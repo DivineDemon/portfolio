@@ -8,8 +8,8 @@ type RevalidatePayload =
       slug: string;
     }
   | {
-      type: "testimonial";
-      slug?: string | null;
+      type: "client";
+      slugs?: string[];
     };
 
 const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET;
@@ -68,13 +68,24 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  if (payload.type === "testimonial") {
+  if (payload.type === "client") {
     revalidatePath("/");
+    const paths = ["/"];
+
+    if (Array.isArray(payload.slugs)) {
+      for (const slug of payload.slugs) {
+        if (typeof slug === "string" && slug.trim()) {
+          const projectPath = `/projects/${slug}`;
+          revalidatePath(projectPath);
+          paths.push(projectPath);
+        }
+      }
+    }
 
     return NextResponse.json({
       revalidated: true,
       type: payload.type,
-      paths: ["/"],
+      paths,
     });
   }
 
