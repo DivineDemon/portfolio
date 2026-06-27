@@ -35,10 +35,4 @@ export const SITE_SEO_DEFAULTS = {
     "Operational Efficiency",
     "Revenue Growth",
   ],
-  serviceTypes: [
-    "Fractional CTO",
-    "AI Automation Consulting",
-    "SaaS Product Engineering",
-    "Technical Leadership",
-  ],
 } as const;

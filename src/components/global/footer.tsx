@@ -1,7 +1,9 @@
 import { cacheLife } from "next/cache";
+import Image from "next/image";
 import Link from "next/link";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
-import { getPublishedPagesForFooter } from "@/lib/cms/page-helpers";
+import { footerMoreLinks, footerWhoIWorkWithLinks } from "@/lib/constants";
+import { HOMEPAGE_DEFAULTS } from "@/lib/seo/defaults";
 
 async function getCopyrightYear() {
   "use cache";
@@ -9,119 +11,76 @@ async function getCopyrightYear() {
   return new Date().getFullYear();
 }
 
-function groupFooterLinks(
-  pages: Awaited<ReturnType<typeof getPublishedPagesForFooter>>,
-) {
-  const services = pages.filter(
-    (page) => page.pageType === "service" || page.slug.startsWith("services/"),
-  );
-  const personas = pages.filter((page) => page.pageType === "persona");
-  const company = pages.filter((page) =>
-    ["index", "process", "now"].includes(page.pageType),
-  );
-
-  return { services, personas, company };
-}
-
 const Footer = async () => {
-  const [year, pages] = await Promise.all([
-    getCopyrightYear(),
-    getPublishedPagesForFooter(),
-  ]);
-  const { services, personas, company } = groupFooterLinks(pages);
+  const year = await getCopyrightYear();
 
   return (
-    <MaxWidthWrapper parentBorder="border-none" showPlusIcons={false}>
-      <footer className="w-full border-t">
-        <div className="mx-auto p-5 grid max-w-4xl gap-8 text-left sm:grid-cols-3">
-          {services.length > 0 && (
-            <div>
-              <h3 className="mb-3 font-mono text-sm font-semibold">Services</h3>
-              <ul className="space-y-2 font-mono text-sm text-muted-foreground">
-                {services.map((page) => (
-                  <li key={page.slug}>
-                    <Link
-                      href={`/${page.slug}`}
-                      className="transition-colors hover:text-foreground"
-                    >
-                      {page.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {personas.length > 0 && (
-            <div>
-              <h3 className="mb-3 font-mono text-sm font-semibold">
-                Who I work with
-              </h3>
-              <ul className="space-y-2 font-mono text-sm text-muted-foreground">
-                {personas.map((page) => (
-                  <li key={page.slug}>
-                    <Link
-                      href={`/${page.slug}`}
-                      className="transition-colors hover:text-foreground"
-                    >
-                      {page.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {company.length > 0 && (
-            <div>
-              <h3 className="mb-3 font-mono text-sm font-semibold">Company</h3>
-              <ul className="space-y-2 font-mono text-sm text-muted-foreground">
-                {company.map((page) => (
-                  <li key={page.slug}>
-                    <Link
-                      href={`/${page.slug}`}
-                      className="transition-colors hover:text-foreground"
-                    >
-                      {page.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+    <MaxWidthWrapper parentBorder="border-t" showPlusIcons>
+      <footer className="w-full font-mono">
+        <div className="grid gap-10 p-6 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] md:gap-8 md:p-8">
+          <div className="flex flex-col gap-3 md:pr-4">
+            <Link
+              href="/"
+              className="group inline-flex w-fit items-center gap-2.5 transition-opacity hover:opacity-80"
+            >
+              <Image
+                alt=""
+                width={20}
+                height={20}
+                src="/logo.svg"
+                className="size-5 dark:invert"
+              />
+              <span className="text-sm font-semibold tracking-tight">
+                Mushood Hanif
+              </span>
+            </Link>
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+              {HOMEPAGE_DEFAULTS.heroBadge}
+            </p>
+          </div>
+
           <div>
-            <h3 className="mb-3 font-mono text-sm font-semibold">
-              {company.length > 0 ? "More" : "Company"}
+            <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70">
+              Who I work with
             </h3>
-            <ul className="space-y-2 font-mono text-sm text-muted-foreground">
-              <li>
-                <Link
-                  href="/blog"
-                  className="transition-colors hover:text-foreground"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/resources"
-                  className="transition-colors hover:text-foreground"
-                >
-                  Resources
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="transition-colors hover:text-foreground"
-                >
-                  Privacy
-                </Link>
-              </li>
+            <ul className="space-y-2.5">
+              {footerWhoIWorkWithLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="block text-sm leading-snug text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70">
+              More
+            </h3>
+            <ul className="space-y-2.5">
+              {footerMoreLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="block text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-        <p className="text-center text-sm text-muted-foreground border-t p-5">
-          &copy; {year} Mushood Hanif. All rights reserved.
-        </p>
+
+        <div className="border-t px-6 py-4 md:px-8">
+          <p className="text-xs text-muted-foreground">
+            &copy; {year} Mushood Hanif. All rights reserved.
+          </p>
+        </div>
       </footer>
     </MaxWidthWrapper>
   );

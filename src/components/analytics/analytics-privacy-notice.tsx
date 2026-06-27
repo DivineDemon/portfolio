@@ -5,13 +5,7 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "analytics-privacy-notice-dismissed";
 
-type AnalyticsPrivacyNoticeProps = {
-  b2bProvider?: string;
-};
-
-const AnalyticsPrivacyNotice = ({
-  b2bProvider,
-}: AnalyticsPrivacyNoticeProps) => {
+const AnalyticsPrivacyNotice = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -40,18 +34,14 @@ const AnalyticsPrivacyNotice = ({
       <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-muted-foreground text-sm leading-relaxed">
           This site uses analytics to understand traffic and improve the
-          experience.
-          {b2bProvider
-            ? ` We also use ${b2bProvider} to identify visiting companies for B2B outreach.`
-            : null}
-          &nbsp; See our&nbsp;
+          experience. See our&nbsp;
           <Link
             href="/privacy"
             className="text-foreground underline underline-offset-4"
           >
             privacy policy
           </Link>
-          &nbsp; for details.
+          &nbsp;for details.
         </p>
         <button
           type="button"

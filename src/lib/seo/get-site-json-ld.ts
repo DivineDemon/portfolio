@@ -1,7 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import type { clients } from "@/generated/prisma/client";
 import { getClients } from "@/lib/cms/get-clients";
-import { getSiteSettings } from "@/lib/cms/get-site-settings";
 import { SITE_URL } from "@/lib/constants";
 import {
   PERSON_SCHEMA_ID,
@@ -9,8 +8,6 @@ import {
   WEBSITE_SCHEMA_ID,
 } from "@/lib/json-ld";
 import { SITE_SEO_DEFAULTS } from "@/lib/seo/defaults";
-
-const PROFESSIONAL_SERVICE_SCHEMA_ID = `${SITE_URL}#professional-service`;
 
 function getReviewBody(client: clients): string | null {
   const reviewBody = client.feedback?.trim() || client.content?.trim();
@@ -48,24 +45,12 @@ function buildReviewSchema(client: clients, index: number) {
 
 export async function getSiteJsonLd() {
   "use cache";
-  cacheTag("cms:settings", "cms:clients");
+  cacheTag("cms:clients");
   cacheLife("hours");
 
-  const [settings, clients] = await Promise.all([
-    getSiteSettings(),
-    getClients(),
-  ]);
-
-  const jobTitle =
-    settings?.heroBadge?.trim() ??
-    settings?.positioningTitle?.trim() ??
-    SITE_SEO_DEFAULTS.heroBadge;
-  const description =
-    settings?.positioningDescription?.trim() ??
-    SITE_SEO_DEFAULTS.positioningDescription;
-  const sameAs = [settings?.linkedinUrl, settings?.githubUrl].filter(
-    (url): url is string => typeof url === "string" && url.trim().length > 0,
-  );
+  const clients = await getClients();
+  const jobTitle = SITE_SEO_DEFAULTS.heroBadge;
+  const description = SITE_SEO_DEFAULTS.positioningDescription;
 
   const reviews = clients
     .map((client, index) => buildReviewSchema(client, index))
@@ -83,7 +68,6 @@ export async function getSiteJsonLd() {
         jobTitle,
         description,
         knowsAbout: [...SITE_SEO_DEFAULTS.knowsAbout],
-        ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
         "@type": "WebSite",
@@ -94,16 +78,6 @@ export async function getSiteJsonLd() {
         inLanguage: "en-US",
         publisher: { "@id": PERSON_SCHEMA_ID },
       },
-      {
-        "@type": "ProfessionalService",
-        "@id": PROFESSIONAL_SERVICE_SCHEMA_ID,
-        name: "Mushood Hanif",
-        url: SITE_URL,
-        description,
-        provider: { "@id": PERSON_SCHEMA_ID },
-        areaServed: "Worldwide",
-        serviceType: [...SITE_SEO_DEFAULTS.serviceTypes],
-      },
       ...reviews,
     ],
   };
@@ -111,15 +85,10 @@ export async function getSiteJsonLd() {
 
 export async function getHomePageJsonLd() {
   "use cache";
-  cacheTag("cms:settings");
   cacheLife("hours");
 
-  const settings = await getSiteSettings();
-  const title =
-    settings?.positioningTitle?.trim() ?? SITE_SEO_DEFAULTS.positioningTitle;
-  const description =
-    settings?.positioningDescription?.trim() ??
-    SITE_SEO_DEFAULTS.positioningDescription;
+  const title = SITE_SEO_DEFAULTS.positioningTitle;
+  const description = SITE_SEO_DEFAULTS.positioningDescription;
 
   return {
     "@context": "https://schema.org",

@@ -6,9 +6,11 @@ import { getRelatedWork } from "@/lib/cms/page-helpers";
 export async function RelatedWork({
   projectSlugs,
   workflowSlugs,
+  heading = "Related work",
 }: {
   projectSlugs: string[];
   workflowSlugs: string[];
+  heading?: string;
 }) {
   const { projects, workflows } = await getRelatedWork(
     projectSlugs,
@@ -22,7 +24,7 @@ export async function RelatedWork({
   return (
     <section className="border-t p-5">
       <h2 className="mb-4 font-mono text-lg font-semibold tracking-tight">
-        Related work
+        {heading}
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
         {projects.map((project) => {

@@ -28,11 +28,7 @@ function validatePayload(payload: RevalidatePayload): string | null {
     }
   }
 
-  if (
-    payload.type === "page" ||
-    payload.type === "blog" ||
-    payload.type === "lead_magnet"
-  ) {
+  if (payload.type === "page" || payload.type === "blog") {
     if (!payload.slug || typeof payload.slug !== "string") {
       return `Missing or invalid slug for ${payload.type} revalidation`;
     }

@@ -3,7 +3,14 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { EffectComposer, wrapEffect } from "@react-three/postprocessing";
 import { Effect } from "postprocessing";
-import { Component, type ReactNode, useEffect, useRef, useState } from "react";
+import {
+  Component,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import * as THREE from "three";
 
 interface RetroEffectOptions {
@@ -19,6 +26,7 @@ interface DitheredWavesProps {
   colorNum: number;
   pixelSize: number;
   disableAnimation: boolean;
+  onContextLost: () => void;
 }
 
 const waveVertexShader = `
@@ -179,9 +187,29 @@ function DitheredWaves({
   colorNum,
   pixelSize,
   disableAnimation,
+  onContextLost,
 }: DitheredWavesProps) {
   const mesh = useRef(null);
   const { viewport, size, gl } = useThree();
+
+  // The postprocessing EffectComposer reads `gl.getContext().getContextAttributes().alpha`
+  // when (re)sizing its buffers. If the browser has dropped this WebGL context
+  // ("Too many active WebGL contexts. Oldest context will be lost."), that call
+  // throws asynchronously and escapes the React error boundary. Catch the loss
+  // here, keep the context recoverable, and let the parent remount a fresh canvas.
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const handleLost = (event: Event) => {
+      event.preventDefault();
+      onContextLost();
+    };
+    canvas.addEventListener("webglcontextlost", handleLost as EventListener);
+    return () =>
+      canvas.removeEventListener(
+        "webglcontextlost",
+        handleLost as EventListener,
+      );
+  }, [gl, onContextLost]);
 
   const waveUniformsRef = useRef({
     time: new THREE.Uniform(0),
@@ -294,7 +322,9 @@ export default function Dither({
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [retryKey, setRetryKey] = useState(0);
+  const [contextLost, setContextLost] = useState(false);
   const retryCountRef = useRef(0);
+  const retryTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -340,13 +370,30 @@ export default function Dither({
     !disableAnimation && isInView && isDocumentVisible && !prefersReducedMotion;
 
   // Only hold a live WebGL context while visible; unmounting frees the context.
-  const shouldRender = mounted && isInView;
+  // While a context is lost we also unmount so the postprocessing pipeline stops
+  // touching the dead context until a fresh canvas is mounted.
+  const shouldRender = mounted && isInView && !contextLost;
 
-  const handleWebGLError = () => {
+  const handleWebGLError = useCallback(() => {
+    setContextLost(true);
     if (retryCountRef.current >= MAX_WEBGL_RETRIES) return;
     retryCountRef.current += 1;
-    window.setTimeout(() => setRetryKey((k) => k + 1), 500);
-  };
+    if (retryTimeoutRef.current !== null) {
+      window.clearTimeout(retryTimeoutRef.current);
+    }
+    retryTimeoutRef.current = window.setTimeout(() => {
+      setContextLost(false);
+      setRetryKey((k) => k + 1);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (retryTimeoutRef.current !== null) {
+        window.clearTimeout(retryTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div ref={containerRef} className="dither-container invert dark:invert-0">
@@ -373,6 +420,7 @@ export default function Dither({
               colorNum={colorNum}
               pixelSize={pixelSize}
               disableAnimation={!canAnimate}
+              onContextLost={handleWebGLError}
             />
           </Canvas>
         </WebGLErrorBoundary>

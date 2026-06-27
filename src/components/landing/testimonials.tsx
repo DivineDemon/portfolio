@@ -67,10 +67,7 @@ const Testimonials = async () => {
       <h2 className="w-full border-b p-5 text-left font-mono text-2xl font-semibold tracking-tight">
         Testimonials
       </h2>
-      <div
-        id="testimonials"
-        className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5"
-      >
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5">
         {featured.length > 0 && (
           <div className="mb-6 grid w-full max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-3">
             {featured.map((client) => (

@@ -6,15 +6,15 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import AnalyticsPrivacyNotice from "@/components/analytics/analytics-privacy-notice";
-import B2BVisitorPixel from "@/components/analytics/b2b-visitor-pixel";
 import MicrosoftClarity from "@/components/analytics/microsoft-clarity";
+import PostHogPageView from "@/components/analytics/posthog-pageview";
 import Footer from "@/components/global/footer";
 import NavbarShell from "@/components/global/navbar-shell";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { getSiteSettings } from "@/lib/cms/get-site-settings";
 import { SITE_URL } from "@/lib/constants";
 import { safeJsonLdStringify } from "@/lib/json-ld";
+import { isPostHogEnabled } from "@/lib/posthog/config";
 import { SITE_SEO_DEFAULTS } from "@/lib/seo/defaults";
 import { getSiteJsonLd } from "@/lib/seo/get-site-json-ld";
 import { cn } from "@/lib/utils";
@@ -30,17 +30,10 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
-  const title =
-    settings?.positioningTitle?.trim() ?? SITE_SEO_DEFAULTS.positioningTitle;
-  const description =
-    settings?.positioningDescription?.trim() ??
-    SITE_SEO_DEFAULTS.positioningDescription;
-  const openGraphTitle =
-    settings?.positioningTitle?.trim() ?? SITE_SEO_DEFAULTS.openGraphTitle;
-  const openGraphDescription =
-    settings?.positioningDescription?.trim() ??
-    SITE_SEO_DEFAULTS.openGraphDescription;
+  const title = SITE_SEO_DEFAULTS.positioningTitle;
+  const description = SITE_SEO_DEFAULTS.positioningDescription;
+  const openGraphTitle = SITE_SEO_DEFAULTS.openGraphTitle;
+  const openGraphDescription = SITE_SEO_DEFAULTS.openGraphDescription;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -95,11 +88,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title:
-        settings?.positioningTitle?.trim() ?? SITE_SEO_DEFAULTS.twitterTitle,
-      description:
-        settings?.positioningDescription?.trim() ??
-        SITE_SEO_DEFAULTS.twitterDescription,
+      title: SITE_SEO_DEFAULTS.twitterTitle,
+      description: SITE_SEO_DEFAULTS.twitterDescription,
       images: ["/og-image.png"],
     },
     keywords: [
@@ -129,14 +119,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const rootJsonLd = await getSiteJsonLd();
-  const b2bPixelEnabled =
-    process.env.NEXT_PUBLIC_B2B_VISITOR_PIXEL_ENABLED === "true";
-  const b2bScriptUrl = process.env.NEXT_PUBLIC_B2B_VISITOR_SCRIPT_URL?.trim();
-  const b2bProvider = process.env.NEXT_PUBLIC_B2B_VISITOR_PROVIDER?.trim();
   const showAnalyticsPrivacyNotice =
     Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) ||
     Boolean(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) ||
-    (b2bPixelEnabled && b2bScriptUrl);
+    isPostHogEnabled();
 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
@@ -160,9 +146,12 @@ export default async function RootLayout({
             {children}
             <Footer />
           </Suspense>
-          {showAnalyticsPrivacyNotice ? (
-            <AnalyticsPrivacyNotice b2bProvider={b2bProvider} />
+          {isPostHogEnabled() ? (
+            <Suspense fallback={null}>
+              <PostHogPageView />
+            </Suspense>
           ) : null}
+          {showAnalyticsPrivacyNotice ? <AnalyticsPrivacyNotice /> : null}
         </ThemeProvider>
       </body>
       {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
@@ -172,9 +161,6 @@ export default async function RootLayout({
         <MicrosoftClarity
           projectId={process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}
         />
-      ) : null}
-      {b2bPixelEnabled && b2bScriptUrl ? (
-        <B2BVisitorPixel scriptUrl={b2bScriptUrl} provider={b2bProvider} />
       ) : null}
     </html>
   );

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import TrackedLink from "@/components/analytics/tracked-link";
 import { CaseStudyMarkdown } from "@/components/case-study/markdown";
 import { BackLink, PageBreadcrumbs } from "@/components/cms/page-breadcrumbs";
@@ -10,10 +9,9 @@ import type { pages } from "@/generated/prisma/client";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
 import { getPublishedProjects } from "@/lib/cms/get-published-projects";
 import { getPublishedWorkflows } from "@/lib/cms/get-published-workflows";
-import { getPublishedPagesByType } from "@/lib/cms/page-helpers";
 import { HOMEPAGE_DEFAULTS } from "@/lib/seo/defaults";
 
-function slugToPath(slug: string) {
+function _slugToPath(slug: string) {
   return `/${slug}`;
 }
 
@@ -148,72 +146,6 @@ export async function WorkIndexPage({ page }: { page: pages }) {
   );
 }
 
-export async function ServicesHubPage({ page }: { page: pages }) {
-  const servicePages = (await getPublishedPagesByType("service")).filter(
-    (item) => item.slug.startsWith("services/"),
-  );
-
-  return (
-    <article className="min-h-screen">
-      <MaxWidthWrapper parentBorder="border-b">
-        <div className="mx-auto max-w-3xl p-5">
-          <PageBreadcrumbs
-            items={[{ label: "Home", href: "/" }, { label: page.title }]}
-            className="mb-4"
-          />
-          <h1 className="font-mono text-3xl font-bold tracking-tight md:text-4xl">
-            {page.title}
-          </h1>
-          {page.excerpt && (
-            <p className="mt-3 font-mono text-sm text-muted-foreground md:text-base">
-              {page.excerpt}
-            </p>
-          )}
-          {page.content?.trim() && (
-            <div className="mt-6">
-              <CaseStudyMarkdown content={page.content} />
-            </div>
-          )}
-        </div>
-      </MaxWidthWrapper>
-      {servicePages.length > 0 && (
-        <>
-          <DitherSplitter />
-          <MaxWidthWrapper parentBorder="border-b">
-            <div className="mx-auto max-w-3xl divide-y border-border">
-              {servicePages.map((service) => (
-                <Link
-                  key={service.slug}
-                  href={slugToPath(service.slug)}
-                  className="block p-5 transition-colors hover:bg-muted/30"
-                >
-                  <h2 className="font-mono text-lg font-semibold">
-                    {service.title}
-                  </h2>
-                  {service.excerpt && (
-                    <p className="mt-2 font-mono text-sm text-muted-foreground">
-                      {service.excerpt}
-                    </p>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </MaxWidthWrapper>
-        </>
-      )}
-      <RelatedWork
-        projectSlugs={page.relatedProjectSlugs}
-        workflowSlugs={page.relatedWorkflowSlugs}
-      />
-      <MaxWidthWrapper parentBorder="border-none">
-        <div className="mx-auto max-w-3xl p-5">
-          <BackLink href="/" label="Back to home" />
-        </div>
-      </MaxWidthWrapper>
-    </article>
-  );
-}
-
 export function CmsMarkdownPage({ page }: { page: pages }) {
   const slugParts = page.slug.split("/");
   const breadcrumbItems = [
@@ -253,6 +185,9 @@ export function CmsMarkdownPage({ page }: { page: pages }) {
           <RelatedWork
             projectSlugs={page.relatedProjectSlugs}
             workflowSlugs={page.relatedWorkflowSlugs}
+            heading={
+              page.pageType === "persona" ? "Proven track record" : undefined
+            }
           />
         </div>
       </MaxWidthWrapper>

@@ -34,8 +34,13 @@ const markdownComponents: Components = {
       {children}
     </a>
   ),
+  h2: ({ children }) => (
+    <h2 className="mt-6 font-mono text-lg font-semibold tracking-tight text-foreground first:mt-0">
+      {children}
+    </h2>
+  ),
   h3: ({ children }) => (
-    <h3 className="font-mono text-sm font-semibold text-foreground">
+    <h3 className="mt-4 font-mono text-base font-semibold text-foreground first:mt-0">
       {children}
     </h3>
   ),

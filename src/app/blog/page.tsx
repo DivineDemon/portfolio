@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { CaseStudyMarkdown } from "@/components/case-study/markdown";
+import { Fragment } from "react/jsx-runtime";
+import DitherSplitter from "@/components/global/dither-splitter";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { getPublishedBlogPosts } from "@/lib/cms/get-published-blog-posts";
 import { SITE_URL } from "@/lib/constants";
@@ -12,70 +14,90 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/blog` },
 };
 
+function formatPostDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export default async function BlogIndexPage() {
   const posts = await getPublishedBlogPosts();
 
   return (
     <MaxWidthWrapper parentBorder="border-none">
-      <div className="mx-auto max-w-3xl px-5 py-16">
-        <header className="mb-10 space-y-3">
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <div className="mx-auto flex max-w-3xl flex-col items-start justify-start">
+        <header className="flex w-full flex-col items-center justify-center gap-3.5 border-b p-5">
+          <p className="w-full text-left font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Insights
           </p>
-          <h1 className="font-mono text-3xl font-semibold tracking-tight md:text-4xl">
+          <h1 className="w-full text-left font-mono text-3xl font-semibold tracking-tight md:text-4xl">
             Blog
           </h1>
-          <p className="font-mono text-sm leading-relaxed text-muted-foreground">
+          <p className="w-full text-left font-mono text-sm leading-relaxed text-muted-foreground">
             Practical writing on technical leadership, SaaS architecture, and AI
             automation — for founders and executives who need systems that ship.
           </p>
         </header>
-
+        <DitherSplitter />
         {posts.length === 0 ? (
-          <p className="font-mono text-sm text-muted-foreground">
+          <p className="p-5 font-mono text-sm text-muted-foreground">
             New articles coming soon.
           </p>
         ) : (
-          <ul className="space-y-8">
+          <ul className="w-full">
             {posts.map((post) => (
-              <li key={post.slug} className="border-b border-border pb-8">
-                <article className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {post.publishedAt && (
-                      <time
-                        dateTime={post.publishedAt.toISOString()}
-                        className="font-mono text-xs text-muted-foreground"
-                      >
-                        {post.publishedAt.toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </time>
-                    )}
-                    {post.featured && (
-                      <span className="rounded-full border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <h2 className="font-mono text-xl font-semibold">
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="transition-colors hover:text-primary"
-                    >
-                      {post.title}
-                    </Link>
-                  </h2>
-                  {post.excerpt && <CaseStudyMarkdown content={post.excerpt} />}
+              <Fragment key={post.slug}>
+                <li>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-block font-mono text-sm text-blue-300 underline-offset-2 hover:underline"
+                    className="group flex w-full flex-wrap items-center gap-4 border-b border-border p-5 text-sm transition-colors duration-100 hover:bg-accent/50"
                   >
-                    Read article →
+                    <div className="flex min-w-0 flex-1 flex-col gap-3">
+                      <span className="text-xl font-semibold group-hover:underline">
+                        {post.title}
+                      </span>
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        {post.featured && (
+                          <>
+                            <span>Featured</span>
+                            <span aria-hidden>•</span>
+                          </>
+                        )}
+                        {post.keywords[0] && (
+                          <>
+                            <span>{post.keywords[0]}</span>
+                            <span aria-hidden>•</span>
+                          </>
+                        )}
+                        {post.publishedAt && (
+                          <time dateTime={post.publishedAt.toISOString()}>
+                            {formatPostDate(post.publishedAt)}
+                          </time>
+                        )}
+                      </div>
+                      {post.excerpt && (
+                        <p className="line-clamp-2 text-muted-foreground">
+                          {post.excerpt}
+                        </p>
+                      )}
+                    </div>
+                    {post.coverImage && (
+                      <div className="relative size-24 shrink-0 overflow-hidden rounded-md bg-muted">
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </div>
+                    )}
                   </Link>
-                </article>
-              </li>
+                </li>
+                <DitherSplitter />
+              </Fragment>
             ))}
           </ul>
         )}

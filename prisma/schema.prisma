@@ -85,20 +85,6 @@ model pages {
   publishedAt          DateTime?
 }
 
-model site_settings {
-  id                     Int      @id @default(1)
-  heroHeadline           String?
-  heroBadge              String?
-  positioningTitle       String?
-  positioningDescription String?
-  bookingUrl             String?
-  linkedinUrl            String?
-  githubUrl              String?
-  llmsIntro              String?
-  whoThisIsFor           Json?
-  updatedAt              DateTime
-}
-
 model blog_posts {
   id             Int       @id @default(autoincrement())
   slug           String    @unique
@@ -114,29 +100,6 @@ model blog_posts {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime
   publishedAt    DateTime?
-}
-
-model lead_magnets {
-  id             Int      @id @default(autoincrement())
-  slug           String   @unique
-  title          String
-  description    String
-  magnetType     String
-  pdfUrl         String?
-  published      Boolean  @default(false)
-  seoTitle       String?
-  seoDescription String?
-  keywords       String[]
-  updatedAt      DateTime
-}
-
-model leads {
-  id         Int      @id @default(autoincrement())
-  email      String
-  name       String?
-  magnetSlug String
-  metadata   Json?
-  createdAt  DateTime @default(now())
 }
 
 model n8n_workflows {

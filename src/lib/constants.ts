@@ -1,6 +1,8 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://mushoodhanif.com";
 
+export const BOOKING_URL = process.env.NEXT_PUBLIC_BOOKING_URL?.trim() || null;
+
 import Cursor from "@/assets/img/tech/cursor.svg";
 import Docker from "@/assets/img/tech/docker.svg";
 import FastAPI from "@/assets/img/tech/fastapi.svg";
@@ -41,16 +43,41 @@ export const techStack = [
   { image: Vite, name: "Vite", invert: false },
 ];
 
+export const navItems = [
+  { label: "Case Studies", href: "/#projects" },
+  { label: "Workflows", href: "/#workflows" },
+  { label: "Blogs", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
+];
+
+export const footerWhoIWorkWithLinks = [
+  {
+    label: "Technical Partner for Founders",
+    href: "/for-founders",
+  },
+  {
+    label: "Consultant for CTOs & Executives",
+    href: "/for-ctos",
+  },
+] as const;
+
+export const footerMoreLinks = [
+  { label: "Case Studies", href: "/work" },
+  { label: "Process", href: "/process" },
+  { label: "Blog", href: "/blog" },
+  { label: "Privacy", href: "/privacy" },
+] as const;
+
 export const services = [
   {
     id: 1,
     icon: "Layers",
     title: "Product Engineering",
     description:
-      "Scale without expensive rewrites. I design SaaS platforms that grow with your business — from product definition to production, with long-term maintainability, performance, and security built in. Whether you're launching a new platform or restructuring an existing one, you get a foundation that supports scale, not just version one.",
+      "I design scalable SaaS platforms that handle growth without expensive rewrites. From product definition to production, I build systems with long-term maintainability, performance, and security in mind. Whether you're launching a new platform or restructuring an existing one, you get a foundation that supports scale — not just version one.",
     includes: [
-      "Fast, reliable web apps that keep users productive (Next.js)",
-      "Scalable multi-tenant setups and access control",
+      "Scalable multi-tenant setups & access control",
+      "Fast, reliable web apps (Next.js)",
       "Backend systems in Node.js / Python",
       "Database design that scales with usage",
       "Event-driven and serverless workflows",
@@ -61,13 +88,13 @@ export const services = [
     icon: "Bot",
     title: "AI & Automation Systems",
     description:
-      "Cut costs and save time. I turn manual processes into intelligent automation that eliminates operational friction and compounds over time. From document ingestion to intelligent scoring and decision pipelines, you get systems that reduce cost, increase precision, and free your team for higher-value work.",
+      "Turning manual processes into intelligent automation that cuts cost and saves time. I design AI-powered workflows that eliminate operational friction and create compounding advantages. From document ingestion to intelligent scoring and decision pipelines, you get systems that reduce cost and increase precision.",
     includes: [
-      "Production-grade automation that replaces repetitive work (n8n)",
-      "OpenAI and LLM integrations",
+      "OpenAI & LLM integrations",
       "LangChain-based pipelines",
+      "Production-grade automation (n8n)",
       "AI-assisted data processing",
-      "Intelligent lead scoring and workflow automation",
+      "Intelligent lead scoring & automation",
     ],
   },
   {
@@ -75,10 +102,10 @@ export const services = [
     icon: "Gauge",
     title: "Technical Leadership",
     description:
-      "Ship faster with less friction. I help engineering teams keep pace as products grow — improving performance, clarifying structure, and aligning execution with business outcomes. Your team scales without burning out or rewriting everything when complexity compounds.",
+      "Helping engineering teams ship faster and with less friction as products grow. When complexity compounds, I step in to improve performance, clarify structure, and align execution with business outcomes — so your team can scale without burning out or rewriting everything.",
     includes: [
-      "Performance optimization that protects user experience",
-      "Architecture refactoring that reduces future delivery risk",
+      "Performance optimization",
+      "Architecture refactoring",
       "Frontend system standardization",
       "Engineering mentorship",
       "Product-technical alignment",
@@ -89,23 +116,14 @@ export const services = [
     icon: "Rocket",
     title: "E2E Product Ownership",
     description:
-      "Deliver results from concept to production — with full accountability. I operate across strategy, engineering, and execution so products don't just ship, they move the business forward. That means clear direction, aligned stakeholders, structured delivery, and a system that holds up from day one. I own the outcome, not just the implementation.",
+      "From concept to production — with full accountability. I operate across strategy, engineering, and execution so products don't just ship — they deliver results. That means clear direction, aligned stakeholders, structured delivery, and a system that holds up from day one. I own the outcome, not just the implementation.",
     includes: [
-      "Scoping and feasibility analysis",
+      "Scoping & feasibility analysis",
       "System design that supports growth",
-      "Roadmap structuring and execution planning",
+      "Roadmap structuring & execution planning",
       "Cross-functional coordination",
-      "Delivery oversight and iterative optimization",
+      "Delivery oversight & iterative optimization",
       "Post-launch scalability refinement",
     ],
   },
-];
-
-export const navItems = [
-  { label: "Services", href: "/#services" },
-  { label: "Case Studies", href: "/#projects" },
-  { label: "Workflows", href: "/#workflows" },
-  { label: "Testimonials", href: "/#testimonials" },
-  { label: "About", href: "/#about" },
-  { label: "Contact", href: "/#contact" },
 ];

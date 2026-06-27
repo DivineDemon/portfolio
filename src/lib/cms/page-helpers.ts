@@ -2,36 +2,6 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 
-export async function getPublishedPagesByType(pageType: string) {
-  "use cache";
-  cacheTag("cms:pages");
-  cacheLife("hours");
-
-  return prisma.pages.findMany({
-    where: { published: true, pageType },
-    orderBy: [
-      { sortOrder: { sort: "asc", nulls: "last" } },
-      { updatedAt: "desc" },
-    ],
-  });
-}
-
-export async function getPublishedPagesForFooter() {
-  "use cache";
-  cacheTag("cms:pages");
-  cacheLife("hours");
-
-  return prisma.pages.findMany({
-    where: { published: true },
-    orderBy: [{ sortOrder: { sort: "asc", nulls: "last" } }, { title: "asc" }],
-    select: {
-      slug: true,
-      title: true,
-      pageType: true,
-    },
-  });
-}
-
 export async function getRelatedWork(
   projectSlugs: string[],
   workflowSlugs: string[],

@@ -4,13 +4,13 @@ Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built 
 
 ## Features
 
-- **Landing page** — Hero, services, featured projects, testimonials carousel, about, skills, and contact sections
+- **Landing page** — Hero, featured projects, testimonials carousel, about, skills, and contact sections
 - **Project case studies** — Dynamic `/projects/[slug]` pages with markdown content, linked client testimonials, metrics, and tech stack tags
 - **API layer** — [Elysia](https://elysiajs.com) routes mounted under `/api` with type-safe Eden client
 - **Database** — PostgreSQL via Prisma (projects and clients)
 - **Contact form** — Server action powered by EmailJS
 - **On-demand revalidation** — Webhook endpoint to refresh cached pages after content updates
-- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, GA4 conversion events, and optional Microsoft Clarity
+- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, GA4 conversion events, PostHog, and optional Microsoft Clarity
 
 ## Tech Stack
 
@@ -57,14 +57,11 @@ EMAILJS_PRIVATE_KEY=""
 
 # Optional
 NEXT_PUBLIC_GA_MEASUREMENT_ID=""
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=""
+NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
 NEXT_PUBLIC_CLARITY_PROJECT_ID=""
 GOOGLE_SITE_VERIFICATION=""
 REVALIDATE_SECRET=""
-
-# Optional B2B visitor identification (requires privacy notice — see docs/b2b-visitor-identification.md)
-NEXT_PUBLIC_B2B_VISITOR_PIXEL_ENABLED="false"
-NEXT_PUBLIC_B2B_VISITOR_SCRIPT_URL=""
-NEXT_PUBLIC_B2B_VISITOR_PROVIDER=""
 ```
 
 ### Database Setup
@@ -162,10 +159,9 @@ Seed CMS content from `portfolio-backend`:
 
 ```bash
 bun run seed:pages
-bun run seed:phase3
 ```
 
-Set `bookingUrl` in **Site Settings** (admin panel) to show the navbar “Book a call” button.
+Set `NEXT_PUBLIC_BOOKING_URL` to show the navbar “Book a call” button.
 
 ## License
 

@@ -1,6 +1,5 @@
 export const ANALYTICS_EVENTS = {
   LEAD_FORM_SUBMIT: "lead_form_submit",
-  LEAD_MAGNET_SUBMIT: "lead_magnet_submit",
   BOOKING_CLICK: "booking_click",
   CTA_CLICK: "cta_click",
   CASE_STUDY_CLICK: "case_study_click",
@@ -31,20 +30,6 @@ export const ANALYTICS_EVENT_CATALOG: AnalyticsEventDefinition[] = [
     markAsKeyEvent: true,
     parameters: ["form_location"],
     firedFrom: ["Contact form"],
-  },
-  {
-    name: ANALYTICS_EVENTS.LEAD_MAGNET_SUBMIT,
-    label: "Lead magnet submit",
-    description: "Email capture from a PDF or calculator lead magnet.",
-    tier: "primary",
-    markAsKeyEvent: true,
-    parameters: [
-      "magnet_slug",
-      "magnet_title",
-      "magnet_type",
-      "annual_savings?",
-    ],
-    firedFrom: ["/resources lead magnets"],
   },
   {
     name: ANALYTICS_EVENTS.BOOKING_CLICK,

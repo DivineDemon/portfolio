@@ -1,8 +1,9 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import type { ForwardedRef } from "react";
+import type { ForwardedRef, ReactNode } from "react";
 import {
+  Component,
   forwardRef,
   useEffect,
   useLayoutEffect,
@@ -116,6 +117,34 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
 });
 SilkPlane.displayName = "SilkPlane";
 
+class WebGLErrorBoundary extends Component<
+  { children: ReactNode; onError: () => void; resetKey: number },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidUpdate(prevProps: { resetKey: number }) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false });
+    }
+  }
+
+  componentDidCatch() {
+    this.props.onError();
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+const MAX_WEBGL_RETRIES = 2;
+
 const Silk = ({
   speed = 5,
   scale = 1,
@@ -125,9 +154,16 @@ const Silk = ({
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const meshRef = useRef<Mesh | null>(null);
-  const [isInView, setIsInView] = useState(true);
+  const retryCountRef = useRef(0);
+  const [mounted, setMounted] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const uniforms = useMemo(
     () => ({
@@ -161,31 +197,49 @@ const Silk = ({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || typeof IntersectionObserver === "undefined")
+    const node = containerRef.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIsInView(true);
       return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.05 },
+      { rootMargin: "200px 0px", threshold: 0 },
     );
-    observer.observe(containerRef.current);
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
   const canAnimate = isInView && isDocumentVisible && !prefersReducedMotion;
+  const shouldRender = mounted && isInView;
+
+  const handleWebGLError = () => {
+    if (retryCountRef.current >= MAX_WEBGL_RETRIES) return;
+    retryCountRef.current += 1;
+    window.setTimeout(() => setRetryKey((k) => k + 1), 500);
+  };
 
   return (
     <div ref={containerRef} className="h-full w-full">
-      <Canvas
-        dpr={[1, 1.25]}
-        frameloop={canAnimate ? "always" : "never"}
-        gl={{
-          antialias: false,
-          preserveDrawingBuffer: false,
-          powerPreference: "low-power",
-        }}
-      >
-        <SilkPlane ref={meshRef} uniforms={uniforms} />
-      </Canvas>
+      {shouldRender ? (
+        <WebGLErrorBoundary onError={handleWebGLError} resetKey={retryKey}>
+          <Canvas
+            key={retryKey}
+            className="h-full w-full"
+            dpr={[1, 1.25]}
+            frameloop={canAnimate ? "always" : "never"}
+            gl={{
+              antialias: false,
+              preserveDrawingBuffer: false,
+              powerPreference: "low-power",
+              failIfMajorPerformanceCaveat: false,
+            }}
+          >
+            <SilkPlane ref={meshRef} uniforms={uniforms} />
+          </Canvas>
+        </WebGLErrorBoundary>
+      ) : null}
     </div>
   );
 };

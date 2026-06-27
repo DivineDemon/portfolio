@@ -5,6 +5,7 @@ import {
   ANALYTICS_EVENTS,
   type AnalyticsEventName,
 } from "@/lib/analytics/events";
+import { isPostHogEnabled } from "@/lib/posthog/config";
 
 export { ANALYTICS_EVENTS };
 
@@ -14,7 +15,10 @@ export function trackEvent(
   eventName: AnalyticsEventName,
   params?: AnalyticsParams,
 ) {
-  if (!process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
+  const hasGa = Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
+  const hasPosthog = isPostHogEnabled();
+
+  if (!hasGa && !hasPosthog) {
     return;
   }
 
@@ -24,5 +28,13 @@ export function trackEvent(
       )
     : undefined;
 
-  sendGAEvent("event", eventName, cleanedParams ?? {});
+  if (hasGa) {
+    sendGAEvent("event", eventName, cleanedParams ?? {});
+  }
+
+  if (hasPosthog) {
+    void import("posthog-js").then(({ default: posthog }) => {
+      posthog.capture(eventName, cleanedParams);
+    });
+  }
 }

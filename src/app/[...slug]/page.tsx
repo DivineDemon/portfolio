@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   CmsMarkdownPage,
-  ServicesHubPage,
   WorkIndexPage,
 } from "@/components/cms/cms-page-views";
 import {
@@ -17,17 +16,32 @@ function joinSlug(slug: string[]) {
   return slug.join("/");
 }
 
+function isExcludedCmsPage(slug: string, pageType: string) {
+  return (
+    pageType === "service" ||
+    slug === "services" ||
+    slug.startsWith("services/") ||
+    pageType === "now" ||
+    slug === "now" ||
+    pageType === "process" ||
+    slug === "process"
+  );
+}
+
 export async function generateStaticParams() {
   const pages = await getPublishedPages();
+  const routablePages = pages.filter(
+    (page) => !isExcludedCmsPage(page.slug, page.pageType),
+  );
 
-  if (pages.length > 0) {
-    return pages.map((page) => ({
+  if (routablePages.length > 0) {
+    return routablePages.map((page) => ({
       slug: page.slug.split("/"),
     }));
   }
 
   // Cache Components requires at least one param at build time.
-  return [{ slug: ["services"] }];
+  return [{ slug: ["privacy"] }];
 }
 
 export async function generateMetadata({
@@ -77,7 +91,7 @@ export default async function CmsPage({
   const slugPath = joinSlug(slug);
   const page = await getPublishedPageBySlug(slugPath);
 
-  if (!page) {
+  if (!page || isExcludedCmsPage(page.slug, page.pageType)) {
     notFound();
   }
 
@@ -121,8 +135,6 @@ export default async function CmsPage({
 
   if (page.slug === "work") {
     content = <WorkIndexPage page={page} />;
-  } else if (page.slug === "services" && page.pageType === "index") {
-    content = <ServicesHubPage page={page} />;
   } else {
     content = <CmsMarkdownPage page={page} />;
   }

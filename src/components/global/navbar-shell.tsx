@@ -1,11 +1,8 @@
 import Navbar from "@/components/global/navbar";
-import { getSiteSettings } from "@/lib/cms/get-site-settings";
+import { BOOKING_URL } from "@/lib/constants";
 
 const NavbarShell = async () => {
-  const settings = await getSiteSettings();
-  const bookingUrl = settings?.bookingUrl?.trim() || null;
-
-  return <Navbar bookingUrl={bookingUrl} />;
+  return <Navbar bookingUrl={BOOKING_URL} />;
 };
 
 export default NavbarShell;

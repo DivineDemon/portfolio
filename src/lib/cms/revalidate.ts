@@ -19,14 +19,7 @@ export type RevalidatePayload =
       slug: string;
     }
   | {
-      type: "settings";
-    }
-  | {
       type: "blog";
-      slug: string;
-    }
-  | {
-      type: "lead_magnet";
       slug: string;
     };
 
@@ -99,13 +92,6 @@ export function handleRevalidation(payload: RevalidatePayload): string[] {
       paths.push(`/${payload.slug}`);
       break;
     }
-    case "settings": {
-      revalidateTag("cms:settings", "max");
-      revalidateSeoArtifacts(paths);
-      revalidatePath("/");
-      paths.push("/");
-      break;
-    }
     case "blog": {
       revalidateTag("cms:blog", "max");
       revalidateTag(`cms:blog:${payload.slug}`, "max");
@@ -113,15 +99,6 @@ export function handleRevalidation(payload: RevalidatePayload): string[] {
       revalidatePath("/blog");
       revalidatePath(`/blog/${payload.slug}`);
       paths.push("/blog", `/blog/${payload.slug}`);
-      break;
-    }
-    case "lead_magnet": {
-      revalidateTag("cms:lead_magnets", "max");
-      revalidateTag(`cms:lead_magnet:${payload.slug}`, "max");
-      revalidateSeoArtifacts(paths);
-      revalidatePath("/resources");
-      revalidatePath(`/resources/${payload.slug}`);
-      paths.push("/resources", `/resources/${payload.slug}`);
       break;
     }
   }

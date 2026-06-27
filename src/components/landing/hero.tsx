@@ -2,15 +2,13 @@ import { Grip } from "lucide-react";
 import TrackedLink from "@/components/analytics/tracked-link";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
-import { getSiteSettings } from "@/lib/cms/get-site-settings";
-import { resolveHeroCopy } from "@/lib/cms/parse-site-settings";
+import { getHeroCopy } from "@/lib/cms/site-copy";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Dither from "../ui/dither";
 
 const Hero = async () => {
-  const settings = await getSiteSettings();
-  const { headline, badgeParts } = resolveHeroCopy(settings);
+  const { headline, badgeParts } = getHeroCopy();
 
   return (
     <MaxWidthWrapper parentBorder="border-b">

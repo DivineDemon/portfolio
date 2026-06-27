@@ -1,17 +1,12 @@
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
-import { getSiteSettings } from "@/lib/cms/get-site-settings";
-import { parseWhoThisIsFor } from "@/lib/cms/parse-site-settings";
+import { getWhoThisIsForBullets } from "@/lib/cms/site-copy";
 
 const About = async () => {
-  const settings = await getSiteSettings();
-  const whoThisIsForBullets = parseWhoThisIsFor(settings?.whoThisIsFor);
+  const whoThisIsForBullets = getWhoThisIsForBullets();
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <div
-        id="about"
-        className="w-full flex flex-col items-center justify-center gap-5 p-5 font-mono text-sm"
-      >
+      <div className="w-full flex flex-col items-center justify-center gap-5 p-5 font-mono text-sm">
         <span className="w-full text-left">
           I work with founders and operators who need software built right the
           first time — without growing a full engineering department to do it.
