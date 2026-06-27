@@ -242,7 +242,7 @@ export function CmsMarkdownPage({ page }: { page: pages }) {
             </p>
           )}
           {page.content?.trim() && (
-            <div className="mt-8">
+            <div className="mt-5">
               <CaseStudyMarkdown content={page.content} />
             </div>
           )}

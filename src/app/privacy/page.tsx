@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             cookies.
           </li>
           <li>
-            Opt out of Google Analytics via the{" "}
+            Opt out of Google Analytics via the&nbsp;
             <a
               href="https://tools.google.com/dlpage/gaoptout"
               rel="noopener noreferrer"
@@ -78,9 +78,9 @@ export default function PrivacyPage() {
             .
           </li>
           <li>
-            Contact{" "}
-            <a href="mailto:hello@mushoodhanif.com">hello@mushoodhanif.com</a>{" "}
-            to request deletion of data you have submitted through forms.
+            Contact&nbsp;
+            <a href="mailto:hello@mushoodhanif.com">hello@mushoodhanif.com</a>
+            &nbsp; to request deletion of data you have submitted through forms.
           </li>
         </ul>
 

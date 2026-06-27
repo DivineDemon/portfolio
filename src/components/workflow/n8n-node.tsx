@@ -54,7 +54,7 @@ export function N8nNode({ data }: NodeProps<N8nFlowNode>) {
       <Handle
         type="target"
         position={Position.Left}
-        className="!size-2 !border-2 !border-[#2d2d44] !bg-[#4a4a6a]"
+        className="size-2! border-2! border-[#2d2d44]! bg-[#4a4a6a]!"
       />
       <div className="flex items-start gap-2">
         <Icon className={cn("mt-0.5 size-3.5 shrink-0", styles.accent)} />
@@ -70,7 +70,7 @@ export function N8nNode({ data }: NodeProps<N8nFlowNode>) {
       <Handle
         type="source"
         position={Position.Right}
-        className="!size-2 !border-2 !border-[#2d2d44] !bg-[#4a4a6a]"
+        className="size-2! border-2! border-[#2d2d44]! bg-[#4a4a6a]!"
       />
     </div>
   );

@@ -285,13 +285,14 @@ export function ExecutiveRoiCalculator({
       {showResults && (
         <div className="space-y-2 rounded-md border border-border bg-background p-4 font-mono text-sm">
           <p>
-            Estimated annual cost of manual work:{" "}
+            Estimated annual cost of manual work:&nbsp;
             <strong>
               ${Math.round(results.annualManualCost).toLocaleString()}
             </strong>
           </p>
           <p>
-            Potential annual savings at {automationSavingsPct}% automation:{" "}
+            Potential annual savings at {automationSavingsPct}%
+            automation:&nbsp;
             <strong>
               ${Math.round(results.annualSavings).toLocaleString()}
             </strong>

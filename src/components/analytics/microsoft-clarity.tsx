@@ -1,19 +1,18 @@
 "use client";
 
-import Script from "next/script";
+import Clarity from "@microsoft/clarity";
+import { useEffect } from "react";
 
 type MicrosoftClarityProps = {
   projectId: string;
 };
 
 const MicrosoftClarity = ({ projectId }: MicrosoftClarityProps) => {
-  return (
-    <Script
-      id="microsoft-clarity"
-      src={`https://www.clarity.ms/tag/${projectId}`}
-      strategy="afterInteractive"
-    />
-  );
+  useEffect(() => {
+    Clarity.init(projectId);
+  }, [projectId]);
+
+  return null;
 };
 
 export default MicrosoftClarity;

@@ -28,32 +28,11 @@ export function parseHeroBadgeParts(
 export function resolveHeroCopy(
   settings: {
     heroHeadline?: string | null;
-    heroSubheadline?: string | null;
     heroBadge?: string | null;
   } | null,
 ) {
   return {
     headline: settings?.heroHeadline?.trim() || HOMEPAGE_DEFAULTS.heroHeadline,
-    subheadline:
-      settings?.heroSubheadline?.trim() || HOMEPAGE_DEFAULTS.heroSubheadline,
     badgeParts: parseHeroBadgeParts(settings?.heroBadge),
-  };
-}
-
-export function resolveContactCopy(
-  settings: {
-    availabilityText?: string | null;
-    projectMinimumText?: string | null;
-    responseTimeText?: string | null;
-  } | null,
-) {
-  return {
-    availabilityText:
-      settings?.availabilityText?.trim() || HOMEPAGE_DEFAULTS.availabilityText,
-    projectMinimumText:
-      settings?.projectMinimumText?.trim() ||
-      HOMEPAGE_DEFAULTS.projectMinimumText,
-    responseTimeText:
-      settings?.responseTimeText?.trim() || HOMEPAGE_DEFAULTS.responseTimeText,
   };
 }

@@ -208,9 +208,5 @@ export async function buildLlmsDocument(variant: LlmsVariant): Promise<string> {
     lines.push(`- Book a call: ${settings.bookingUrl.trim()}`);
   }
 
-  if (settings?.availabilityText?.trim()) {
-    lines.push(`- Availability: ${settings.availabilityText.trim()}`);
-  }
-
   return `${lines.join("\n")}\n`;
 }

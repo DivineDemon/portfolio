@@ -1,6 +1,11 @@
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { getSiteSettings } from "@/lib/cms/get-site-settings";
+import { parseWhoThisIsFor } from "@/lib/cms/parse-site-settings";
 
-const About = () => {
+const About = async () => {
+  const settings = await getSiteSettings();
+  const whoThisIsForBullets = parseWhoThisIsFor(settings?.whoThisIsFor);
+
   return (
     <MaxWidthWrapper parentBorder="border-b">
       <div
@@ -11,6 +16,14 @@ const About = () => {
           I work with founders and operators who need software built right the
           first time — without growing a full engineering department to do it.
         </span>
+        <div className="w-full flex flex-col items-center justify-center gap-1.5">
+          <span className="w-full text-left">This is for you if:</span>
+          <ul className="list-disc list-inside w-full text-left">
+            {whoThisIsForBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+        </div>
         <span className="w-full text-left">
           Over the past 5+ years, I have led the design and delivery of
           production-grade platforms across FinTech, healthcare, real estate,

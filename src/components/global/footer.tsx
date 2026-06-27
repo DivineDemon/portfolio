@@ -32,8 +32,8 @@ const Footer = async () => {
 
   return (
     <MaxWidthWrapper parentBorder="border-none" showPlusIcons={false}>
-      <footer className="w-full border-t p-5">
-        <div className="mx-auto mb-6 grid max-w-4xl gap-8 text-left sm:grid-cols-3">
+      <footer className="w-full border-t">
+        <div className="mx-auto p-5 grid max-w-4xl gap-8 text-left sm:grid-cols-3">
           {services.length > 0 && (
             <div>
               <h3 className="mb-3 font-mono text-sm font-semibold">Services</h3>
@@ -119,7 +119,7 @@ const Footer = async () => {
             </ul>
           </div>
         </div>
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-muted-foreground border-t p-5">
           &copy; {year} Mushood Hanif. All rights reserved.
         </p>
       </footer>

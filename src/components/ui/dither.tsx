@@ -3,7 +3,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { EffectComposer, wrapEffect } from "@react-three/postprocessing";
 import { Effect } from "postprocessing";
-import { useEffect, useRef, useState } from "react";
+import { Component, type ReactNode, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 interface RetroEffectOptions {
@@ -240,6 +240,33 @@ function DitheredWaves({
   );
 }
 
+class WebGLErrorBoundary extends Component<
+  { children: ReactNode; onError: () => void; resetKey: number },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidUpdate(prevProps: { resetKey: number }) {
+    // Only retry rendering when an explicit reset is requested (bounded by parent).
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false });
+    }
+  }
+
+  componentDidCatch() {
+    this.props.onError();
+  }
+
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 interface DitherProps {
   waveSpeed?: number;
   waveFrequency?: number;
@@ -249,6 +276,8 @@ interface DitherProps {
   pixelSize?: number;
   disableAnimation?: boolean;
 }
+
+const MAX_WEBGL_RETRIES = 2;
 
 export default function Dither({
   waveSpeed = 0.05,
@@ -260,9 +289,16 @@ export default function Dither({
   disableAnimation = false,
 }: DitherProps = {}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [isInView, setIsInView] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+  const retryCountRef = useRef(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -284,42 +320,63 @@ export default function Dither({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || typeof IntersectionObserver === "undefined")
+    const node = containerRef.current;
+    if (!node) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIsInView(true);
       return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.05 },
+      // Preload slightly before entering and release shortly after leaving so
+      // only on-screen canvases hold a WebGL context (avoids context exhaustion).
+      { rootMargin: "200px 0px", threshold: 0 },
     );
-    observer.observe(containerRef.current);
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
   const canAnimate =
     !disableAnimation && isInView && isDocumentVisible && !prefersReducedMotion;
 
+  // Only hold a live WebGL context while visible; unmounting frees the context.
+  const shouldRender = mounted && isInView;
+
+  const handleWebGLError = () => {
+    if (retryCountRef.current >= MAX_WEBGL_RETRIES) return;
+    retryCountRef.current += 1;
+    window.setTimeout(() => setRetryKey((k) => k + 1), 500);
+  };
+
   return (
     <div ref={containerRef} className="dither-container invert dark:invert-0">
-      <Canvas
-        className="h-full w-full"
-        camera={{ position: [0, 0, 6] }}
-        dpr={[1, 1.25]}
-        frameloop={canAnimate ? "always" : "never"}
-        gl={{
-          antialias: false,
-          preserveDrawingBuffer: false,
-          powerPreference: "low-power",
-        }}
-      >
-        <DitheredWaves
-          waveSpeed={waveSpeed}
-          waveFrequency={waveFrequency}
-          waveAmplitude={waveAmplitude}
-          waveColor={waveColor}
-          colorNum={colorNum}
-          pixelSize={pixelSize}
-          disableAnimation={!canAnimate}
-        />
-      </Canvas>
+      {shouldRender ? (
+        <WebGLErrorBoundary onError={handleWebGLError} resetKey={retryKey}>
+          <Canvas
+            key={retryKey}
+            className="h-full w-full"
+            camera={{ position: [0, 0, 6] }}
+            dpr={[1, 1.25]}
+            frameloop={canAnimate ? "always" : "never"}
+            gl={{
+              antialias: false,
+              preserveDrawingBuffer: false,
+              powerPreference: "low-power",
+              failIfMajorPerformanceCaveat: false,
+            }}
+          >
+            <DitheredWaves
+              waveSpeed={waveSpeed}
+              waveFrequency={waveFrequency}
+              waveAmplitude={waveAmplitude}
+              waveColor={waveColor}
+              colorNum={colorNum}
+              pixelSize={pixelSize}
+              disableAnimation={!canAnimate}
+            />
+          </Canvas>
+        </WebGLErrorBoundary>
+      ) : null}
     </div>
   );
 }

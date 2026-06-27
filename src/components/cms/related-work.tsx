@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import TrackedLink from "@/components/analytics/tracked-link";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
 import { getRelatedWork } from "@/lib/cms/page-helpers";
@@ -105,13 +104,6 @@ export async function RelatedWork({
           );
         })}
       </div>
-      <p className="mt-4 font-mono text-sm text-muted-foreground">
-        More case studies on the{" "}
-        <Link href="/work" className="text-primary hover:underline">
-          work index
-        </Link>
-        .
-      </p>
     </section>
   );
 }

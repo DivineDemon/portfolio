@@ -63,9 +63,9 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-md flex flex-col gap-6"
+      className="flex w-full min-w-0 flex-col gap-5 sm:gap-6"
     >
-      <FieldGroup>
+      <FieldGroup className="gap-5 sm:gap-6">
         <Field data-invalid={!!errors.name}>
           <FieldLabel htmlFor="contact-name">Name</FieldLabel>
           <Input
@@ -93,14 +93,14 @@ const ContactForm = () => {
           <FieldError errors={errors.email ? [errors.email] : undefined} />
         </Field>
         <Field data-invalid={!!errors.coreProblem}>
-          <FieldLabel htmlFor="contact-core-problem">
+          <FieldLabel htmlFor="contact-core-problem" className="text-pretty">
             What&apos;s the core problem you&apos;re trying to solve?
           </FieldLabel>
           <Textarea
             id="contact-core-problem"
             placeholder="e.g. Our SaaS can't scale past 500 tenants without performance issues..."
-            rows={3}
-            className="min-h-[88px] resize-none border-black/25 dark:border-border"
+            rows={2}
+            className="min-h-[72px] resize-none border-black/25 dark:border-border sm:min-h-[88px]"
             aria-invalid={!!errors.coreProblem}
             {...register("coreProblem")}
           />
@@ -113,8 +113,8 @@ const ContactForm = () => {
           <Textarea
             id="contact-message"
             placeholder="Your message..."
-            rows={5}
-            className="min-h-[120px] resize-none border-black/25 dark:border-border"
+            rows={4}
+            className="min-h-[96px] resize-none border-black/25 dark:border-border sm:min-h-[120px]"
             aria-invalid={!!errors.message}
             {...register("message")}
           />

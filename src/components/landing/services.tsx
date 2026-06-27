@@ -1,12 +1,11 @@
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, Bot, Gauge, Layers, Rocket } from "lucide-react";
-import Link from "next/link";
 import TrackedLink from "@/components/analytics/tracked-link";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
 import { getPublishedServicePages } from "@/lib/cms/get-published-service-pages";
 import { services as fallbackServices } from "@/lib/constants";
-import DitherSplitter from "../global/dither-splitter";
+import { cn } from "@/lib/utils";
 
 const serviceIcons: Record<string, LucideIcon> = {
   "services/product-engineering": Layers,
@@ -41,35 +40,42 @@ function ServiceCard({
 }) {
   const Icon = serviceIcons[iconKey] ?? fallbackIconByTitle[title] ?? Layers;
 
-  const body = (
-    <article className="flex flex-col p-5 border-b last:border-b-0">
+  const content = (
+    <>
       <div className="w-full flex items-center justify-center gap-5">
-        <div className="size-[45px] p-2 bg-muted rounded-lg shrink-0 flex items-center justify-center">
-          <Icon className="size-full text-foreground" />
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-primary/25 bg-primary/10">
+          <Icon className="size-5 text-primary" />
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <span className="w-full text-left font-mono text-xs text-muted-foreground tabular-nums">
+        <div className="flex-1 flex flex-col items-center justify-center gap-1">
+          <span className="w-full text-left font-mono text-xs tabular-nums text-muted-foreground">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="w-full text-left mt-1.5 text-lg font-semibold tracking-tight">
+          <h3 className="w-full text-left font-mono text-lg font-semibold tracking-tight text-foreground">
             {title}
           </h3>
         </div>
       </div>
-      <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed">
+      <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-4">
         {description}
       </p>
       {href && (
-        <p className="mt-4 font-mono text-sm text-primary inline-flex items-center gap-1.5 group-hover:underline">
+        <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-sm font-medium text-primary">
           Learn more
-          <ArrowRight className="size-3.5" />
-        </p>
+          <ArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
       )}
-    </article>
+    </>
+  );
+
+  const cardClassName = cn(
+    "group flex h-full flex-col rounded-xl border border-border bg-card p-5 shadow-sm",
+    "transition-all duration-200 hover:border-primary/30 hover:shadow-md",
+    href &&
+      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
   );
 
   if (!href) {
-    return body;
+    return <article className={cardClassName}>{content}</article>;
   }
 
   return (
@@ -80,9 +86,9 @@ function ServiceCard({
         cta_label: title,
         cta_location: "services",
       }}
-      className="block transition-colors hover:bg-muted/20"
+      className={cardClassName}
     >
-      {body}
+      {content}
     </TrackedLink>
   );
 }
@@ -104,53 +110,24 @@ const Services = async () => {
           key: String(service.id),
           index: service.id - 1,
           title: service.title,
-          description: `${service.description} This includes: ${service.includes.slice(0, 2).join("; ")}.`,
+          description: service.description,
           href: undefined as string | undefined,
           iconKey: service.icon ?? service.title,
         }));
 
-  const firstHalf = items.slice(0, 2);
-  const secondHalf = items.slice(2);
-
   return (
-    <>
+    <section id="services" className="scroll-mt-20">
       <MaxWidthWrapper parentBorder="border-b">
-        <div
-          id="services"
-          className="w-full flex flex-col items-center justify-center"
-        >
-          <div className="w-full border-b p-5">
-            <h2 className="text-2xl font-semibold tracking-tight text-left font-mono">
-              Services
-            </h2>
-            {cmsServices.length > 0 && (
-              <p className="mt-2 font-mono text-sm text-muted-foreground">
-                Explore each service area, or{" "}
-                <Link href="/#contact" className="text-primary hover:underline">
-                  book a call
-                </Link>{" "}
-                to discuss your situation.
-              </p>
-            )}
-          </div>
-          {firstHalf.map(({ key, ...item }) => (
+        <h2 className="w-full border-b p-5 text-left font-mono text-2xl font-semibold tracking-tight">
+          Services
+        </h2>
+        <div className="grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-2">
+          {items.map(({ key, ...item }) => (
             <ServiceCard key={key} {...item} />
           ))}
         </div>
       </MaxWidthWrapper>
-      {secondHalf.length > 0 && (
-        <>
-          <DitherSplitter />
-          <MaxWidthWrapper parentBorder="border-b">
-            <div className="w-full flex flex-col items-center justify-center">
-              {secondHalf.map(({ key, ...item }) => (
-                <ServiceCard key={key} {...item} />
-              ))}
-            </div>
-          </MaxWidthWrapper>
-        </>
-      )}
-    </>
+    </section>
   );
 };
 

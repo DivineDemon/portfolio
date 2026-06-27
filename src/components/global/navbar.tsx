@@ -55,7 +55,7 @@ const Navbar = ({ bookingUrl }: NavbarProps) => {
                 cta_label: label,
                 cta_location: "navbar",
               }}
-              className="rounded-full px-4 py-1 transition-all duration-300 hover:bg-muted hover:font-medium"
+              className="rounded-full px-4 py-1 transition-all duration-300 hover:bg-muted"
             >
               {label}
             </TrackedLink>

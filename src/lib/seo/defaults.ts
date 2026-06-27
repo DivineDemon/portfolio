@@ -1,8 +1,6 @@
 export const HOMEPAGE_DEFAULTS = {
   heroHeadline:
     "I solve the product and systems problems that cost your company time, revenue, and momentum.",
-  heroSubheadline:
-    "SaaS architecture, AI automation, and technical leadership for founders and executives who need results — not more meetings.",
   heroBadge: "Fractional CTO · Builder",
   whoThisIsFor: [
     "You're a founder with a technical product that isn't scaling",
@@ -10,13 +8,7 @@ export const HOMEPAGE_DEFAULTS = {
     "You need AI or automation built correctly the first time — not prototyped",
     "You want a technical partner who takes ownership, not a contractor who takes instructions",
   ],
-  availabilityText:
-    "Currently taking on 2–3 new client engagements per quarter",
-  projectMinimumText:
-    "Typical projects: 3-month minimum, milestone-based delivery",
-  responseTimeText: "Response time: Within 24 hours",
   caseStudiesLabel: "Case Studies",
-  caseStudiesIntro: "Real problems, real results.",
 } as const;
 
 export const SITE_SEO_DEFAULTS = {

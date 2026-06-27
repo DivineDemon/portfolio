@@ -43,15 +43,15 @@ const AnalyticsPrivacyNotice = ({
           experience.
           {b2bProvider
             ? ` We also use ${b2bProvider} to identify visiting companies for B2B outreach.`
-            : null}{" "}
-          See our{" "}
+            : null}
+          &nbsp; See our&nbsp;
           <Link
             href="/privacy"
             className="text-foreground underline underline-offset-4"
           >
             privacy policy
-          </Link>{" "}
-          for details.
+          </Link>
+          &nbsp; for details.
         </p>
         <button
           type="button"

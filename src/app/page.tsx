@@ -6,8 +6,6 @@ import Projects from "@/components/landing/projects";
 import Services from "@/components/landing/services";
 import Skills from "@/components/landing/skills";
 import Testimonials from "@/components/landing/testimonials";
-import TrustedBy from "@/components/landing/trusted-by";
-import WhoThisIsFor from "@/components/landing/who-this-is-for";
 import Workflows from "@/components/landing/workflows";
 import { safeJsonLdStringify } from "@/lib/json-ld";
 import { getHomePageJsonLd } from "@/lib/seo/get-site-json-ld";
@@ -22,11 +20,9 @@ const Home = async () => {
       </script>
       <Hero />
       <Services />
-      <WhoThisIsFor />
       <DitherSplitter />
       <Projects />
       <Workflows />
-      <TrustedBy />
       <Testimonials />
       <DitherSplitter />
       <About />

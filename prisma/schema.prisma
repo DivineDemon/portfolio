@@ -88,13 +88,9 @@ model pages {
 model site_settings {
   id                     Int      @id @default(1)
   heroHeadline           String?
-  heroSubheadline        String?
   heroBadge              String?
   positioningTitle       String?
   positioningDescription String?
-  availabilityText       String?
-  projectMinimumText     String?
-  responseTimeText       String?
   bookingUrl             String?
   linkedinUrl            String?
   githubUrl              String?

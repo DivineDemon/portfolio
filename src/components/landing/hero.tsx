@@ -10,7 +10,7 @@ import Dither from "../ui/dither";
 
 const Hero = async () => {
   const settings = await getSiteSettings();
-  const { headline, subheadline, badgeParts } = resolveHeroCopy(settings);
+  const { headline, badgeParts } = resolveHeroCopy(settings);
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
@@ -38,9 +38,6 @@ const Hero = async () => {
             <h1 className="text-2xl md:text-4xl font-bold tracking-tight">
               {headline}
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl">
-              {subheadline}
-            </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <TrackedLink
                 href="#contact"
@@ -60,7 +57,7 @@ const Hero = async () => {
                   cta_label: "See how I've done it",
                   cta_location: "hero",
                 }}
-                className={cn(buttonVariants({ variant: "outline" }))}
+                className={cn(buttonVariants({ variant: "secondary" }))}
               >
                 See how I&apos;ve done it
               </TrackedLink>
