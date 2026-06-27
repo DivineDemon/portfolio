@@ -1,11 +1,17 @@
 import { Grip } from "lucide-react";
-import Link from "next/link";
+import TrackedLink from "@/components/analytics/tracked-link";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
+import { getSiteSettings } from "@/lib/cms/get-site-settings";
+import { resolveHeroCopy } from "@/lib/cms/parse-site-settings";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Dither from "../ui/dither";
 
-const Hero = () => {
+const Hero = async () => {
+  const settings = await getSiteSettings();
+  const { headline, subheadline, badgeParts } = resolveHeroCopy(settings);
+
   return (
     <MaxWidthWrapper parentBorder="border-b">
       <div className="w-full relative min-h-[40vh]">
@@ -20,26 +26,45 @@ const Hero = () => {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-full max-w-2/3 mx-auto flex flex-col items-center justify-center gap-5 text-center pointer-events-auto">
+          <div className="w-full max-w-2/3 mx-auto flex flex-col items-center justify-center gap-5 text-center pointer-events-auto px-4">
             <p className="px-5 py-1.5 rounded-full bg-background/10 backdrop-blur-md text-sm font-medium flex items-center justify-center gap-2 border">
-              Founder
-              <Grip className="size-3.5" />
-              Builder
+              {badgeParts.map((part, index) => (
+                <span key={part} className="flex items-center gap-2">
+                  {index > 0 ? <Grip className="size-3.5" /> : null}
+                  {part}
+                </span>
+              ))}
             </p>
             <h1 className="text-2xl md:text-4xl font-bold tracking-tight">
-              I Build Scalable SaaS & AI Systems That Drive Measurable Business
-              Growth.
+              {headline}
             </h1>
-            <Link
-              href="#contact"
-              className={cn(
-                buttonVariants({
-                  variant: "default",
-                }),
-              )}
-            >
-              Get in touch
-            </Link>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl">
+              {subheadline}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <TrackedLink
+                href="#contact"
+                eventName={ANALYTICS_EVENTS.CTA_CLICK}
+                eventParams={{
+                  cta_label: "Work with me",
+                  cta_location: "hero",
+                }}
+                className={cn(buttonVariants({ variant: "default" }))}
+              >
+                Work with me
+              </TrackedLink>
+              <TrackedLink
+                href="#projects"
+                eventName={ANALYTICS_EVENTS.CTA_CLICK}
+                eventParams={{
+                  cta_label: "See how I've done it",
+                  cta_location: "hero",
+                }}
+                className={cn(buttonVariants({ variant: "outline" }))}
+              >
+                See how I&apos;ve done it
+              </TrackedLink>
+            </div>
           </div>
         </div>
       </div>

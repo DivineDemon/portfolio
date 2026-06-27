@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CaseStudyViewTracker from "@/components/analytics/case-study-view-tracker";
 import { CaseStudySection } from "@/components/case-study/case-study-section";
 import { ClientTestimonial } from "@/components/case-study/client-testimonial";
 import { EngagementMeta } from "@/components/case-study/engagement-meta";
@@ -14,16 +15,15 @@ import { TechnicalDetailsAccordion } from "@/components/case-study/technical-det
 import type { Project } from "@/components/case-study/types";
 import DitherSplitter from "@/components/global/dither-splitter";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { getProjectBySlug } from "@/lib/cms/get-published-projects";
 import { SITE_URL } from "@/lib/constants";
-import { server } from "@/lib/elysia/server";
 import {
   PERSON_SCHEMA_ID,
   safeJsonLdStringify,
   toAbsoluteUrl,
   WEBSITE_SCHEMA_ID,
 } from "@/lib/json-ld";
-
-export const revalidate = 300;
+import { HOMEPAGE_DEFAULTS } from "@/lib/seo/defaults";
 
 function toIsoDate(value: unknown): string | undefined {
   if (value instanceof Date) {
@@ -41,12 +41,7 @@ function toIsoDate(value: unknown): string | undefined {
 }
 
 async function getProject(slug: string): Promise<Project | null> {
-  const raw = await server.project({ slug }).get();
-  return (
-    raw && typeof raw === "object" && "data" in raw
-      ? (raw as { data: Project | null }).data
-      : raw
-  ) as Project | null;
+  return getProjectBySlug(slug);
 }
 
 export async function generateMetadata({
@@ -132,7 +127,7 @@ export default async function ProjectCaseStudyPage({
           {
             "@type": "ListItem",
             position: 2,
-            name: "Projects",
+            name: HOMEPAGE_DEFAULTS.caseStudiesLabel,
             item: `${SITE_URL}/#projects`,
           },
           {
@@ -171,6 +166,11 @@ export default async function ProjectCaseStudyPage({
       <script type="application/ld+json">
         {safeJsonLdStringify(projectJsonLd)}
       </script>
+      <CaseStudyViewTracker
+        contentType="project"
+        slug={slug}
+        title={project.title}
+      />
       <MaxWidthWrapper parentBorder="border-none">
         <header className="relative w-full">
           <Image

@@ -1,20 +1,9 @@
-import { revalidatePath } from "next/cache";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-
-type RevalidatePayload =
-  | {
-      type: "project";
-      slug: string;
-    }
-  | {
-      type: "workflow";
-      slug: string;
-    }
-  | {
-      type: "client";
-      slugs?: string[];
-    };
+import {
+  handleRevalidation,
+  type RevalidatePayload,
+} from "@/lib/cms/revalidate";
 
 const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET;
 
@@ -27,6 +16,26 @@ function getProvidedSecret(request: NextRequest): string | null {
   const headerSecret = request.headers.get("x-revalidate-secret");
   if (headerSecret && headerSecret.trim().length > 0) {
     return headerSecret.trim();
+  }
+
+  return null;
+}
+
+function validatePayload(payload: RevalidatePayload): string | null {
+  if (payload.type === "project" || payload.type === "workflow") {
+    if (!payload.slug || typeof payload.slug !== "string") {
+      return `Missing or invalid slug for ${payload.type} revalidation`;
+    }
+  }
+
+  if (
+    payload.type === "page" ||
+    payload.type === "blog" ||
+    payload.type === "lead_magnet"
+  ) {
+    if (!payload.slug || typeof payload.slug !== "string") {
+      return `Missing or invalid slug for ${payload.type} revalidation`;
+    }
   }
 
   return null;
@@ -53,67 +62,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Invalid JSON body" }, { status: 400 });
   }
 
-  if (payload.type === "project") {
-    if (!payload.slug || typeof payload.slug !== "string") {
-      return NextResponse.json(
-        { message: "Missing or invalid slug for project revalidation" },
-        { status: 400 },
-      );
-    }
-
-    revalidatePath("/");
-    revalidatePath(`/projects/${payload.slug}`);
-
-    return NextResponse.json({
-      revalidated: true,
-      type: payload.type,
-      slug: payload.slug,
-      paths: ["/", `/projects/${payload.slug}`],
-    });
+  const validationError = validatePayload(payload);
+  if (validationError) {
+    return NextResponse.json({ message: validationError }, { status: 400 });
   }
 
-  if (payload.type === "workflow") {
-    if (!payload.slug || typeof payload.slug !== "string") {
-      return NextResponse.json(
-        { message: "Missing or invalid slug for workflow revalidation" },
-        { status: 400 },
-      );
-    }
+  const paths = handleRevalidation(payload);
 
-    revalidatePath("/");
-    revalidatePath(`/workflows/${payload.slug}`);
-
-    return NextResponse.json({
-      revalidated: true,
-      type: payload.type,
-      slug: payload.slug,
-      paths: ["/", `/workflows/${payload.slug}`],
-    });
-  }
-
-  if (payload.type === "client") {
-    revalidatePath("/");
-    const paths = ["/"];
-
-    if (Array.isArray(payload.slugs)) {
-      for (const slug of payload.slugs) {
-        if (typeof slug === "string" && slug.trim()) {
-          const projectPath = `/projects/${slug}`;
-          revalidatePath(projectPath);
-          paths.push(projectPath);
-        }
-      }
-    }
-
-    return NextResponse.json({
-      revalidated: true,
-      type: payload.type,
-      paths,
-    });
-  }
-
-  return NextResponse.json(
-    { message: "Unsupported revalidation type" },
-    { status: 400 },
-  );
+  return NextResponse.json({
+    revalidated: true,
+    type: payload.type,
+    ...("slug" in payload && payload.slug ? { slug: payload.slug } : {}),
+    paths,
+  });
 }

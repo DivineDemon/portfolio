@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CaseStudyViewTracker from "@/components/analytics/case-study-view-tracker";
 import { CaseStudySection } from "@/components/case-study/case-study-section";
 import { ClientTestimonial } from "@/components/case-study/client-testimonial";
 import { CaseStudyMarkdown } from "@/components/case-study/markdown";
@@ -12,16 +13,14 @@ import type { Workflow } from "@/components/case-study/types";
 import DitherSplitter from "@/components/global/dither-splitter";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import { WorkflowCanvas } from "@/components/workflow/workflow-canvas";
+import { getWorkflowBySlug } from "@/lib/cms/get-published-workflows";
 import { SITE_URL } from "@/lib/constants";
-import { server } from "@/lib/elysia/server";
 import {
   PERSON_SCHEMA_ID,
   safeJsonLdStringify,
   toAbsoluteUrl,
   WEBSITE_SCHEMA_ID,
 } from "@/lib/json-ld";
-
-export const revalidate = 300;
 
 function toIsoDate(value: unknown): string | undefined {
   if (value instanceof Date) {
@@ -39,12 +38,7 @@ function toIsoDate(value: unknown): string | undefined {
 }
 
 async function getWorkflow(slug: string): Promise<Workflow | null> {
-  const raw = await server.workflow({ slug }).get();
-  return (
-    raw && typeof raw === "object" && "data" in raw
-      ? (raw as { data: Workflow | null }).data
-      : raw
-  ) as Workflow | null;
+  return getWorkflowBySlug(slug);
 }
 
 export async function generateMetadata({
@@ -167,6 +161,11 @@ export default async function WorkflowCaseStudyPage({
       <script type="application/ld+json">
         {safeJsonLdStringify(workflowJsonLd)}
       </script>
+      <CaseStudyViewTracker
+        contentType="workflow"
+        slug={slug}
+        title={workflow.title}
+      />
       <MaxWidthWrapper parentBorder="border-none">
         <header className="relative w-full">
           <Image

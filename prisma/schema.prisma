@@ -15,6 +15,9 @@ model clients {
   designation   String
   clientName    String
   feedback      String?
+  logo          String?
+  companyUrl    String?
+  featured      Boolean         @default(false)
   n8n_workflows n8n_workflows[]
   projects      projects[]
 }
@@ -61,6 +64,83 @@ model projects {
   galleryCaptions  String[] @default([])
   clientId         Int?
   client           clients? @relation(fields: [clientId], references: [id])
+}
+
+model pages {
+  id                   Int       @id @default(autoincrement())
+  slug                 String    @unique
+  title                String
+  pageType             String
+  content              String
+  excerpt              String?
+  seoTitle             String?
+  seoDescription       String?
+  keywords             String[]
+  published            Boolean   @default(false)
+  featured             Boolean   @default(false)
+  sortOrder            Int?
+  relatedProjectSlugs  String[]
+  relatedWorkflowSlugs String[]
+  updatedAt            DateTime
+  publishedAt          DateTime?
+}
+
+model site_settings {
+  id                     Int      @id @default(1)
+  heroHeadline           String?
+  heroSubheadline        String?
+  heroBadge              String?
+  positioningTitle       String?
+  positioningDescription String?
+  availabilityText       String?
+  projectMinimumText     String?
+  responseTimeText       String?
+  bookingUrl             String?
+  linkedinUrl            String?
+  githubUrl              String?
+  llmsIntro              String?
+  whoThisIsFor           Json?
+  updatedAt              DateTime
+}
+
+model blog_posts {
+  id             Int       @id @default(autoincrement())
+  slug           String    @unique
+  title          String
+  excerpt        String?
+  content        String
+  coverImage     String?
+  published      Boolean   @default(false)
+  featured       Boolean   @default(false)
+  seoTitle       String?
+  seoDescription String?
+  keywords       String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime
+  publishedAt    DateTime?
+}
+
+model lead_magnets {
+  id             Int      @id @default(autoincrement())
+  slug           String   @unique
+  title          String
+  description    String
+  magnetType     String
+  pdfUrl         String?
+  published      Boolean  @default(false)
+  seoTitle       String?
+  seoDescription String?
+  keywords       String[]
+  updatedAt      DateTime
+}
+
+model leads {
+  id         Int      @id @default(autoincrement())
+  email      String
+  name       String?
+  magnetSlug String
+  metadata   Json?
+  createdAt  DateTime @default(now())
 }
 
 model n8n_workflows {

@@ -1,84 +1,93 @@
 import Image from "next/image";
-import Link from "next/link";
+import TrackedLink from "@/components/analytics/tracked-link";
+import { InlineTestimonial } from "@/components/landing/testimonial-cards";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
-import type { n8n_workflows } from "@/generated/prisma/client";
-import { server } from "@/lib/elysia/server";
+import type { clients } from "@/generated/prisma/client";
+import { ANALYTICS_EVENTS } from "@/lib/analytics/track";
+import { filterPublicClients } from "@/lib/clients";
+import { getClients } from "@/lib/cms/get-clients";
+import type { WorkflowListItem } from "@/lib/cms/get-published-workflows";
+import { getPublishedWorkflows } from "@/lib/cms/get-published-workflows";
 import { cn } from "@/lib/utils";
-
-function parseWorkflows(res: unknown): n8n_workflows[] {
-  if (Array.isArray(res)) return res;
-  const data = (res as { data?: n8n_workflows[] })?.data;
-  return data ?? [];
-}
 
 function WorkflowCard({
   workflow,
+  client,
   isHero = false,
 }: {
-  workflow: n8n_workflows;
+  workflow: WorkflowListItem;
+  client?: clients | null;
   isHero?: boolean;
 }) {
   const outcome = workflow.cardOutcome || workflow.headlineResult;
 
   return (
-    <Link
-      href={`/workflows/${workflow.slug}`}
-      className={cn(
-        "group flex col-span-1 h-full shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm",
-        "transition-all duration-200 hover:border-border/80 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-        isHero && "md:col-span-2",
-      )}
-    >
-      <div className="relative aspect-16/10 w-full overflow-hidden bg-muted">
-        <Image
-          src={workflow.coverImage}
-          alt={workflow.title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-          sizes={
-            isHero
-              ? "(max-width: 768px) 100vw, 66vw"
-              : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          }
-        />
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        {workflow.integrations.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {workflow.integrations.slice(0, 3).map((integration) => (
-              <span
-                key={integration}
-                className="rounded-md border border-primary/25 bg-primary/10 px-2 py-0.5 font-mono text-xs font-medium text-primary"
-              >
-                {integration}
-              </span>
-            ))}
-            {workflow.integrations.length > 3 && (
-              <span className="rounded-md border border-border bg-muted/50 px-2 py-0.5 font-mono text-xs text-muted-foreground">
-                +{workflow.integrations.length - 3}
-              </span>
-            )}
-          </div>
+    <div className={cn("flex flex-col gap-3", isHero && "md:col-span-2")}>
+      <TrackedLink
+        href={`/workflows/${workflow.slug}`}
+        eventName={ANALYTICS_EVENTS.CASE_STUDY_CLICK}
+        eventParams={{
+          content_type: "workflow",
+          item_slug: workflow.slug,
+          item_title: workflow.title,
+        }}
+        className={cn(
+          "group flex h-full shrink-0 flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm",
+          "transition-all duration-200 hover:border-border/80 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         )}
-        <h3 className="font-mono text-lg font-semibold text-foreground transition-colors group-hover:text-foreground/90">
-          {workflow.title}
-        </h3>
-        <p className="line-clamp-2 font-mono text-sm leading-relaxed text-muted-foreground">
-          {outcome}
-        </p>
-      </div>
-    </Link>
+      >
+        <div className="relative aspect-16/10 w-full overflow-hidden bg-muted">
+          <Image
+            src={workflow.coverImage}
+            alt={workflow.title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            sizes={
+              isHero
+                ? "(max-width: 768px) 100vw, 66vw"
+                : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            }
+          />
+        </div>
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          {workflow.integrations.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {workflow.integrations.slice(0, 3).map((integration) => (
+                <span
+                  key={integration}
+                  className="rounded-md border border-primary/25 bg-primary/10 px-2 py-0.5 font-mono text-xs font-medium text-primary"
+                >
+                  {integration}
+                </span>
+              ))}
+              {workflow.integrations.length > 3 && (
+                <span className="rounded-md border border-border bg-muted/50 px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                  +{workflow.integrations.length - 3}
+                </span>
+              )}
+            </div>
+          )}
+          <h3 className="font-mono text-lg font-semibold text-foreground transition-colors group-hover:text-foreground/90">
+            {workflow.title}
+          </h3>
+          <p className="line-clamp-2 font-mono text-sm leading-relaxed text-muted-foreground">
+            {outcome}
+          </p>
+        </div>
+      </TrackedLink>
+      {client?.content?.trim() && <InlineTestimonial client={client} />}
+    </div>
   );
 }
 
 const Workflows = async () => {
-  const [featuredRes, otherRes] = await Promise.all([
-    server.workflow.get({ query: { featured: "true" } }),
-    server.workflow.get({ query: { featured: "false" } }),
+  const [featuredWorkflows, otherWorkflows, clients] = await Promise.all([
+    getPublishedWorkflows(true),
+    getPublishedWorkflows(false),
+    filterPublicClients(await getClients()),
   ]);
 
-  const featuredWorkflows = parseWorkflows(featuredRes.data);
-  const otherWorkflows = parseWorkflows(otherRes.data);
+  const clientById = new Map(clients.map((client) => [client.id, client]));
 
   if (featuredWorkflows.length === 0 && otherWorkflows.length === 0) {
     return null;
@@ -96,6 +105,11 @@ const Workflows = async () => {
               <WorkflowCard
                 key={workflow.id}
                 workflow={workflow}
+                client={
+                  workflow.clientId
+                    ? clientById.get(workflow.clientId)
+                    : undefined
+                }
                 isHero={index === 0}
               />
             ))}
@@ -109,7 +123,15 @@ const Workflows = async () => {
             </h3>
             <div className="relative grid w-full grid-cols-1 items-stretch justify-center gap-5 p-5 md:grid-cols-2">
               {otherWorkflows.map((workflow) => (
-                <WorkflowCard key={workflow.id} workflow={workflow} />
+                <WorkflowCard
+                  key={workflow.id}
+                  workflow={workflow}
+                  client={
+                    workflow.clientId
+                      ? clientById.get(workflow.clientId)
+                      : undefined
+                  }
+                />
               ))}
             </div>
           </>

@@ -5,6 +5,7 @@ import emailjs from "@emailjs/nodejs";
 export type SendContactEmailParams = {
   name: string;
   email: string;
+  coreProblem: string;
   message: string;
 };
 
@@ -34,6 +35,7 @@ export async function sendContactEmail(
       {
         from_name: params.name,
         from_email: params.email,
+        core_problem: params.coreProblem,
         message: params.message,
         reply_to: params.email,
       },

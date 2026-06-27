@@ -10,7 +10,7 @@ Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built 
 - **Database** — PostgreSQL via Prisma (projects and clients)
 - **Contact form** — Server action powered by EmailJS
 - **On-demand revalidation** — Webhook endpoint to refresh cached pages after content updates
-- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, and optional Google Analytics
+- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, GA4 conversion events, and optional Microsoft Clarity
 
 ## Tech Stack
 
@@ -57,7 +57,14 @@ EMAILJS_PRIVATE_KEY=""
 
 # Optional
 NEXT_PUBLIC_GA_MEASUREMENT_ID=""
+NEXT_PUBLIC_CLARITY_PROJECT_ID=""
+GOOGLE_SITE_VERIFICATION=""
 REVALIDATE_SECRET=""
+
+# Optional B2B visitor identification (requires privacy notice — see docs/b2b-visitor-identification.md)
+NEXT_PUBLIC_B2B_VISITOR_PIXEL_ENABLED="false"
+NEXT_PUBLIC_B2B_VISITOR_SCRIPT_URL=""
+NEXT_PUBLIC_B2B_VISITOR_PROVIDER=""
 ```
 
 ### Database Setup
@@ -98,6 +105,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `bun run format` | Format code with Biome |
 | `bun run db:pull` | Introspect the database and update `prisma/schema.prisma` |
 | `bun run db:generate` | Generate Prisma client to `src/generated/prisma` |
+| `bun run submit-sitemap` | Ping Bing/Google with the live sitemap URL |
 
 ## Project Structure
 
@@ -140,9 +148,24 @@ Send a `POST` to `/api/revalidate` with a Bearer token or `x-revalidate-secret` 
 
 The `slugs` array is optional for client revalidation. When provided, linked case study pages are revalidated in addition to the homepage.
 
+| Route | Description |
+| --- | --- |
+| `/llms.txt`, `/llms-full.txt` | CMS-generated AI discovery documents |
+| `/indexnow-key.txt` | IndexNow verification key (requires `INDEXNOW_KEY`) |
+| `/sitemap.xml`, `/robots.txt` | Dynamic SEO routes |
+
 ## Deployment
 
-Optimized for [Vercel](https://vercel.com). Set environment variables in the project dashboard, connect a PostgreSQL database, and deploy. Pages use ISR with a 5-minute revalidation window (`revalidate = 300`).
+Optimized for [Vercel](https://vercel.com). Set environment variables in the project dashboard, connect a PostgreSQL database, and deploy. The site uses **Next.js 16 Cache Components** (`cacheComponents: true`) with tag-based on-demand revalidation from the backend CMS.
+
+Seed CMS content from `portfolio-backend`:
+
+```bash
+bun run seed:pages
+bun run seed:phase3
+```
+
+Set `bookingUrl` in **Site Settings** (admin panel) to show the navbar “Book a call” button.
 
 ## License
 

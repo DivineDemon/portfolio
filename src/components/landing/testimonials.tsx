@@ -1,12 +1,13 @@
 import Image from "next/image";
+import { FeaturedTestimonialCard } from "@/components/landing/testimonial-cards";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 import type { clients } from "@/generated/prisma/client";
 import { filterPublicClients } from "@/lib/clients";
-import { server } from "@/lib/elysia/server";
+import { getClients } from "@/lib/cms/get-clients";
 import { cn } from "@/lib/utils";
 import { Marquee } from "../ui/marquee";
 
-function TestimonialCard({ client }: { client: clients }) {
+function TestimonialMarqueeCard({ client }: { client: clients }) {
   const initial = client.clientName.trim().slice(0, 1).toUpperCase();
 
   return (
@@ -44,7 +45,7 @@ function TestimonialCard({ client }: { client: clients }) {
         </div>
       </div>
       <p
-        className="font-mono text-sm leading-relaxed text-foreground line-clamp-3"
+        className="line-clamp-3 font-mono text-sm leading-relaxed text-foreground"
         title={client.content}
       >
         {client.content}
@@ -54,25 +55,41 @@ function TestimonialCard({ client }: { client: clients }) {
 }
 
 const Testimonials = async () => {
-  const response = await server.client.get();
-  const clients = filterPublicClients(response.data ?? []);
+  const clients = filterPublicClients(await getClients());
+  const featured = clients.filter((client) => client.featured).slice(0, 3);
+  const featuredIds = new Set(featured.map((client) => client.id));
+  const marqueeClients = clients.filter(
+    (client) => !featuredIds.has(client.id),
+  );
 
   return (
     <MaxWidthWrapper parentBorder="border-b">
-      <h2 className="text-2xl font-semibold tracking-tight p-5 text-left w-full border-b font-mono">
+      <h2 className="w-full border-b p-5 text-left font-mono text-2xl font-semibold tracking-tight">
         Testimonials
       </h2>
       <div
         id="testimonials"
         className="relative flex w-full flex-col items-center justify-center overflow-hidden p-5"
       >
-        <Marquee pauseOnHover>
-          {clients.map((client) => (
-            <TestimonialCard key={client.id} client={client} />
-          ))}
-        </Marquee>
-        <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
-        <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
+        {featured.length > 0 && (
+          <div className="mb-6 grid w-full max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {featured.map((client) => (
+              <FeaturedTestimonialCard key={client.id} client={client} />
+            ))}
+          </div>
+        )}
+
+        {marqueeClients.length > 0 && (
+          <>
+            <Marquee pauseOnHover>
+              {marqueeClients.map((client) => (
+                <TestimonialMarqueeCard key={client.id} client={client} />
+              ))}
+            </Marquee>
+            <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r" />
+            <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l" />
+          </>
+        )}
       </div>
     </MaxWidthWrapper>
   );

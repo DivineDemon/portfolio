@@ -11,7 +11,8 @@
     "postinstall": "prisma generate",
     "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
-    "lint": "biome check --write --unsafe"
+    "lint": "biome check --write --unsafe",
+    "submit-sitemap": "tsx scripts/submit-sitemap.ts"
   },
   "dependencies": {
     "@elysiajs/eden": "^1.4.8",
