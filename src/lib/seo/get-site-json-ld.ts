@@ -1,6 +1,4 @@
-import { cacheLife, cacheTag } from "next/cache";
-import type { clients } from "@/generated/prisma/client";
-import { getClients } from "@/lib/cms/get-clients";
+import { cacheLife } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import {
   PERSON_SCHEMA_ID,
@@ -9,52 +7,12 @@ import {
 } from "@/lib/json-ld";
 import { SITE_SEO_DEFAULTS } from "@/lib/seo/defaults";
 
-function getReviewBody(client: clients): string | null {
-  const reviewBody = client.feedback?.trim() || client.content?.trim();
-  return reviewBody || null;
-}
-
-function buildReviewSchema(client: clients, index: number) {
-  const reviewBody = getReviewBody(client);
-  if (!reviewBody) {
-    return null;
-  }
-
-  return {
-    "@type": "Review" as const,
-    "@id": `${SITE_URL}#review-${index + 1}`,
-    author: {
-      "@type": "Person" as const,
-      name: client.clientName,
-      ...(client.designation ? { jobTitle: client.designation } : {}),
-      ...(client.company
-        ? {
-            worksFor: {
-              "@type": "Organization" as const,
-              name: client.company,
-            },
-          }
-        : {}),
-    },
-    reviewBody,
-    itemReviewed: {
-      "@id": PERSON_SCHEMA_ID,
-    },
-  };
-}
-
 export async function getSiteJsonLd() {
   "use cache";
-  cacheTag("cms:clients");
   cacheLife("hours");
 
-  const clients = await getClients();
   const jobTitle = SITE_SEO_DEFAULTS.heroBadge;
   const description = SITE_SEO_DEFAULTS.positioningDescription;
-
-  const reviews = clients
-    .map((client, index) => buildReviewSchema(client, index))
-    .filter((review): review is NonNullable<typeof review> => review !== null);
 
   return {
     "@context": "https://schema.org",
@@ -78,7 +36,6 @@ export async function getSiteJsonLd() {
         inLanguage: "en-US",
         publisher: { "@id": PERSON_SCHEMA_ID },
       },
-      ...reviews,
     ],
   };
 }
