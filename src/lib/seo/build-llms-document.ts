@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { isDeprecatedCmsPage } from "@/lib/cms/deprecated-pages";
 import { getPublishedBlogPosts } from "@/lib/cms/get-published-blog-posts";
 import { getPublishedPages } from "@/lib/cms/get-published-pages";
 import { getPublishedProjects } from "@/lib/cms/get-published-projects";
@@ -144,14 +145,7 @@ export async function buildLlmsDocument(variant: LlmsVariant): Promise<string> {
   }
 
   const cmsPages = pages.filter(
-    (page) =>
-      page.pageType !== "service" &&
-      page.slug !== "services" &&
-      !page.slug.startsWith("services/") &&
-      page.pageType !== "now" &&
-      page.slug !== "now" &&
-      page.pageType !== "process" &&
-      page.slug !== "process",
+    (page) => !isDeprecatedCmsPage(page.slug, page.pageType),
   );
 
   lines.push("## Pages");

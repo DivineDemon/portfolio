@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { ReactNode } from "react";
-import {
-  CmsMarkdownPage,
-  WorkIndexPage,
-} from "@/components/cms/cms-page-views";
+import { CmsMarkdownPage } from "@/components/cms/cms-page-views";
+import { isDeprecatedCmsPage } from "@/lib/cms/deprecated-pages";
 import {
   getPublishedPageBySlug,
   getPublishedPages,
@@ -16,22 +13,10 @@ function joinSlug(slug: string[]) {
   return slug.join("/");
 }
 
-function isExcludedCmsPage(slug: string, pageType: string) {
-  return (
-    pageType === "service" ||
-    slug === "services" ||
-    slug.startsWith("services/") ||
-    pageType === "now" ||
-    slug === "now" ||
-    pageType === "process" ||
-    slug === "process"
-  );
-}
-
 export async function generateStaticParams() {
   const pages = await getPublishedPages();
   const routablePages = pages.filter(
-    (page) => !isExcludedCmsPage(page.slug, page.pageType),
+    (page) => !isDeprecatedCmsPage(page.slug, page.pageType),
   );
 
   if (routablePages.length > 0) {
@@ -91,7 +76,7 @@ export default async function CmsPage({
   const slugPath = joinSlug(slug);
   const page = await getPublishedPageBySlug(slugPath);
 
-  if (!page || isExcludedCmsPage(page.slug, page.pageType)) {
+  if (!page || isDeprecatedCmsPage(page.slug, page.pageType)) {
     notFound();
   }
 
@@ -131,20 +116,12 @@ export default async function CmsPage({
     ],
   };
 
-  let content: ReactNode;
-
-  if (page.slug === "work") {
-    content = <WorkIndexPage page={page} />;
-  } else {
-    content = <CmsMarkdownPage page={page} />;
-  }
-
   return (
     <>
       <script type="application/ld+json">
         {safeJsonLdStringify(pageJsonLd)}
       </script>
-      {content}
+      <CmsMarkdownPage page={page} />
     </>
   );
 }

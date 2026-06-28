@@ -24,8 +24,8 @@ const Hero = async () => {
           />
         </div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-full max-w-2/3 mx-auto flex flex-col items-center justify-center gap-5 text-center pointer-events-auto px-4">
-            <p className="px-5 py-1.5 rounded-full bg-background/10 backdrop-blur-md text-sm font-medium flex items-center justify-center gap-2 border">
+          <div className="w-full md:max-w-2/3 mx-auto flex flex-col items-center justify-center gap-5 text-center pointer-events-auto px-4">
+            <p className="w-fit px-5 py-1.5 rounded-full bg-background/10 backdrop-blur-md text-sm font-medium flex items-center justify-center gap-2 border">
               {badgeParts.map((part, index) => (
                 <span key={part} className="flex items-center gap-2">
                   {index > 0 ? <Grip className="size-3.5" /> : null}

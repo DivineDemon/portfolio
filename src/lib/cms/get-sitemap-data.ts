@@ -1,4 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { isDeprecatedCmsPage } from "@/lib/cms/deprecated-pages";
 import { prisma } from "@/lib/prisma";
 
 export async function getSitemapData() {
@@ -25,19 +26,8 @@ export async function getSitemapData() {
       orderBy: { updatedAt: "desc" },
     }),
     prisma.pages.findMany({
-      where: {
-        published: true,
-        NOT: [
-          { pageType: "service" },
-          { slug: "services" },
-          { slug: { startsWith: "services/" } },
-          { pageType: "now" },
-          { slug: "now" },
-          { pageType: "process" },
-          { slug: "process" },
-        ],
-      },
-      select: { slug: true, updatedAt: true },
+      where: { published: true },
+      select: { slug: true, updatedAt: true, pageType: true },
       orderBy: { updatedAt: "desc" },
     }),
     prisma.blog_posts.findMany({
@@ -50,7 +40,9 @@ export async function getSitemapData() {
   return {
     projects,
     workflows,
-    pages,
+    pages: pages.filter(
+      (page) => !isDeprecatedCmsPage(page.slug, page.pageType),
+    ),
     blogPosts,
   };
 }

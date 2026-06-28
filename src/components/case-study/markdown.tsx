@@ -1,6 +1,7 @@
 import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { sanitizeDeprecatedMarkdownLinks } from "@/lib/cms/deprecated-pages";
 import { cn } from "@/lib/utils";
 
 const markdownComponents: Components = {
@@ -86,13 +87,15 @@ export function CaseStudyMarkdown({
 }) {
   if (!content?.trim()) return null;
 
+  const sanitizedContent = sanitizeDeprecatedMarkdownLinks(content.trim());
+
   return (
     <div className={cn("space-y-3", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={markdownComponents}
       >
-        {content.trim()}
+        {sanitizedContent}
       </ReactMarkdown>
     </div>
   );

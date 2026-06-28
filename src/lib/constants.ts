@@ -62,7 +62,7 @@ export const footerWhoIWorkWithLinks = [
 ] as const;
 
 export const footerMoreLinks = [
-  { label: "Case Studies", href: "/work" },
+  { label: "Case Studies", href: "/#projects" },
   { label: "Process", href: "/process" },
   { label: "Blog", href: "/blog" },
   { label: "Privacy", href: "/privacy" },

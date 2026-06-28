@@ -52,12 +52,23 @@ export default async function BlogIndexPage() {
                 <li>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="group flex w-full flex-wrap items-center gap-4 border-b border-border p-5 text-sm transition-colors duration-100 hover:bg-accent/50"
+                    className="group block w-full border-b border-border p-5 text-sm transition-colors duration-100 hover:bg-accent/50 md:flex md:items-center md:gap-4"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-3">
                       <span className="text-xl font-semibold group-hover:underline">
                         {post.title}
                       </span>
+                      {post.coverImage && (
+                        <div className="relative aspect-16/10 w-full overflow-hidden rounded-md bg-muted md:hidden">
+                          <Image
+                            src={post.coverImage}
+                            alt={post.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 0px"
+                          />
+                        </div>
+                      )}
                       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         {post.featured && (
                           <>
@@ -84,7 +95,7 @@ export default async function BlogIndexPage() {
                       )}
                     </div>
                     {post.coverImage && (
-                      <div className="relative size-24 shrink-0 overflow-hidden rounded-md bg-muted">
+                      <div className="relative hidden size-24 shrink-0 overflow-hidden rounded-md bg-muted md:block">
                         <Image
                           src={post.coverImage}
                           alt={post.title}
