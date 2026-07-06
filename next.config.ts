@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-
 import {
   getPostHogApiHost,
   getPostHogAssetsHost,
@@ -11,6 +10,7 @@ const posthogAssetsHost = getPostHogAssetsHost();
 const nextConfig: NextConfig = {
   cacheComponents: true,
   reactCompiler: true,
+  transpilePackages: ["react-tweet"],
   images: {
     remotePatterns: [
       {
@@ -19,7 +19,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "pbs.twimg.com",
+      },
+      {
+        protocol: "https",
+        hostname: "abs.twimg.com",
       },
     ],
   },

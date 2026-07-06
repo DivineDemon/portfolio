@@ -11,7 +11,6 @@ export async function getSiteJsonLd() {
   "use cache";
   cacheLife("hours");
 
-  const jobTitle = SITE_SEO_DEFAULTS.heroBadge;
   const description = SITE_SEO_DEFAULTS.positioningDescription;
 
   return {
@@ -23,7 +22,7 @@ export async function getSiteJsonLd() {
         name: "Mushood Hanif",
         url: SITE_URL,
         image: toAbsoluteUrl("/og-image.png"),
-        jobTitle,
+        jobTitle: "Fractional CTO · Builder",
         description,
         knowsAbout: [...SITE_SEO_DEFAULTS.knowsAbout],
       },
@@ -37,29 +36,5 @@ export async function getSiteJsonLd() {
         publisher: { "@id": PERSON_SCHEMA_ID },
       },
     ],
-  };
-}
-
-export async function getHomePageJsonLd() {
-  "use cache";
-  cacheLife("hours");
-
-  const title = SITE_SEO_DEFAULTS.positioningTitle;
-  const description = SITE_SEO_DEFAULTS.positioningDescription;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${SITE_URL}#webpage`,
-    url: SITE_URL,
-    name: title,
-    description,
-    inLanguage: "en-US",
-    isPartOf: {
-      "@id": WEBSITE_SCHEMA_ID,
-    },
-    about: {
-      "@id": PERSON_SCHEMA_ID,
-    },
   };
 }

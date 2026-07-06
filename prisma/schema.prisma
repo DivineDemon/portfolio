@@ -7,6 +7,23 @@ datasource db {
   provider = "postgresql"
 }
 
+model blog_posts {
+  id             Int       @id @default(autoincrement())
+  slug           String    @unique
+  title          String
+  excerpt        String?
+  content        String
+  coverImage     String?
+  published      Boolean   @default(false)
+  featured       Boolean   @default(false)
+  seoTitle       String?
+  seoDescription String?
+  keywords       String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime
+  publishedAt    DateTime?
+}
+
 model clients {
   id            Int             @id @default(autoincrement())
   image         String?
@@ -20,6 +37,50 @@ model clients {
   featured      Boolean         @default(false)
   n8n_workflows n8n_workflows[]
   projects      projects[]
+}
+
+model n8n_workflows {
+  id             Int      @id @default(autoincrement())
+  slug           String   @unique
+  title          String
+  headlineResult String
+  problem        String
+  approach       String
+  results        String
+  workflowJson   Json
+  integrations   String[]
+  metrics        Json?
+  coverImage     String
+  cardOutcome    String?
+  displayOrder   Int?
+  featured       Boolean  @default(false)
+  published      Boolean  @default(false)
+  seoTitle       String?
+  seoDescription String?
+  keywords       String[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  clientId       Int?
+  clients        clients? @relation(fields: [clientId], references: [id])
+}
+
+model pages {
+  id                   Int       @id @default(autoincrement())
+  slug                 String    @unique
+  title                String
+  pageType             String
+  content              String
+  excerpt              String?
+  seoTitle             String?
+  seoDescription       String?
+  keywords             String[]
+  published            Boolean   @default(false)
+  featured             Boolean   @default(false)
+  sortOrder            Int?
+  relatedProjectSlugs  String[]
+  relatedWorkflowSlugs String[]
+  updatedAt            DateTime
+  publishedAt          DateTime?
 }
 
 model projects {
@@ -63,66 +124,5 @@ model projects {
   isLive           Boolean  @default(false)
   galleryCaptions  String[] @default([])
   clientId         Int?
-  client           clients? @relation(fields: [clientId], references: [id])
-}
-
-model pages {
-  id                   Int       @id @default(autoincrement())
-  slug                 String    @unique
-  title                String
-  pageType             String
-  content              String
-  excerpt              String?
-  seoTitle             String?
-  seoDescription       String?
-  keywords             String[]
-  published            Boolean   @default(false)
-  featured             Boolean   @default(false)
-  sortOrder            Int?
-  relatedProjectSlugs  String[]
-  relatedWorkflowSlugs String[]
-  updatedAt            DateTime
-  publishedAt          DateTime?
-}
-
-model blog_posts {
-  id             Int       @id @default(autoincrement())
-  slug           String    @unique
-  title          String
-  excerpt        String?
-  content        String
-  coverImage     String?
-  published      Boolean   @default(false)
-  featured       Boolean   @default(false)
-  seoTitle       String?
-  seoDescription String?
-  keywords       String[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime
-  publishedAt    DateTime?
-}
-
-model n8n_workflows {
-  id             Int      @id @default(autoincrement())
-  slug           String   @unique
-  title          String
-  headlineResult String
-  problem        String
-  approach       String
-  results        String
-  workflowJson   Json
-  integrations   String[]
-  metrics        Json?
-  coverImage     String
-  cardOutcome    String?
-  displayOrder   Int?
-  featured       Boolean  @default(false)
-  published      Boolean  @default(false)
-  seoTitle       String?
-  seoDescription String?
-  keywords       String[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime
-  clientId       Int?
-  clients        clients? @relation(fields: [clientId], references: [id])
+  clients          clients? @relation(fields: [clientId], references: [id])
 }

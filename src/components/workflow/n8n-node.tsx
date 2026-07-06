@@ -20,22 +20,22 @@ const categoryStyles: Record<
 > = {
   trigger: {
     border: "border-emerald-500/60",
-    accent: "text-emerald-400",
+    accent: "text-emerald-600 dark:text-emerald-400",
     icon: Zap,
   },
   transform: {
     border: "border-sky-500/60",
-    accent: "text-sky-400",
+    accent: "text-sky-600 dark:text-sky-400",
     icon: Shuffle,
   },
   integration: {
     border: "border-violet-500/60",
-    accent: "text-violet-400",
+    accent: "text-violet-600 dark:text-violet-400",
     icon: Plug,
   },
   logic: {
     border: "border-amber-500/60",
-    accent: "text-amber-400",
+    accent: "text-amber-600 dark:text-amber-400",
     icon: GitBranch,
   },
 };
@@ -47,22 +47,22 @@ export function N8nNode({ data }: NodeProps<N8nFlowNode>) {
   return (
     <div
       className={cn(
-        "min-w-[160px] max-w-[220px] rounded-lg border bg-[#1a1a2e] px-3 py-2.5 shadow-lg",
+        "min-w-[160px] max-w-[220px] rounded-lg border bg-card px-3 py-2.5 shadow-md",
         styles.border,
       )}
     >
       <Handle
         type="target"
         position={Position.Left}
-        className="size-2! border-2! border-[#2d2d44]! bg-[#4a4a6a]!"
+        className="size-2! border-2! border-border! bg-muted-foreground!"
       />
       <div className="flex items-start gap-2">
         <Icon className={cn("mt-0.5 size-3.5 shrink-0", styles.accent)} />
         <div className="min-w-0">
-          <p className="truncate font-mono text-xs font-medium text-zinc-100">
+          <p className="truncate font-mono text-xs font-medium text-card-foreground">
             {data.label}
           </p>
-          <p className="truncate font-mono text-[10px] text-zinc-500">
+          <p className="truncate font-mono text-[10px] text-muted-foreground">
             {data.nodeType}
           </p>
         </div>
@@ -70,7 +70,7 @@ export function N8nNode({ data }: NodeProps<N8nFlowNode>) {
       <Handle
         type="source"
         position={Position.Right}
-        className="size-2! border-2! border-[#2d2d44]! bg-[#4a4a6a]!"
+        className="size-2! border-2! border-border! bg-muted-foreground!"
       />
     </div>
   );

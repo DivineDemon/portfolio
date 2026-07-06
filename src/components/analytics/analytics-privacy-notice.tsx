@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "analytics-privacy-notice-dismissed";
@@ -32,21 +31,14 @@ const AnalyticsPrivacyNotice = () => {
       className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 p-4 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
     >
       <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-muted-foreground text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed text-muted-foreground">
           This site uses analytics to understand traffic and improve the
-          experience. See our&nbsp;
-          <Link
-            href="/privacy"
-            className="text-foreground underline underline-offset-4"
-          >
-            privacy policy
-          </Link>
-          &nbsp;for details.
+          experience.
         </p>
         <button
           type="button"
           onClick={dismiss}
-          className="shrink-0 rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+          className="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
           Got it
         </button>

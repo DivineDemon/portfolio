@@ -1,5 +1,4 @@
 import posthog from "posthog-js";
-
 import { getPostHogProjectToken, getPostHogUiHost } from "@/lib/posthog/config";
 
 const projectToken = getPostHogProjectToken();

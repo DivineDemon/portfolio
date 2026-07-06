@@ -21,8 +21,12 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "PerplexityBot",
         allow: "/",
       },
+      {
+        userAgent: "Google-Extended",
+        allow: "/",
+      },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: [`${SITE_URL}/sitemap.xml`, `${SITE_URL}/llms.txt`],
     host: SITE_URL,
   };
 }

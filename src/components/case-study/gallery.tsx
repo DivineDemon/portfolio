@@ -14,7 +14,7 @@ function GalleryImage({
 }) {
   return (
     <figure className={cn("overflow-hidden", className)}>
-      <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-muted">
+      <div className="relative aspect-video w-full overflow-hidden border border-border bg-muted">
         <Image
           src={src}
           alt={alt}
@@ -23,11 +23,11 @@ function GalleryImage({
           sizes="(max-width: 640px) 100vw, 50vw"
         />
       </div>
-      {caption && (
+      {caption ? (
         <figcaption className="mt-2 font-mono text-xs text-muted-foreground">
           {caption}
         </figcaption>
-      )}
+      ) : null}
     </figure>
   );
 }
@@ -48,40 +48,7 @@ function getCaption(
   return undefined;
 }
 
-export function InlineGallery({
-  images,
-  captions,
-  title,
-}: {
-  images: string[];
-  captions?: string[];
-  title: string;
-}) {
-  const inlineImages = images.slice(0, 2);
-  if (!inlineImages.length) return null;
-
-  return (
-    <section className="border-b p-5">
-      <div
-        className={cn(
-          "grid gap-4",
-          inlineImages.length > 1 ? "sm:grid-cols-2" : "grid-cols-1",
-        )}
-      >
-        {inlineImages.map((src, index) => (
-          <GalleryImage
-            key={src}
-            src={src}
-            alt={getGalleryAlt(title, index, images.length)}
-            caption={getCaption(captions, index, images.length)}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export function FullGallery({
+export function CaseStudyGallery({
   images,
   captions,
   title,
@@ -93,11 +60,11 @@ export function FullGallery({
   if (!images.length) return null;
 
   return (
-    <section className="border-b p-5">
-      <h2 className="mb-4 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+    <section className="flex flex-col gap-4">
+      <h2 className="font-heading text-xl font-semibold text-foreground">
         Gallery
       </h2>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {images.map((src, index) => (
           <GalleryImage
             key={src}

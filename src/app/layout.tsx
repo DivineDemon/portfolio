@@ -1,166 +1,56 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Suspense } from "react";
-import "@/assets/css/globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import AnalyticsPrivacyNotice from "@/components/analytics/analytics-privacy-notice";
+import type { Metadata } from "next";
+import { Noto_Sans, Playfair_Display } from "next/font/google";
+import "@/assets/css/globals.css";
+import Analytics from "@/components/analytics/analytics";
 import MicrosoftClarity from "@/components/analytics/microsoft-clarity";
-import PostHogPageView from "@/components/analytics/posthog-pageview";
-import Footer from "@/components/global/footer";
-import NavbarShell from "@/components/global/navbar-shell";
-import ThemeProvider from "@/components/providers/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { SITE_URL } from "@/lib/constants";
-import { safeJsonLdStringify } from "@/lib/json-ld";
-import { isPostHogEnabled } from "@/lib/posthog/config";
-import { SITE_SEO_DEFAULTS } from "@/lib/seo/defaults";
+import GlobalLayout from "@/components/layout/global-layout";
+import Providers from "@/components/providers/providers";
+import { JsonLd } from "@/components/seo/json-ld";
 import { getSiteJsonLd } from "@/lib/seo/get-site-json-ld";
+import { rootMetadata } from "@/lib/seo/metadata";
 import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
+  variable: "--font-heading",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = SITE_SEO_DEFAULTS.positioningTitle;
-  const description = SITE_SEO_DEFAULTS.positioningDescription;
-  const openGraphTitle = SITE_SEO_DEFAULTS.openGraphTitle;
-  const openGraphDescription = SITE_SEO_DEFAULTS.openGraphDescription;
-
-  return {
-    metadataBase: new URL(SITE_URL),
-    title: {
-      default: title,
-      template: "%s | Mushood Hanif",
-    },
-    description,
-    abstract:
-      "Founder and Builder building scalable, high-performance platforms with modern TypeScript ecosystems.",
-    alternates: {
-      canonical: SITE_URL,
-    },
-    applicationName: "Mushood Hanif",
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    verification: {
-      ...(process.env.GOOGLE_SITE_VERIFICATION
-        ? { google: process.env.GOOGLE_SITE_VERIFICATION }
-        : {}),
-      other: {
-        "msvalidate.01": "A1C10078467FC563779FE013C977698A",
-      },
-    },
-    icons: {
-      icon: "/logo.svg",
-    },
-    openGraph: {
-      title: openGraphTitle,
-      description: openGraphDescription,
-      url: SITE_URL,
-      siteName: "Mushood Hanif",
-      images: [
-        {
-          url: "/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: "Mushood Hanif - Founder and Builder",
-        },
-      ],
-      type: "website",
-      locale: "en_US",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: SITE_SEO_DEFAULTS.twitterTitle,
-      description: SITE_SEO_DEFAULTS.twitterDescription,
-      images: ["/og-image.png"],
-    },
-    keywords: [
-      "Fractional CTO",
-      "hire fractional CTO",
-      "AI Business Consultant",
-      "AI automation consultant for hire",
-      "SaaS Architect",
-      "SaaS architecture consultant",
-      "n8n automation expert",
-      "AI Automation Engineer",
-      "Next.js Developer",
-      "TypeScript Engineer",
-      "Multi-Tenant SaaS Development",
-      "technical co-founder for hire",
-      "Product Engineer",
-      "Remote SaaS Engineer",
-    ],
-    publisher: "Mushood Hanif",
-    category: "Technology",
-  };
-}
+export const metadata: Metadata = rootMetadata;
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const rootJsonLd = await getSiteJsonLd();
-  const showAnalyticsPrivacyNotice =
-    Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) ||
-    Boolean(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) ||
-    isPostHogEnabled();
+  const siteJsonLd = await getSiteJsonLd();
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={cn(geistSans.variable, geistMono.variable, "antialiased")}
-      >
-        <script type="application/ld+json">
-          {safeJsonLdStringify(rootJsonLd)}
-        </script>
+    <html
+      lang="en"
+      className={cn(
+        "h-full",
+        "antialiased",
+        "font-sans",
+        notoSans.variable,
+        playfairDisplayHeading.variable,
+      )}
+      suppressHydrationWarning
+    >
+      <body className="min-h-full flex flex-col">
+        <JsonLd data={siteJsonLd} />
         <Analytics />
-        <SpeedInsights />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          forcedTheme="dark"
-          disableTransitionOnChange
-        >
-          <NavbarShell />
-          <Toaster richColors duration={1500} />
-          <Suspense fallback={null}>
-            {children}
-            <Footer />
-          </Suspense>
-          {isPostHogEnabled() ? (
-            <Suspense fallback={null}>
-              <PostHogPageView />
-            </Suspense>
-          ) : null}
-          {showAnalyticsPrivacyNotice ? <AnalyticsPrivacyNotice /> : null}
-        </ThemeProvider>
+        <Providers>
+          <GlobalLayout>{children}</GlobalLayout>
+        </Providers>
       </body>
-      {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-      ) : null}
-      {process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID ? (
-        <MicrosoftClarity
-          projectId={process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}
-        />
+      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+      {clarityProjectId ? (
+        <MicrosoftClarity projectId={clarityProjectId} />
       ) : null}
     </html>
   );

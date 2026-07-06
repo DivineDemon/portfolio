@@ -1,22 +1,21 @@
-import { cn } from "@/lib/utils";
+import { Markdown } from "@/components/content/markdown";
 
-export function CaseStudySection({
-  title,
-  children,
-  className,
-}: {
+type CaseStudySectionProps = {
   title: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
+  content: string;
+};
+
+export function CaseStudySection({ title, content }: CaseStudySectionProps) {
+  if (!content.trim()) {
+    return null;
+  }
+
   return (
-    <section className={cn("border-b p-5 last:border-b-0", className)}>
-      <h2 className="mb-4 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+    <section className="flex flex-col gap-3 border-t border-border pt-6 first:border-t-0 first:pt-0">
+      <h2 className="font-heading text-xl font-semibold text-foreground">
         {title}
       </h2>
-      <div className="space-y-3 font-mono text-sm leading-relaxed text-foreground">
-        {children}
-      </div>
+      <Markdown content={content} className="max-w-none" />
     </section>
   );
 }

@@ -1,48 +1,63 @@
 import Image from "next/image";
-import type { Client } from "@/components/case-study/types";
+import Link from "next/link";
+import type { CaseStudyClient } from "@/lib/types/case-study";
 
-export function ClientTestimonial({ client }: { client: Client }) {
-  if (!client.content?.trim()) return null;
-
-  const initial = client.clientName.trim().slice(0, 1).toUpperCase();
+export function ClientTestimonial({ client }: { client: CaseStudyClient }) {
+  if (!client.content.trim() && !client.feedback?.trim()) {
+    return null;
+  }
 
   return (
-    <section className="border-b bg-muted/20 p-5">
-      <blockquote className="border-l-2 border-primary/40 pl-4 font-mono text-sm leading-relaxed text-foreground">
-        {client.content}
-      </blockquote>
-      {client.feedback?.trim() && (
-        <p className="mt-4 font-mono text-sm leading-relaxed text-muted-foreground">
-          {client.feedback}
+    <section className="flex flex-col gap-4 border border-border bg-muted/20 p-5">
+      {client.feedback?.trim() ? (
+        <p className="text-sm leading-7 text-muted-foreground">
+          &ldquo;{client.feedback.trim()}&rdquo;
         </p>
-      )}
-      <footer className="mt-4 flex items-center gap-3 border-t border-border/80 pt-4">
+      ) : null}
+      {client.content.trim() ? (
+        <p className="text-sm leading-7 text-muted-foreground">
+          {client.content.trim()}
+        </p>
+      ) : null}
+      <div className="flex items-center gap-3">
         {client.image ? (
           <Image
+            src={client.image}
             alt={client.clientName}
             width={40}
             height={40}
-            src={client.image}
-            className="size-10 shrink-0 rounded-full border border-border object-cover"
+            className="size-10 rounded-full object-cover"
           />
-        ) : (
-          <div
-            className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted font-mono text-sm font-medium text-muted-foreground"
-            aria-hidden
-          >
-            {initial}
-          </div>
-        )}
+        ) : null}
         <div className="min-w-0">
-          <p className="font-mono text-sm font-medium text-foreground">
+          <p className="text-sm font-semibold text-foreground">
             {client.clientName}
           </p>
-          <p className="font-mono text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             {client.designation}
-            {client.company && ` · ${client.company}`}
+            {client.company && !client.companyUrl ? ` · ${client.company}` : ""}
           </p>
+          {client.companyUrl && client.company ? (
+            <Link
+              href={client.companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-primary underline underline-offset-4"
+            >
+              {client.company}
+            </Link>
+          ) : null}
         </div>
-      </footer>
+        {client.logo ? (
+          <Image
+            src={client.logo}
+            alt={`${client.company} logo`}
+            width={48}
+            height={24}
+            className="ml-auto h-6 w-auto object-contain"
+          />
+        ) : null}
+      </div>
     </section>
   );
 }

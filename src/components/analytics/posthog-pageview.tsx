@@ -2,7 +2,6 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-
 import { isPostHogEnabled } from "@/lib/posthog/config";
 
 const PostHogPageView = () => {

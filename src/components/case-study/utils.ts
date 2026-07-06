@@ -1,4 +1,6 @@
-import type { ProjectMetrics, ProjectMetricValue } from "./types";
+type ProjectMetrics = Record<string, unknown>;
+
+type ProjectMetricValue = string | number | boolean | string[] | null;
 
 export function parseProjectMetrics(metrics: unknown): ProjectMetrics {
   if (!metrics || typeof metrics !== "object" || Array.isArray(metrics)) {
@@ -23,15 +25,13 @@ export function formatMetricLabel(key: string): string {
 
 export function getMetricEntries(
   metrics: ProjectMetrics,
-  limit = 4,
 ): Array<{ label: string; value: string }> {
   return Object.entries(metrics)
     .filter(
       ([, value]) => value !== null && value !== undefined && value !== "",
     )
-    .slice(0, limit)
     .map(([key, value]) => ({
       label: formatMetricLabel(key),
-      value: formatMetricValue(value),
+      value: formatMetricValue(value as ProjectMetricValue),
     }));
 }

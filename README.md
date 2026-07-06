@@ -1,168 +1,118 @@
 # Mushood Hanif — Portfolio
 
-Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16, featuring project case studies, client testimonials, a contact form, and SEO-optimized landing pages.
+Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16 App Router, a sidebar layout, and a hybrid content model: static markdown for long-form pages, PostgreSQL (via Prisma) for blog posts and case studies.
 
-## Features
+## Stack
 
-- **Landing page** — Hero, featured projects, testimonials carousel, about, skills, and contact sections
-- **Project case studies** — Dynamic `/projects/[slug]` pages with markdown content, linked client testimonials, metrics, and tech stack tags
-- **API layer** — [Elysia](https://elysiajs.com) routes mounted under `/api` with type-safe Eden client
-- **Database** — PostgreSQL via Prisma (projects and clients)
-- **Contact form** — Server action powered by EmailJS
-- **On-demand revalidation** — Webhook endpoint to refresh cached pages after content updates
-- **SEO & analytics** — JSON-LD structured data, sitemap, robots.txt, Open Graph metadata, Vercel Analytics, GA4 conversion events, PostHog, and optional Microsoft Clarity
+- **Framework:** Next.js 16 (Cache Components / PPR, React Compiler)
+- **UI:** React 19, Tailwind CSS 4, shadcn/ui, Radix
+- **Data:** Prisma 7 + PostgreSQL (Neon)
+- **Content:** Markdown files (`docs/content/`) + database-backed blog & case studies
+- **Workflows:** n8n JSON rendered with React Flow (`@xyflow/react`)
+- **Contact:** EmailJS (server action)
+- **Analytics:** Vercel Analytics, Speed Insights, GA4, PostHog, Microsoft Clarity, Web Vitals
+- **Tooling:** Bun, Biome, TypeScript
 
-## Tech Stack
+## Routes
 
-| Layer | Technologies |
-| --- | --- |
-| Framework | Next.js 16, React 19, TypeScript |
-| Styling | Tailwind CSS 4, shadcn/ui, Geist font |
-| API | Elysia, Eden Treaty |
-| Database | PostgreSQL, Prisma 7 (`prisma db pull` + `prisma generate`) |
-| Forms & validation | React Hook Form, Zod |
-| 3D / visuals | Three.js, React Three Fiber |
-| Tooling | Biome, Bun |
+| Path | Source |
+|------|--------|
+| `/` | `docs/content/about.md` |
+| `/skills` | `docs/content/skills.md` |
+| `/blog`, `/blog/[slug]` | `blog_posts` table |
+| `/case-studies/projects`, `/case-studies/projects/[slug]` | `projects` table |
+| `/case-studies/workflows`, `/case-studies/workflows/[slug]` | `n8n_workflows` table |
+| `/testimonials` | `clients` table |
+| `/contact` | Contact form (EmailJS) |
 
-## Getting Started
+SEO routes: `/sitemap.xml`, `/robots.txt`, `/llms.txt`
 
-### Prerequisites
+## Getting started
 
-- [Bun](https://bun.sh) (recommended) or Node.js 20+
-- PostgreSQL database (e.g. [Neon](https://neon.tech))
-
-### Installation
+**Prerequisites:** Bun, PostgreSQL database, EmailJS account (for contact form).
 
 ```bash
 bun install
-```
-
-### Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-# Database
-DATABASE_URL="postgresql://..."
-
-# Site
-NEXT_PUBLIC_SITE_URL="https://mushoodhanif.com"
-NEXT_PUBLIC_API_URL="http://localhost:3000"
-
-# Contact form (EmailJS)
-EMAILJS_SERVICE_ID=""
-EMAILJS_TEMPLATE_ID=""
-EMAILJS_PUBLIC_KEY=""
-EMAILJS_PRIVATE_KEY=""
-
-# Optional
-NEXT_PUBLIC_GA_MEASUREMENT_ID=""
-NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=""
-NEXT_PUBLIC_POSTHOG_HOST="https://us.i.posthog.com"
-NEXT_PUBLIC_CLARITY_PROJECT_ID=""
-GOOGLE_SITE_VERIFICATION=""
-REVALIDATE_SECRET=""
-```
-
-### Database Setup
-
-Schema and migrations are owned by [`portfolio-backend`](../portfolio-backend). After backend migrations are applied, sync the local schema and generate the client in this app:
-
-```bash
-bunx prisma db pull
-bunx prisma generate
-```
-
-Or use the npm scripts:
-
-```bash
-bun run db:pull
-bun run db:generate
-```
-
-`postinstall` runs `prisma generate` only. Run `db:pull` whenever `portfolio-backend` applies a new migration.
-
-### Development
-
-```bash
+cp .env.example .env
+# Fill in DATABASE_URL and other values (see below)
 bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Scripts
+### Scripts
 
-| Command | Description |
-| --- | --- |
-| `bun dev` | Start the development server |
-| `bun run build` | Production build |
-| `bun start` | Start the production server |
-| `bun run typecheck` | Run TypeScript checks |
-| `bun run lint` | Lint and fix with Biome |
-| `bun run format` | Format code with Biome |
-| `bun run db:pull` | Introspect the database and update `prisma/schema.prisma` |
-| `bun run db:generate` | Generate Prisma client to `src/generated/prisma` |
-| `bun run submit-sitemap` | Ping Bing/Google with the live sitemap URL |
+```bash
+bun dev          # Start dev server
+bun run build    # Production build
+bun start        # Start production server
+bun run typecheck
+bun run lint     # Biome check + format
+```
 
-## Project Structure
+## Environment variables
+
+Copy `.env.example` to `.env` and configure:
+
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | PostgreSQL connection string (required) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL (e.g. `https://mushoodhanif.com`) |
+| `EMAILJS_*` | Contact form delivery (`SERVICE_ID`, `TEMPLATE_ID`, `PUBLIC_KEY`, `PRIVATE_KEY`) |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 |
+| `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` | PostHog (optional: `NEXT_PUBLIC_POSTHOG_HOST`) |
+| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity |
+| `GOOGLE_SITE_VERIFICATION` | Search Console verification meta tag |
+
+Analytics providers load only when their env vars are set. Vercel Analytics and Speed Insights work automatically on Vercel.
+
+## Project structure
 
 ```
 src/
-├── app/                  # Next.js App Router pages and API routes
-│   ├── api/              # Elysia API + revalidation webhook
-│   └── projects/[slug]/  # Project case study pages
-├── components/
-│   ├── case-study/       # Case study sections (incl. client testimonial)
-│   ├── global/           # Navbar, footer, contact
-│   ├── landing/          # Homepage sections
-│   └── ui/               # shadcn/ui components
-├── lib/                  # Utilities, Prisma client, EmailJS, JSON-LD
-└── generated/prisma/     # Prisma client output
+├── app/                  # App Router pages & SEO routes
+├── components/           # UI, layout, case studies, analytics
+├── lib/
+│   ├── data/             # Cached data fetchers (blog, case studies, content)
+│   └── seo/              # Metadata, JSON-LD, sitemap helpers
+docs/
+├── content/              # Static markdown (about, skills)
+└── dev/                  # Internal dev docs (SEO playbook, etc.)
 prisma/
-└── schema.prisma         # Synced via `db pull` (no migrations in this app)
+└── schema.prisma         # blog_posts, projects, n8n_workflows, clients, pages
 ```
 
-## API
+## Content
 
-| Endpoint | Method | Description |
-| --- | --- | --- |
-| `/api/project` | GET | List published projects |
-| `/api/project/:slug` | GET | Fetch a project by slug (includes linked `client`) |
-| `/api/client` | GET | List clients (used by homepage testimonials carousel) |
-| `/api/revalidate` | POST | On-demand ISR revalidation (requires `REVALIDATE_SECRET`) |
+**Static pages** — edit markdown in `docs/content/`:
 
-### Revalidation
+- `about.md` → homepage
+- `skills.md` → skills page
 
-Send a `POST` to `/api/revalidate` with a Bearer token or `x-revalidate-secret` header:
+**Dynamic content** — manage via the database:
 
-```json
-{ "type": "project", "slug": "my-project" }
-```
+- Blog posts → `blog_posts`
+- Project case studies → `projects`
+- Workflow case studies → `n8n_workflows` (includes `workflowJson` for the canvas)
+- Testimonials → `clients`
 
-```json
-{ "type": "client", "slugs": ["my-project", "another-project"] }
-```
+Data fetchers use Next.js 16 `'use cache'` with `cacheTag` / `cacheLife` for ISR-style caching.
 
-The `slugs` array is optional for client revalidation. When provided, linked case study pages are revalidated in addition to the homepage.
+## SEO
 
-| Route | Description |
-| --- | --- |
-| `/llms.txt`, `/llms-full.txt` | CMS-generated AI discovery documents |
-| `/indexnow-key.txt` | IndexNow verification key (requires `INDEXNOW_KEY`) |
-| `/sitemap.xml`, `/robots.txt` | Dynamic SEO routes |
+Implemented per `docs/dev/seo-best-practices.md`:
 
-## Deployment
+- Root metadata (`metadataBase`, OG/Twitter, canonical)
+- Per-route `generateMetadata` + JSON-LD (`Person`, `WebSite`, `Article`, `BreadcrumbList`)
+- Dynamic `sitemap.ts`, `robots.ts`, and `llms.txt`
+- OG image: `public/og-image.png` (1200×630)
 
-Optimized for [Vercel](https://vercel.com). Set environment variables in the project dashboard, connect a PostgreSQL database, and deploy. The site uses **Next.js 16 Cache Components** (`cacheComponents: true`) with tag-based on-demand revalidation from the backend CMS.
+## Deploy
 
-Seed CMS content from `portfolio-backend`:
+Designed for [Vercel](https://vercel.com). Set environment variables in the project dashboard, connect the Neon Postgres integration, and deploy.
 
 ```bash
-bun run seed:pages
+bun run build
 ```
 
-Set `NEXT_PUBLIC_BOOKING_URL` to show the navbar “Book a call” button.
-
-## License
-
-[GNU GPL v3](LICENSE.txt)
+After deploy, submit `https://mushoodhanif.com/sitemap.xml` in Google Search Console.

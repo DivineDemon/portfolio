@@ -17,3 +17,18 @@ export function toAbsoluteUrl(pathOrUrl: string): string {
     : `/${pathOrUrl}`;
   return `${SITE_URL}${normalizedPath}`;
 }
+
+export function toIsoDate(value: unknown): string | undefined {
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString();
+    }
+  }
+
+  return undefined;
+}
