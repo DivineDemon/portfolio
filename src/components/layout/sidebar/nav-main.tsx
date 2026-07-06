@@ -26,6 +26,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/track";
 import type { SidebarItem } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,14 @@ function isPathActive(pathname: string, href: string) {
   }
 
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function trackNavClick(itemTitle: string, itemHref: string) {
+  trackEvent(ANALYTICS_EVENTS.NAV_CLICK, {
+    item_title: itemTitle,
+    item_href: itemHref,
+    nav_location: "sidebar",
+  });
 }
 
 function NavItemWithSubItems({
@@ -65,6 +74,7 @@ function NavItemWithSubItems({
               <DropdownMenuItem key={subItem.href} asChild>
                 <Link
                   href={subItem.href}
+                  onClick={() => trackNavClick(subItem.title, subItem.href)}
                   className={cn(
                     isPathActive(pathname, subItem.href) &&
                       "bg-accent text-accent-foreground",
@@ -104,7 +114,10 @@ function NavItemWithSubItems({
                   asChild
                   isActive={isPathActive(pathname, subItem.href)}
                 >
-                  <Link href={subItem.href}>
+                  <Link
+                    href={subItem.href}
+                    onClick={() => trackNavClick(subItem.title, subItem.href)}
+                  >
                     <span>{subItem.title}</span>
                   </Link>
                 </SidebarMenuSubButton>
@@ -137,7 +150,10 @@ export function NavMain({ items }: { items: SidebarItem[] }) {
                   tooltip={item.title}
                   isActive={isSectionActive}
                 >
-                  <Link href={item.href}>
+                  <Link
+                    href={item.href}
+                    onClick={() => trackNavClick(item.title, item.href)}
+                  >
                     <Icon />
                     <span>{item.title}</span>
                   </Link>

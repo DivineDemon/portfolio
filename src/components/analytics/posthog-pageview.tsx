@@ -3,6 +3,7 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { isPostHogEnabled } from "@/lib/posthog/config";
+import { initPostHogDeferred } from "@/lib/posthog/init-client";
 
 const PostHogPageView = () => {
   const pathname = usePathname();
@@ -20,8 +21,8 @@ const PostHogPageView = () => {
       url += `?${query}`;
     }
 
-    void import("posthog-js").then(({ default: posthog }) => {
-      posthog.capture("$pageview", { $current_url: url });
+    void initPostHogDeferred().then((posthog) => {
+      posthog?.capture("$pageview", { $current_url: url });
     });
   }, [pathname, searchParams]);
 

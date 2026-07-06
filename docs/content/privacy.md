@@ -1,0 +1,39 @@
+# Privacy
+
+This site uses privacy-conscious analytics to understand how visitors use the site and to improve performance. No account is required to browse, and analytics data is used in aggregate — not sold or shared for advertising.
+
+## What we collect
+
+When analytics are enabled, the site may record:
+
+- **Page views and navigation** — which pages you visit and how you move through the site
+- **Device and browser metadata** — screen size, browser type, and approximate location (country/region level)
+- **Performance metrics** — Core Web Vitals such as load time and layout stability
+- **Interaction signals** — clicks and scroll patterns on select pages (session recordings are anonymized)
+
+Contact form submissions are handled separately via EmailJS and are not mixed with site analytics.
+
+## Services used
+
+Depending on configuration, analytics may be provided by:
+
+- **Google Analytics (GA4)** — traffic and event measurement
+- **Microsoft Clarity** — heatmaps and session replays (masked inputs)
+- **PostHog** — product analytics and custom events
+- **Vercel Analytics & Speed Insights** — aggregate traffic and performance on Vercel-hosted deployments
+
+Each provider processes data under its own privacy policy. You can review their policies on their respective websites.
+
+## Cookies and local storage
+
+Analytics tools may set cookies or use browser local storage to distinguish sessions. The site also stores a local preference when you dismiss the analytics notice.
+
+## Your choices
+
+- Use browser settings or extensions to block analytics cookies and scripts
+- Dismiss the notice on first visit; it will not reappear on this device
+- Reach out via the [contact page](/contact) with any privacy questions
+
+## Updates
+
+This policy may be updated as tools or practices change. The latest version is always published on this page.

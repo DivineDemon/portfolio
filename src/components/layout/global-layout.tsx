@@ -9,7 +9,10 @@ const GlobalLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex-1 flex flex-col items-start justify-start">
         <Navbar />
         <Breadcrumbs />
-        <div className="w-full h-[calc(100vh-120px)] overflow-y-auto px-5 pb-5">
+        <div
+          id="main-scroll"
+          className="w-full h-[calc(100vh-120px)] overflow-y-auto px-5 pb-5"
+        >
           {children}
         </div>
       </div>

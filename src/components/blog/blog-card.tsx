@@ -8,6 +8,7 @@ type BlogCardProps = {
   post: BlogCardPost;
   href?: string;
   className?: string;
+  priority?: boolean;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
@@ -19,7 +20,13 @@ function formatPublishedDate(date: Date | string) {
   }).format(new Date(date));
 }
 
-export function BlogCard({ post, href, className, onClick }: BlogCardProps) {
+export function BlogCard({
+  post,
+  href,
+  className,
+  priority = false,
+  onClick,
+}: BlogCardProps) {
   const { slug, title, excerpt, coverImage, publishedAt } = post;
 
   return (
@@ -37,6 +44,7 @@ export function BlogCard({ post, href, className, onClick }: BlogCardProps) {
             alt={title}
             src={coverImage}
             fill
+            priority={priority}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />

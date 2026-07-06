@@ -54,6 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: homeLastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({

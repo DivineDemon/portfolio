@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import BlogPostViewTracker from "@/components/analytics/blog-post-view-tracker";
+import { BlogPostFooter } from "@/components/blog/blog-post-footer";
 import { Markdown } from "@/components/content/markdown";
 import { JsonLd } from "@/components/seo/json-ld";
 import {
+  getBlogFooterCaseStudy,
   getPublishedBlogPostBySlug,
   getPublishedBlogSlugs,
+  getRelatedBlogPosts,
 } from "@/lib/data/blog";
 import { toIsoDate } from "@/lib/json-ld";
 import { buildArticleJsonLd, resolveImageUrl } from "@/lib/seo/article-json-ld";
@@ -44,6 +48,7 @@ export async function generateMetadata({
     title,
     description,
     path,
+    keywords: post.keywords.length ? post.keywords : undefined,
     openGraph: {
       type: "article",
       publishedTime: toIsoDate(post.publishedAt),
@@ -70,6 +75,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const [relatedPosts, caseStudy] = await Promise.all([
+    getRelatedBlogPosts(slug[0], post.keywords),
+    getBlogFooterCaseStudy(slug[0]),
+  ]);
+
   const title = post.seoTitle ?? post.title;
   const description = post.seoDescription ?? post.excerpt ?? undefined;
   const canonical = absoluteUrl(`/blog/${slug[0]}`);
@@ -80,6 +90,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     imageUrl: resolveImageUrl(post.coverImage),
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
+    keywords: post.keywords,
     breadcrumbs: [
       { name: "About", href: "/" },
       { name: "Blog", href: "/blog" },
@@ -90,6 +101,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <JsonLd data={articleJsonLd} />
+      <BlogPostViewTracker slug={slug[0]} title={post.title} />
       <article className="w-full max-w-3xl flex flex-col gap-6">
         <header className="flex flex-col gap-4">
           <h1 className="font-heading text-3xl font-bold tracking-tight text-foreground">
@@ -121,6 +133,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         ) : null}
         <Markdown content={post.content} />
+        <BlogPostFooter
+          postSlug={slug[0]}
+          relatedPosts={relatedPosts}
+          caseStudy={caseStudy}
+        />
       </article>
     </>
   );

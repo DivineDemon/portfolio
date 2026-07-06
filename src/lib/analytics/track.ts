@@ -6,6 +6,7 @@ import {
   type AnalyticsEventName,
 } from "@/lib/analytics/events";
 import { isPostHogEnabled } from "@/lib/posthog/config";
+import { initPostHogDeferred } from "@/lib/posthog/init-client";
 
 export { ANALYTICS_EVENTS };
 
@@ -33,8 +34,8 @@ export function trackEvent(
   }
 
   if (hasPosthog) {
-    void import("posthog-js").then(({ default: posthog }) => {
-      posthog.capture(eventName, cleanedParams);
+    void initPostHogDeferred().then((posthog) => {
+      posthog?.capture(eventName, cleanedParams);
     });
   }
 }

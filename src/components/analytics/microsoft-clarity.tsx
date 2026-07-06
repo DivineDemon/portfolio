@@ -1,7 +1,7 @@
 "use client";
 
-import Clarity from "@microsoft/clarity";
 import { useEffect } from "react";
+import { deferUntilIdle } from "@/lib/analytics/defer-until-idle";
 
 type MicrosoftClarityProps = {
   projectId: string;
@@ -9,7 +9,11 @@ type MicrosoftClarityProps = {
 
 const MicrosoftClarity = ({ projectId }: MicrosoftClarityProps) => {
   useEffect(() => {
-    Clarity.init(projectId);
+    deferUntilIdle(() => {
+      void import("@microsoft/clarity").then(({ default: Clarity }) => {
+        Clarity.init(projectId);
+      });
+    });
   }, [projectId]);
 
   return null;

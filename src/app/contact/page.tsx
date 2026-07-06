@@ -3,9 +3,9 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Contact",
+  title: "Contact — Fractional CTO & AI Systems Engagements",
   description:
-    "Get in touch about a project, collaboration, or consulting engagement.",
+    "Work with a fractional CTO on RAG systems, SaaS architecture, n8n automation, and production AI — for founders and product leaders with measurable outcomes in mind.",
   path: "/contact",
 });
 
@@ -17,8 +17,11 @@ export default function ContactPage() {
           Contact
         </h1>
         <p className="w-full text-left text-sm text-muted-foreground">
-          Tell me about the problem you&apos;re solving. I&apos;ll get back to
-          you as soon as I can.
+          I work best with founders, business owners, and product leaders
+          tackling production AI, platform rewrites, workflow automation, or
+          fractional CTO advisory. Describe the business problem — not the stack
+          you&apos;ve already picked — and I&apos;ll get back to you as soon as
+          I can.
         </p>
       </div>
 

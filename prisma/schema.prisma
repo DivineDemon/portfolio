@@ -64,25 +64,6 @@ model n8n_workflows {
   clients        clients? @relation(fields: [clientId], references: [id])
 }
 
-model pages {
-  id                   Int       @id @default(autoincrement())
-  slug                 String    @unique
-  title                String
-  pageType             String
-  content              String
-  excerpt              String?
-  seoTitle             String?
-  seoDescription       String?
-  keywords             String[]
-  published            Boolean   @default(false)
-  featured             Boolean   @default(false)
-  sortOrder            Int?
-  relatedProjectSlugs  String[]
-  relatedWorkflowSlugs String[]
-  updatedAt            DateTime
-  publishedAt          DateTime?
-}
-
 model projects {
   id               Int      @id @default(autoincrement())
   slug             String   @unique

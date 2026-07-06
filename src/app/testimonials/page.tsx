@@ -5,7 +5,8 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Testimonials",
-  description: "What clients and collaborators say about working together.",
+  description:
+    "Client feedback on fractional CTO partnerships, production AI systems, and SaaS engineering engagements.",
   path: "/testimonials",
 });
 

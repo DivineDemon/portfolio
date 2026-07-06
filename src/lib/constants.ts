@@ -10,6 +10,7 @@ import {
   Info,
   Mail,
   MessageCircle,
+  Shield,
 } from "lucide-react";
 
 export type SidebarSubItem = {
@@ -59,10 +60,16 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     href: "/contact",
     icon: Mail,
   },
+  {
+    title: "Privacy",
+    href: "/privacy",
+    icon: Shield,
+  },
 ];
 
 export const SIDEBAR_PATH_LABELS: Record<string, string> = {
   "/case-studies": "Case Studies",
   "/case-studies/projects": "Projects",
   "/case-studies/workflows": "Workflows",
+  "/privacy": "Privacy",
 };
