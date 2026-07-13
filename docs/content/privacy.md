@@ -18,6 +18,7 @@ Contact form submissions are handled separately via EmailJS and are not mixed wi
 Depending on configuration, analytics may be provided by:
 
 - **Google Analytics (GA4)** — traffic and event measurement
+- **Google Ads** — conversion measurement for ad campaigns
 - **PostHog** — product analytics, custom events, and session replays
 - **Vercel Analytics & Speed Insights** — aggregate traffic and performance on Vercel-hosted deployments
 
