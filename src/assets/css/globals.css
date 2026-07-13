@@ -8,12 +8,12 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans:
-    Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+    var(--font-noto-sans), ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono:
-    "Fira Code", "Ubuntu Mono", "Source Code Pro", Menlo, Monaco, Consolas,
-    monospace;
-  --font-heading: var(--font-heading);
+    var(--font-fira-code), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --font-heading: var(--font-playfair), Georgia, "Times New Roman", serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,7 +50,6 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --font-serif: Georgia, serif;
   --radius: 0.25rem;
   --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
   --tracking-tight: calc(var(--tracking-normal) - 0.025em);
@@ -111,13 +110,6 @@
   --sidebar-border: oklch(0.9276 0.0058 264.5313);
   --sidebar-ring: oklch(0.7163 0.1706 53.4464);
   --destructive-foreground: oklch(1 0 0);
-  --font-sans:
-    Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono:
-    "Fira Code", "Ubuntu Mono", "Source Code Pro", Menlo, Monaco, Consolas,
-    monospace;
   --shadow-color: #000000;
   --shadow-opacity: 0.1;
   --shadow-blur: 4px;
@@ -155,7 +147,7 @@
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.2686 0 0);
   --muted-foreground: oklch(0.7118 0.0129 286.0665);
-  --accent: oklch(0.7235 0.1724 53.7949);
+  --accent: #f6821f;
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --border: oklch(0.2739 0.0055 286.0326);
@@ -176,13 +168,6 @@
   --sidebar-ring: oklch(0.7235 0.1724 53.7949);
   --destructive-foreground: oklch(1 0 0);
   --radius: 0.25rem;
-  --font-sans:
-    Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono:
-    "Fira Code", "Ubuntu Mono", "Source Code Pro", Menlo, Monaco, Consolas,
-    monospace;
   --shadow-color: #000000;
   --shadow-opacity: 0.5;
   --shadow-blur: 10px;
