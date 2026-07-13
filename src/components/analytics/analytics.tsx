@@ -15,9 +15,7 @@ const WebVitals = dynamic(() => import("@/components/analytics/web-vitals"), {
 
 function hasAnalyticsPrivacyNotice() {
   return (
-    Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) ||
-    Boolean(process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID) ||
-    isPostHogEnabled()
+    Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) || isPostHogEnabled()
   );
 }
 

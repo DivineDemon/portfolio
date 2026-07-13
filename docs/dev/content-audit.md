@@ -46,7 +46,7 @@ Scores are 1–5 per dimension. **Overall** is a weighted judgment for prioritiz
 | ~90% single-page sessions | Plan / PostHog (old design) | Blog and static pages need in-content next steps |
 | ~94% blog post bounce | Plan / GA4 (old design) | Unpublish or rewrite off-ICP posts; strengthen on-theme posts |
 | Top organic landing post: `stop-prompting-ai-start-building-loops` | Plan / GA4 | Keep and deepen; aligns with production-AI editorial |
-| ~30% homepage Clarity clicks on privacy “Got it” | Clarity export 2026-07-06 | Homepage content competes with banner (Phase 1 UX, not content) |
+| ~30% homepage clicks on privacy “Got it” | Session replay export 2026-07-06 | Homepage content competes with banner (Phase 1 UX, not content) |
 | All 5 published posts `featured: true` | DB audit | Dilutes pillar promotion; only on-theme pillar should be featured |
 
 *GA4 landing-page breakdown not queried in this audit (credentials not run in CI). Re-validate after Phase 3 baseline.*

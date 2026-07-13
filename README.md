@@ -10,7 +10,7 @@ Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built 
 - **Content:** Markdown files (`docs/content/`) + database-backed blog & case studies
 - **Workflows:** n8n JSON rendered with React Flow (`@xyflow/react`)
 - **Contact:** EmailJS (server action)
-- **Analytics:** Vercel Analytics, Speed Insights, GA4, PostHog, Microsoft Clarity, Web Vitals
+- **Analytics:** Vercel Analytics, Speed Insights, GA4, PostHog, Web Vitals
 - **Tooling:** Bun, Biome, TypeScript
 
 ## Routes
@@ -61,7 +61,6 @@ Copy `.env.example` to `.env` and configure:
 | `EMAILJS_*` | Contact form delivery (`SERVICE_ID`, `TEMPLATE_ID`, `PUBLIC_KEY`, `PRIVATE_KEY`) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 |
 | `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` | PostHog (optional: `NEXT_PUBLIC_POSTHOG_HOST`) |
-| `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Microsoft Clarity |
 | `GOOGLE_SITE_VERIFICATION` | Search Console verification meta tag |
 
 Analytics providers load only when their env vars are set. Vercel Analytics and Speed Insights work automatically on Vercel.

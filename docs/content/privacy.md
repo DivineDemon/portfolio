@@ -18,8 +18,7 @@ Contact form submissions are handled separately via EmailJS and are not mixed wi
 Depending on configuration, analytics may be provided by:
 
 - **Google Analytics (GA4)** — traffic and event measurement
-- **Microsoft Clarity** — heatmaps and session replays (masked inputs)
-- **PostHog** — product analytics and custom events
+- **PostHog** — product analytics, custom events, and session replays
 - **Vercel Analytics & Speed Insights** — aggregate traffic and performance on Vercel-hosted deployments
 
 Each provider processes data under its own privacy policy. You can review their policies on their respective websites.

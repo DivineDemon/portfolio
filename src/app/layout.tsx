@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "@/assets/css/globals.css";
 import Analytics from "@/components/analytics/analytics";
-import MicrosoftClarity from "@/components/analytics/microsoft-clarity";
 import GlobalLayout from "@/components/layout/global-layout";
 import Providers from "@/components/providers/providers";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -27,7 +26,6 @@ export default async function RootLayout({
 }>) {
   const siteJsonLd = await getSiteJsonLd();
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID;
 
   return (
     <html
@@ -49,9 +47,6 @@ export default async function RootLayout({
         </Providers>
       </body>
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-      {clarityProjectId ? (
-        <MicrosoftClarity projectId={clarityProjectId} />
-      ) : null}
     </html>
   );
 }
