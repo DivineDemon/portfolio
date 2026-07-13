@@ -12,6 +12,26 @@ export { ANALYTICS_EVENTS };
 
 type AnalyticsParams = Record<string, string | number | boolean | undefined>;
 
+function pushGtagEvent(...args: unknown[]) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  // gtag pushes argument objects onto dataLayer
+  window.dataLayer.push(args);
+}
+
+export function trackGoogleAdsConversion(
+  sendTo = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO,
+) {
+  if (!sendTo) {
+    return;
+  }
+
+  pushGtagEvent("event", "conversion", { send_to: sendTo });
+}
+
 export function trackEvent(
   eventName: AnalyticsEventName,
   params?: AnalyticsParams,
@@ -38,4 +58,22 @@ export function trackEvent(
       posthog?.capture(eventName, cleanedParams);
     });
   }
+}
+
+type LeadConversionParams = {
+  form_location: string;
+  currency?: string;
+  value?: number;
+};
+
+export function trackLeadConversion({
+  form_location,
+  currency = "USD",
+  value = 1,
+}: LeadConversionParams) {
+  const params = { form_location, currency, value };
+
+  trackEvent(ANALYTICS_EVENTS.LEAD_FORM_SUBMIT, params);
+  trackEvent(ANALYTICS_EVENTS.GENERATE_LEAD, params);
+  trackGoogleAdsConversion();
 }

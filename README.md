@@ -61,6 +61,7 @@ Copy `.env.example` to `.env` and configure:
 | `EMAILJS_*` | Contact form delivery (`SERVICE_ID`, `TEMPLATE_ID`, `PUBLIC_KEY`, `PRIVATE_KEY`) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 |
 | `NEXT_PUBLIC_GOOGLE_ADS_ID` | Google Ads conversion tag (e.g. `AW-18319273740`) |
+| `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO` | Google Ads conversion `send_to` value (e.g. `AW-18319273740/AbCdEfGh`) |
 | `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` | PostHog (optional: `NEXT_PUBLIC_POSTHOG_HOST`) |
 | `GOOGLE_SITE_VERIFICATION` | Search Console verification meta tag |
 

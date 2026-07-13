@@ -1,4 +1,5 @@
 export const ANALYTICS_EVENTS = {
+  GENERATE_LEAD: "generate_lead",
   LEAD_FORM_SUBMIT: "lead_form_submit",
   BOOKING_CLICK: "booking_click",
   CTA_CLICK: "cta_click",

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/track";
+import { trackLeadConversion } from "@/lib/analytics/track";
 import { sendContactEmail } from "@/lib/emailjs";
 
 const contactSchema = z.object({
@@ -51,9 +51,7 @@ export function ContactForm() {
     const result = await sendContactEmail(values);
 
     if (result.success) {
-      trackEvent(ANALYTICS_EVENTS.LEAD_FORM_SUBMIT, {
-        form_location: "contact",
-      });
+      trackLeadConversion({ form_location: "contact" });
       toast.success("Message sent successfully");
       form.reset();
     } else {
