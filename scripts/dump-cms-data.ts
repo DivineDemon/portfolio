@@ -1,9 +1,10 @@
 /**
- * Build-time dump of published CMS rows into src/data/cms.json.
- * Keeps Prisma/pg out of the Cloudflare Worker runtime bundle.
+ * Build-time dump of published CMS rows into src/data/cms.json,
+ * plus markdown pages into src/data/pages.json.
+ * Keeps Prisma/pg/fs content out of the Cloudflare Worker runtime bundle.
  */
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { config as loadEnv } from "dotenv";
 import { PrismaClient } from "../src/generated/prisma/client";
@@ -11,6 +12,28 @@ import { PrismaClient } from "../src/generated/prisma/client";
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
 const OUT_PATH = resolve(process.cwd(), "src/data/cms.json");
+const PAGES_OUT_PATH = resolve(process.cwd(), "src/data/pages.json");
+const CONTENT_DIR = resolve(process.cwd(), "docs/content");
+
+function dumpMarkdownPages() {
+  const pages: Record<string, string> = {};
+  for (const file of readdirSync(CONTENT_DIR)) {
+    if (!file.endsWith(".md")) continue;
+    pages[file.replace(/\.md$/, "")] = readFileSync(
+      join(CONTENT_DIR, file),
+      "utf8",
+    );
+  }
+  mkdirSync(dirname(PAGES_OUT_PATH), { recursive: true });
+  writeFileSync(
+    PAGES_OUT_PATH,
+    `${JSON.stringify(pages, null, 2)}\n`,
+    "utf8",
+  );
+  console.log(
+    `[dump-cms-data] wrote ${PAGES_OUT_PATH} (pages=${Object.keys(pages).join(",")})`,
+  );
+}
 
 const clientSelect = {
   clientName: true,
@@ -24,6 +47,8 @@ const clientSelect = {
 } as const;
 
 async function main() {
+  dumpMarkdownPages();
+
   const connectionString = process.env.DATABASE_URL;
 
   if (!connectionString) {
