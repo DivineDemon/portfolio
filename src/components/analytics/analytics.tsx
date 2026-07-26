@@ -1,7 +1,5 @@
 "use client";
 
-import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import AnalyticsPrivacyNotice from "@/components/analytics/analytics-privacy-notice";
@@ -24,8 +22,6 @@ function hasAnalyticsPrivacyNotice() {
 const Analytics = () => {
   return (
     <>
-      <VercelAnalytics />
-      <SpeedInsights />
       <WebVitals />
       {isPostHogEnabled() ? (
         <>
