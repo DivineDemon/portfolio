@@ -33,7 +33,9 @@ function readMdx(filePath: string) {
 function compilePages() {
   const pages: Record<string, string> = {};
   for (const file of listMdx(join(contentRoot, "pages"))) {
-    const slug = file.split("/").pop()!.replace(/\.mdx$/, "");
+    const base = file.split("/").pop();
+    if (!base) continue;
+    const slug = base.replace(/\.mdx$/, "");
     pages[slug] = readMdx(file).body;
   }
   return pages;
