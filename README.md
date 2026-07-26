@@ -1,6 +1,6 @@
 # Mushood Hanif — Portfolio
 
-Personal portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16 App Router, a sidebar layout, and a hybrid content model: static markdown for long-form pages, PostgreSQL (via Prisma) for blog posts and case studies.
+Portfolio site for [mushoodhanif.com](https://mushoodhanif.com). Built with Next.js 16 App Router, a sidebar layout, and a hybrid content model: static markdown for long-form pages, PostgreSQL (via Prisma) for blog posts and case studies.
 
 ## Stack
 
