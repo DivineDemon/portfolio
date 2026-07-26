@@ -1,35 +1,30 @@
 import "server-only";
 
 import { cacheLife, cacheTag } from "next/cache";
-import { prisma } from "@/lib/prisma";
-
-function publishedBlogWhere() {
-  return {
-    published: true,
-    OR: [{ publishedAt: null }, { publishedAt: { lte: new Date() } }],
-  };
-}
+import {
+  getCmsBlogPosts,
+  getCmsProjects,
+  getCmsWorkflows,
+  toDate,
+} from "@/lib/data/cms-store";
 
 export async function getSitemapData() {
   "use cache";
   cacheTag("sitemap", "blog", "case-studies");
-  cacheLife("hours");
+  cacheLife("max");
 
-  const [blogPosts, projects, workflows] = await Promise.all([
-    prisma.blog_posts.findMany({
-      where: publishedBlogWhere(),
-      select: { slug: true, updatedAt: true },
-      orderBy: [{ publishedAt: "desc" }],
-    }),
-    prisma.projects.findMany({
-      where: { published: true },
-      select: { slug: true, updatedAt: true },
-    }),
-    prisma.n8n_workflows.findMany({
-      where: { published: true },
-      select: { slug: true, updatedAt: true },
-    }),
-  ]);
-
-  return { blogPosts, projects, workflows };
+  return {
+    blogPosts: getCmsBlogPosts().map((post) => ({
+      slug: post.slug,
+      updatedAt: toDate(post.updatedAt),
+    })),
+    projects: getCmsProjects().map((project) => ({
+      slug: project.slug,
+      updatedAt: toDate(project.updatedAt),
+    })),
+    workflows: getCmsWorkflows().map((workflow) => ({
+      slug: workflow.slug,
+      updatedAt: toDate(workflow.updatedAt),
+    })),
+  };
 }

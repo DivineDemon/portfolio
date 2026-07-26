@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cacheLife, cacheTag } from "next/cache";
-import { prisma } from "@/lib/prisma";
+import { getCmsClients } from "@/lib/data/cms-store";
 
 const EXCLUDED_CLIENT_NAMES = ["farrukh iminov"];
 
@@ -26,24 +26,11 @@ function normalizeContent(content: string): string {
 export async function getTestimonials(): Promise<Testimonial[]> {
   "use cache";
   cacheTag("testimonials");
-  cacheLife("hours");
-
-  const clients = await prisma.clients.findMany({
-    orderBy: [{ featured: "desc" }, { id: "desc" }],
-    select: {
-      id: true,
-      clientName: true,
-      designation: true,
-      company: true,
-      content: true,
-      image: true,
-      featured: true,
-    },
-  });
+  cacheLife("max");
 
   const seenContent = new Set<string>();
 
-  return clients.flatMap((client) => {
+  return getCmsClients().flatMap((client) => {
     if (!client.content?.trim()) {
       return [];
     }
