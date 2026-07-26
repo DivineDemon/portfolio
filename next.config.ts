@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   reactCompiler: true,
   transpilePackages: ["react-tweet"],
+  // OpenNext/esbuild needs workerd builds of pg-cloudflare; NFT otherwise only traces empty.js
+  outputFileTracingIncludes: {
+    "/**": [
+      "./node_modules/pg-cloudflare/dist/**",
+      "./node_modules/pg-cloudflare/esm/**",
+    ],
+  },
   images: {
     remotePatterns: [
       {
