@@ -4,6 +4,9 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-07-26",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "cache": {
+    "enabled": true
+  },
   "minify": true,
   "assets": {
     "directory": ".open-next/assets",
@@ -13,7 +16,13 @@
     "binding": "IMAGES"
   },
   "observability": {
-    "enabled": true
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": true
+    }
   },
   "services": [
     {
