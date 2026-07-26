@@ -3,7 +3,7 @@ export type FaqItem = {
   answer: string;
 };
 
-/** Keep in sync with the FAQ section in docs/content/about.md */
+/** Keep in sync with the FAQ section in content/pages/about.mdx */
 export const ABOUT_FAQ_ITEMS: FaqItem[] = [
   {
     question: "When should a founder hire a fractional CTO?",

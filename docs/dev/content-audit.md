@@ -57,8 +57,8 @@ Scores are 1–5 per dimension. **Overall** is a weighted judgment for prioritiz
 
 | URL | Asset | ICP | Market | Intent | Overall | Action | Notes |
 |-----|-------|-----|--------|--------|---------|--------|-------|
-| `/` | `docs/content/about.md` | 5 | 5 | 4 | **Strong** | **edit** | Outcome-led copy, measured KPIs, fractional CTO line. **Add** 3–5 FAQ block + FAQPage JSON-LD (founder questions: when to hire fractional CTO, build vs buy, AI in production). Links to case studies and contact. |
-| `/skills` | `docs/content/skills.md` | 4 | 5 | 4 | **Strong** | **keep** | Organized by problem type; ties skills to case-study proof. Minor keyword pass only if gap found. Avoid duplicating about KPI block — link instead. |
+| `/` | `content/pages/about.mdx` | 5 | 5 | 4 | **Strong** | **edit** | Outcome-led copy, measured KPIs, fractional CTO line. **Add** 3–5 FAQ block + FAQPage JSON-LD (founder questions: when to hire fractional CTO, build vs buy, AI in production). Links to case studies and contact. |
+| `/skills` | `content/pages/skills.mdx` | 4 | 5 | 4 | **Strong** | **keep** | Organized by problem type; ties skills to case-study proof. Minor keyword pass only if gap found. Avoid duplicating about KPI block — link instead. |
 | `/contact` | `src/app/contact/page.tsx` | 3 | 2 | 3 | **Weak** | **edit** | Generic “tell me about your problem.” Rewrite: who you work with (founders, product leaders), typical problems (RAG, n8n, SaaS scale, fractional CTO), one positioning phrase in metadata. |
 | `/blog` | `src/app/blog/page.tsx` | 2 | 2 | 2 | **Weak** | **edit** | H1/description: “Thoughts on engineering…” — generic, off-positioning. Replace with fractional CTO / production AI / automation keywords per market SEO research. |
 | `/testimonials` | `src/app/testimonials/page.tsx` | 4 | 3 | 3 | **Adequate** | **edit** | Social proof supports trust. Update `description` metadata to positioning phrase; optional intro line tying testimonials to engagement types. |
@@ -106,7 +106,7 @@ Scores are 1–5 per dimension. **Overall** is a weighted judgment for prioritiz
 
 | Item | Where | Priority | Market basis |
 |------|-------|----------|--------------|
-| FAQ block (3–5 Qs) | End of `docs/content/about.md` | High | Founder questions rank (when to hire fractional CTO, build vs buy, production AI readiness) |
+| FAQ block (3–5 Qs) | End of `content/pages/about.mdx` | High | Founder questions rank (when to hire fractional CTO, build vs buy, production AI readiness) |
 | FAQPage JSON-LD | About render path | High | SEO playbook; AI Overview eligibility |
 | Blog index H1 + description | `src/app/blog/page.tsx` | High | Category SEO: fractional CTO, AI automation, production systems |
 | Contact page copy + metadata | `src/app/contact/page.tsx` | High | Buyer research: who you work with, typical problems |
@@ -118,7 +118,7 @@ Scores are 1–5 per dimension. **Overall** is a weighted judgment for prioritiz
 
 ## Edit list (prioritized)
 
-1. **`docs/content/about.md`** — Add FAQ section (3–5 founder questions with concise answers).
+1. **`content/pages/about.mdx`** — Add FAQ section (3–5 founder questions with concise answers).
 2. **`src/app/blog/page.tsx`** — Replace generic H1/subtitle and metadata with positioning keywords.
 3. **`src/app/contact/page.tsx`** — ICP-specific intro + metadata description.
 4. **`stop-prompting-ai-start-building-loops`** — Outcome-led intro, production framing, internal links to Scintia + Zoomlion + contact.
@@ -145,7 +145,7 @@ After unpublish: blog index shows **one** on-theme post until new editorial cont
 ## Keep list (no structural change)
 
 - `/` about body (minus FAQ add)
-- `/skills` (`docs/content/skills.md`)
+- `/skills` (`content/pages/skills.mdx`)
 - Case studies: `scintia`, `ezra-bid-assistant`, `zoomlion-lead-gen`
 - Case study index pages
 - Root SEO defaults (`src/lib/seo/defaults.ts`)

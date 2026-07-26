@@ -1,0 +1,144 @@
+---
+"slug": "scintia"
+"title": "Scintia"
+"headlineResult": "Helped Scintia launch a unified AI voice SaaS — four role-specific portals with live billing and call analytics, shipped in 16 months with a team of 4."
+"industry": "AI Voice Automation / B2B SaaS"
+"role": "Frontend Team Lead"
+"engagementModel": "Ongoing product development"
+"teamSize": 4
+"durationInMonths": 16
+"problem": "Scintia had a working AI voice backend but **no production frontend** operators could use. Business teams, sales reps, developers, and QA each needed different workflows — agent configuration, call monitoring, subscription management, support tickets — but everything lived in fragmented tools and ad-hoc dashboards. Without a unified product surface, the company could not onboard customers, bill subscriptions, or give operators day-to-day visibility into call operations."
+"situation": "Scintia Callflow is a B2B SaaS company building **intelligent voice agents** for business operations. When I joined as Frontend Team Lead, the backend and AI models were progressing, but there was no cohesive product experience — each stakeholder group was effectively waiting on a different interface. I led a team of four over **16 months of ongoing product development** to ship four role-specific portals on a shared architecture, with Stripe billing, Twilio/Vapi telephony, and bilingual (EN/FR) support."
+"approach": "Rather than building one monolithic dashboard that tried to serve everyone, I separated the experience by role — business operators, sales teams, developers, and testing staff each get a portal built for their workflow, while all four connect to a single backend API. Shared patterns for auth (including OTP flows), billing, analytics, support tickets, and knowledge management keep the product feeling like one platform, not four disconnected apps. This let Scintia onboard different user types in parallel without blocking launches on a single UI."
+"architecture": "**Frontend ecosystem** — Four React + TypeScript + Vite SPAs (developer, business, sales, test), each using Redux Toolkit + RTK Query for state/API, React Router for navigation, shared UI patterns with Tailwind/Radix, and environment-driven API base URLs."
+"execution": "**Delivered capabilities**
+
+
+  - Role-based authentication (including OTP flows)
+
+  - Dashboard analytics
+
+  - AI agent configuration
+
+  - Call-log workflows
+
+  - Product/knowledge modules
+
+  - Support ticketing
+
+  - Notification systems
+
+  - Plan/payment management"
+"whatMadeThisHard": "**Four user types, one product** — Business operators, sales reps, developers, and QA teams had fundamentally different workflows. Building four separate products that felt like one was the design problem, not just the engineering problem.
+
+
+  **Billing and telephony in production** — Subscription management (Stripe) and live call infrastructure (Twilio, Vapi) had to work reliably in customer-facing portals, not just in demos.
+
+
+  **Bilingual operations** — EN and FR locales across legal notices, operational copy, and user-facing flows added scope beyond a single-language MVP.
+
+
+  **Sustained delivery over 16 months** — Ongoing product development meant balancing new features, regression risk across four panels, and evolving backend API contracts without breaking live users."
+"whatWeBuilt": "A modular multi-panel SaaS frontend — four React SPAs sharing Redux Toolkit patterns, RTK Query for API state, and environment-driven configuration. Each portal covers role-specific workflows (agent setup, call analytics, developer tools, test operations) while Stripe billing, support ticketing, and knowledge modules work consistently across all four."
+"results": "- **Zero to four production portals in 16 months** — Scintia went from no working frontend to business, sales, developer, and testing portals serving live operators.
+
+  - **Integrated billing and telephony** — Stripe subscription management and Twilio/Vapi call infrastructure embedded in customer-facing workflows, not bolted on later.
+
+  - **Unified support and knowledge** — Ticketing and document management accessible across panels, reducing context-switching for operations staff.
+
+  - **Team of 4, sustained engagement** — Delivered as Frontend Team Lead across 16 months of ongoing product development, not a one-off build handoff.
+
+  - **Live product at scintia.ai** — Production SaaS with role-based auth, call analytics, and agent configuration used by Scintia's customers."
+"metrics":
+  "portals": 4
+  "languages":
+    - "EN"
+    - "FR"
+  "team size": 4
+  "supportedRoles":
+    - "developer"
+    - "business"
+    - "sales"
+    - "manager"
+    - "test"
+  "telephonyStack":
+    - "Twilio"
+    - "Vapi"
+  "key integrations":
+    - "Stripe"
+    - "Twilio"
+    - "Vapi"
+  "billingIntegration": "Stripe"
+  "engagement duration": "16 months"
+"techStack":
+  - "React 19"
+  - "TypeScript"
+  - "Vite"
+  - "Redux Toolkit"
+  - "RTK Query"
+  - "React Router"
+  - "Tailwind CSS"
+  - "Radix UI"
+  - "React Hook Form"
+  - "Zod"
+  - "Recharts"
+  - "Biome"
+"infrastructure":
+  - "Hostinger-hosted web properties (per legal notice)"
+  - "Environment-configured REST backend (VITE_BASE_API_URL)"
+  - "SPA deployment per panel"
+  - "Client-side persisted session/state via redux-persist"
+"integrations":
+  - "Stripe"
+  - "Twilio"
+  - "Vapi"
+  - "Mapbox"
+  - "IPGeolocation API"
+  - "ImgBB"
+  - "Documenso"
+"coverImage": "https://i.ibb.co/6RDZjn6b/a41a72f9e80e.png"
+"galleryImages":
+  - "https://i.ibb.co/ch737RC3/b2df7b8c2744.png"
+  - "https://i.ibb.co/GQcRQf5t/7b91b45612ff.png"
+  - "https://i.ibb.co/Qj7CMdZJ/aa60f952629c.png"
+  - "https://i.ibb.co/chTQZgxc/3f823f201c70.png"
+"demoUrl": "https://scintia.ai"
+"repositoryUrl": "https://github.com/mohmdqasim/scintia-landing-new"
+"seoTitle": "Scintia Callflow | Multi-Panel AI Voice Agent SaaS"
+"seoDescription": "Led frontend for Scintia Callflow — four production AI voice portals with Stripe billing and Twilio telephony, shipped in 16 months with a team of 4."
+"keywords":
+  - "AI voice agents"
+  - "call automation"
+  - "business panel"
+  - "sales panel"
+  - "developer panel"
+  - "SaaS dashboard"
+  - "Twilio integration"
+  - "Stripe billing"
+  - "call analytics"
+  - "Scintia Callflow"
+"featured": true
+"published": true
+"createdAt": "2026-02-11T14:45:18.736Z"
+"updatedAt": "2026-06-26T01:49:19.227Z"
+"businessOutcome": "Scintia's product team could focus on AI model quality and go-to-market instead of fighting frontend fragmentation. Every operator type had a portal built for their workflow — and the CEO could point prospects at a polished, scalable product, not a backend demo."
+"beforeAfter": "**Before:** Scintia had AI voice capability but no unified product surface — operators, sales, and developers each lacked dedicated tools to configure agents, monitor calls, or manage subscriptions.
+
+
+  **After:** Four role-specific portals on a shared architecture, with live Stripe billing, Twilio telephony, call analytics, and support workflows — enabling Scintia to onboard and bill customers through a single SaaS product."
+"engagementType": "client-work"
+"cardOutcome": "Zero to four production portals in 16 months — unified AI voice SaaS with Stripe billing and Twilio telephony"
+"displayOrder": 3
+"isLive": true
+"galleryCaptions": []
+"client":
+  "clientName": "Azmi Fekiri"
+  "designation": "CEO"
+  "company": "Scintia Callflow"
+  "content": "Bringing him on board was one of the most impactful decisions we made at Scintia Callflow and Scintia AI. His ownership, technical depth, and design sensibility made him feel less like a contractor and more like a founding team member. We didn’t just gain a frontend developer — we gained product leadership."
+  "feedback": null
+  "image": "https://i.ibb.co/GqkFLBM/e30ca50d6f42.jpg"
+  "logo": null
+  "companyUrl": null
+---
+

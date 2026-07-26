@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 /secrets/
 
 # vercel
@@ -47,7 +48,3 @@ cloudflare-env.d.ts
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-/src/generated
-/generated
-/src/generated/prisma

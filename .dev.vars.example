@@ -1,1 +1,7 @@
+# Used by `wrangler dev` / OpenNext local preview
 NEXTJS_ENV=development
+
+EMAILJS_SERVICE_ID=
+EMAILJS_PUBLIC_KEY=
+EMAILJS_TEMPLATE_ID=
+EMAILJS_PRIVATE_KEY=
