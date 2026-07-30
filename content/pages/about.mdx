@@ -1,143 +1,48 @@
 ---
-"title": "about"
+title: "About Ashwin Gupta"
+description: "AI Systems Engineer specializing in inference routing, concurrency architecture, and physics-informed ML."
+role: "AI Engineer"
+company: "SkanAI"
+location: "Bangalore, India"
+status: "Optimising: Residuals • Not: Roles"
+email: "ashwingupta3012@gmail.com"
+github: "https://github.com/ughshwin"
+linkedin: "https://www.linkedin.com/in/ashwingupta3012/"
+tagline: "Not what a model outputs - how the system decides, executes, and holds under load."
+quote: "Honest where it matters. Available when it's hard."
 ---
 
-# I build the systems your business runs on — not just the screens people click.
+# Inference is easy. Everything around it isn't.
 
-Most engineers can ship a feature. Fewer can sit across the table from a founder, translate
-a vague business problem into a technical roadmap, and then personally build, deploy, and
-own the result. That's the gap I work in.
+Mechanical engineering by training - which meant learning to ask why a system fails before asking how to build it. AI hit in second year like a realisation, not a subject: software that understood language was a new class of thing, and I knew it would matter before anyone around me thought it would. The IISc ML lead role confirmed the direction - physics-constrained optimisation on eVTOL design under Dr. Harursampath, five projects in eight months, at the edge of what was understood.
 
-I'm Mushood Hanif, a Senior Fullstack & AI Systems Engineer based in Lahore, Pakistan,
-working with founders, business owners, and product leaders across FinTech, HealthTech,
-Real Estate, and B2B SaaS. Over the last 5+ years I've led engineering teams of up to 10,
-shipped production platforms across three continents, and built the AI and automation
-pipelines that let lean teams operate like much bigger ones.
+Production changed the picture fast. At Gida and then Coforge, the same pattern emerged: the GenAI core - prompts, basic RAG, API calls - is learnable in three months. Everyone builds it. The real gap is what surrounds the model: the routing logic, the concurrency architecture, the observability that tells you what actually broke and when. That's the part nobody wants to own. That's where I went.
 
-I don't sell tools. I sell outcomes — fewer support tickets, faster load times, shorter
-sales cycles, and systems that don't fall over the day they matter most.
+At Coforge on the HSBC Conversational Analytics project, I was the youngest on the team and three months in when I became the de facto integration lead - having solved in one week a problem another technology partner hadn't resolved in eight months at the same client. GIL'd threading replaced with CPU-pinned parallel instances, asyncio + uvloop across the full pipeline, cross-stack observability built before the second incident happened. 7× session capacity. $1.3M annualised savings. MTTR from ~1hr to ~10mins.
 
----
+## Architecture Pillars
 
-## What I Actually Do
+### 1. Inference as a System
+Most teams ship inference as a function call. The real questions - p95 latency, 10× load, what happens when a backend goes down - are architecture questions. I answer them before the first model goes live.
 
-**AI Systems & RAG Architecture**
-I design and ship Retrieval-Augmented Generation systems — Naive, Conversational, and
-Agentic — using pgvector, FastAPI, and modern LLM APIs (OpenAI custom tools & agents,
-Gemini Live, LangChain, Ollama). If your team is drowning in institutional knowledge that
-nobody can search fast enough, this is the fix.
+### 2. Execution Under Constraints
+Systems that perform in demos often don't survive production. Real constraints - latency budgets, VRAM ceilings, cost per token - are known at design time, not discovered at launch. I build the constraint model first.
 
-**Fullstack Product Engineering**
-React, Next.js, TypeScript end-to-end. I build the kind of product that survives contact
-with real users — fast, type-safe, and boring in all the right ways (no 2am outages).
+### 3. Physics-Informed Scientific ML
+Data-driven physics models aren't data problems - they're structure problems. Ignoring governing equations forces the model to rediscover physics from data it may never have enough of. Embedding PDEs into the objective is what makes sparse data sufficient.
 
-**Automation & Workflow Systems**
-Verified n8n Creator. I've built automation pipelines with 60+ nodes that quietly triple a
-sales team's qualified lead flow without anyone touching a spreadsheet.
+## What I Don't Do
+- I don't ship AI wrappers dressed as products. Core API calls with a nice UI aren't systems.
+- I don't build for its own sake. The system has to earn what it costs to run.
+- I don't take off-the-shelf work. If the implementation is a Google search away, I'm not the right person.
 
-**Fractional CTO / Technical Advisory**
-For founders who need a technical co-pilot but aren't ready for a full-time hire, I advise
-on architecture, hiring, and AI integration strategy.
-
----
-
-## Proof, Not Promises
-
-Every claim below is measured, not estimated:
-
-- **Cut physician lookup time by 60%** across 100,000+ patients by architecting an
-  Agentic RAG pipeline for a HealthTech platform.
-- **Reduced deploy time from 2 hours to under 12 minutes** with a zero-downtime
-  CI/CD pipeline on AWS.
-- **Tripled qualified B2B lead throughput** with a 68-node n8n automation system for a
-  client in Oman.
-- **Grew inbound real-estate leads 40%+ in 90 days** with an SEO-optimized, SSR
-  Next.js platform serving 1,000+ listings.
-- **Achieved 99.9% alert delivery reliability** on a Redis-backed, multi-tenant SaaS
-  monitoring product built from scratch.
-- **Led 10 engineers across 7 concurrent client projects** with 98% client retention.
-
----
-
-## Who I Work Best With
-
-I do my best work with people who already respect execution:
-
-- **Founders** who need a technical partner, not just a contractor
-- **Business owners** who want AI and automation to *reduce* headcount pressure, not add
-  complexity
-- **Product leaders** who need a senior engineer who can own a system end-to-end —
-  architecture through deployment
-- **Teams** that measure success in business outcomes, not story points
-
-If you need someone to "just write some code," I'm probably not your best fit. If you need
-someone who treats your problem like their own business, let's talk.
-
----
-
-## How I Think About Problems
-
-Technology is never the actual goal — it's the fastest available path to a business
-result. That's why every project I take on starts with a question most engineers skip:
-*what does "solved" actually look like, in numbers, for the business?*
-
-Then I pick the stack, not the other way around. TypeScript, Python, RAG pipelines, n8n,
-AWS — these are tools I'm fluent in, but the fluency only matters in service of an outcome
-you can measure.
-
----
-
-## Beyond the Client Work
-
-- **Verified n8n Creator** — production automation workflows used by teams globally
-- **GitHub Arctic Code Vault Contributor** — open-source work archived for long-term
-  digital preservation
-- Advisor to founders and executives on SaaS architecture and AI strategy
-
----
-
-## Let's Build Something That Actually Works
-
-If you have a real problem — not a hypothetical one — and you want it solved by someone
-who'll own it like a founder would, [get in touch](/contact) or explore
-[selected projects](/case-studies).
-
----
-
-## Frequently Asked Questions
-
-### When should a founder hire a fractional CTO?
-
-When you need senior technical leadership — architecture decisions, AI integration strategy,
-hiring bar-setting, or production reliability — but a full-time CTO isn't justified yet.
-Typical triggers: pre-Series A with a growing engineering team, a critical platform rewrite,
-or shipping AI/automation into production without burning runway on the wrong bets.
-
-### Should we build custom AI and automation or buy off-the-shelf tools?
-
-Buy when a mature product solves 80% of the problem with acceptable integration cost. Build
-when your workflow, data, or compliance requirements are specific enough that glue-code and
-workarounds cost more than ownership — common with RAG over proprietary knowledge,
-multi-step sales ops, and regulated HealthTech or FinTech pipelines. I help founders run that
-build-vs-buy analysis before anyone writes code.
-
-### What does production-ready AI actually look like?
-
-Measurable outcomes, not demos: retrieval quality you can audit, agent task success rates,
-human-in-the-loop fallbacks, cost per request, and monitoring when models drift. Production
-AI means the system still works on Tuesday when traffic spikes — not a prompt that looked
-good in a slide deck.
-
-### What kinds of problems do you take on?
-
-RAG and agentic systems over messy institutional knowledge, fullstack SaaS platforms that
-need to survive real users, n8n and workflow automation that moves revenue metrics, and
-fractional CTO advisory for founders who need a technical co-pilot. If the success metric is
-a business number — fewer tickets, faster deploys, more qualified leads — we're aligned.
-
-### How do engagements typically work?
-
-We start by defining what "solved" looks like in numbers, then I own architecture through
-deployment — hands-on building, not slide-deck consulting. Engagements range from focused
-build sprints to ongoing fractional CTO partnerships. If you have a real problem and want
-someone who treats it like their own business, [get in touch](/contact).
+## The Gold and the Glory (Accolades)
+- **Guinness World Record** (Jul 2025): Command Centre Ops • Most Participants - Agentic AI Day 2025 (Google Cloud | Hack2Skill)
+- **$1.3M+ Annualised Savings** (Jan 2026): HSBC • Coforge Conversational Analytics Integration
+- **Best Team Award** (Nov 2025): HSBC Account • Coforge
+- **Pat on Back - Think Customer Award** (Dec 2024): Individual Delivery Excellence • Coforge
+- **Keep It Up Award** (Jun 2026): Ownership of Professional Growth & Skill Visibility • Coforge
+- **Java Spring AI Trainer** (Dec '25 – May '26): 130+ Participants • 81% voted preferred trainer • NPS +50
+- **Best Outgoing Project** (Aug 2024): Mechanical Engineering • BMSCE 2023
+- **Augment.AI Founder & Mentor** (Jan 2022): BMSCE's AI Club
+- **Kaggle Dataset Creator**: 42.8K Downloads • 202K Views (Human Faces Kaggle Dataset)

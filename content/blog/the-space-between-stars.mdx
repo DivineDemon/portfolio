@@ -1,0 +1,45 @@
+---
+title: "The Space Between Stars: Physics-Informed ML"
+description: "How embedding differential equations directly into objective functions allows neural networks to generalize in sparse-data physical domains."
+date: "2026-05-20"
+author: "Ashwin Gupta"
+tags: ["PINNs", "Machine Learning", "Physics", "PyTorch"]
+---
+
+# The Space Between Stars: Physics-Informed ML
+
+When training deep learning models on physical phenomena — fluid dynamics, structural stress, aerodynamic drag — data is notoriously scarce and expensive to acquire. Sensor placement is limited, wind tunnel hours are costly, and simulations take days.
+
+Purely data-driven models struggle when forced to extrapolate beyond their training distribution. They hallucinate non-physical behavior, breaking conservation of mass or energy.
+
+## Enter Physics-Informed Neural Networks (PINNs)
+
+Physics-Informed Neural Networks solve sparse data challenges by constraining the network's hypothesis space using known governing Partial Differential Equations (PDEs).
+
+Instead of treating the loss function purely as a mean-squared error between predictions and ground truth labels:
+
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{data}} + \lambda \mathcal{L}_{\text{physics}}$$
+
+The physics loss $\mathcal{L}_{\text{physics}}$ measures how severely the neural network violates the governing PDE evaluated at residual collocation points using automatic differentiation (Autograd).
+
+```python
+import torch
+
+def physics_loss(model, x_collocation):
+    x_collocation.requires_grad_(True)
+    u = model(x_collocation)
+    
+    # Compute derivative du/dx via autograd
+    u_x = torch.autograd.grad(u, x_collocation, torch.ones_like(u), create_graph=True)[0]
+    u_xx = torch.autograd.grad(u_x, x_collocation, torch.ones_like(u_x), create_graph=True)[0]
+    
+    # Governing 1D heat equation residual: u_t - alpha * u_xx = 0
+    residual = u_x - 0.01 * u_xx
+    return torch.mean(residual ** 2)
+```
+
+## Real-world eVTOL Structural Optimization
+
+During my research at the Indian Institute of Science (IISc) under Dr. Harursampath, we applied PINNs to structural blade optimization for electric vertical take-off and landing (eVTOL) aircraft.
+
+By embedding beam theory boundary constraints directly into PyTorch loss objectives, we achieved accurate stress prediction with **90% fewer experimental data points** than traditional surrogate models.

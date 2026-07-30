@@ -1,0 +1,27 @@
+---
+title: "HSBC Conversational Analytics Voice Engine"
+description: "High-concurrency async voice analytics pipeline processing real-time audio streams with $1.3M+ annual savings."
+client: "HSBC / Coforge"
+category: "AI Systems Engineering"
+tags: ["Python", "AsyncIO", "uvloop", "Speech-to-Text", "Observability"]
+featured: true
+order: 1
+---
+
+# HSBC Conversational Analytics Engine
+
+At Coforge, I served as de facto integration lead on the HSBC Conversational Analytics initiative. The platform processes high-volume multi-channel voice calls for compliance monitoring, sentiment extraction, and automated intent tagging.
+
+## The Challenge
+The existing architecture suffered from thread contention and Python GIL bottlenecks under high call volumes. Concurrent audio streams caused latency spikes exceeding SLAs, and an external integration partner had been unable to resolve the throughput issue for 8 months.
+
+## The Solution
+- **CPU-Pinned Workers**: Replaced multi-threaded GIL bottlenecks with process-isolated CPU-pinned worker processes.
+- **Async Pipeline**: Re-architected the stream ingestion layer using `asyncio` and `uvloop`.
+- **Distributed Observability**: Built end-to-end tracing and custom metrics across audio ingestion, speech recognition, and intent extraction stages.
+
+## Results
+- **7x Increase in Session Capacity**
+- **$1.3M+ Annualised Operational Savings**
+- **MTTR reduced from 60 minutes to 10 minutes**
+- **Best Team Award (Nov 2025) & Pat on Back Award (Dec 2024)**
