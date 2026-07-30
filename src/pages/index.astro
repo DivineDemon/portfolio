@@ -1,17 +1,151 @@
 ---
+import { ArrowUpRight } from "lucide-react";
+import Markdown from "react-markdown";
+import Layout from "@/components/layout/layout.astro";
+import BlurFade from "@/components/magicui/blur-fade";
+import BlurFadeText from "@/components/magicui/blur-fade-text";
+import ContactSection from "@/components/section/contact-section";
+import HackathonsSection from "@/components/section/hackathons-section";
+import ProjectsSection from "@/components/section/projects-section";
+import SkillsSection from "@/components/section/skills-section";
+import WorkSection from "@/components/section/work-section";
+import { CompositeAvatar } from "@/components/ui/avatar";
+import { DATA } from "@/data/resume";
 
+const BLUR_FADE_DELAY = 0.04;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={`${DATA.name} | Portfolio`} description={DATA.description}>
+	<div class="min-h-screen flex flex-col gap-14 relative">
+		<section id="hero">
+			<div class="mx-auto w-full max-w-2xl space-y-8">
+				<div class="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
+					<div class="gap-2 flex flex-col order-2 md:order-1">
+						<BlurFadeText
+							client:load
+							delay={BLUR_FADE_DELAY}
+							className="text-3xl font-semibold tracking-tighter sm:text-4xl lg:text-5xl"
+							yOffset={8}
+							text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
+						/>
+						<BlurFadeText
+							client:load
+							className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl"
+							delay={BLUR_FADE_DELAY}
+							text={DATA.description}
+						/>
+					</div>
+					<BlurFade client:load delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
+						<CompositeAvatar
+							client:load
+							className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted"
+							src={DATA.avatarUrl}
+							fallback={DATA.initials}
+							alt={DATA.name}
+						/>
+					</BlurFade>
+				</div>
+			</div>
+		</section>
+
+		<section id="about">
+			<div class="flex min-h-0 flex-col gap-y-4">
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 3}>
+					<h2 class="text-xl font-bold">About</h2>
+				</BlurFade>
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 4}>
+					<div class="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+						<Markdown client:load children={DATA.summary} />
+					</div>
+				</BlurFade>
+			</div>
+		</section>
+
+		<section id="work">
+			<div class="flex min-h-0 flex-col gap-y-6">
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 5}>
+					<h2 class="text-xl font-bold">Work Experience</h2>
+				</BlurFade>
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 6}>
+					<WorkSection client:load />
+				</BlurFade>
+			</div>
+		</section>
+
+		<section id="education">
+			<div class="flex min-h-0 flex-col gap-y-6">
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 7}>
+					<h2 class="text-xl font-bold">Education</h2>
+				</BlurFade>
+				<div class="flex flex-col gap-8">
+					{DATA.education.map((education, index) => (
+						<BlurFade
+							client:load
+							delay={BLUR_FADE_DELAY * 8 + index * 0.05}
+						>
+							<a
+								href={education.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="flex items-center gap-x-3 justify-between group"
+							>
+								<div class="flex items-center gap-x-3 flex-1 min-w-0">
+									{education.logoUrl ? (
+										<img
+											src={education.logoUrl}
+											alt={education.school}
+											class="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
+										/>
+									) : (
+										<div class="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
+									)}
+									<div class="flex-1 min-w-0 flex flex-col gap-0.5">
+										<div class="font-semibold leading-none flex items-center gap-2">
+											{education.school}
+											<ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" aria-hidden />
+										</div>
+										<div class="font-sans text-sm text-muted-foreground">
+											{education.degree}
+										</div>
+									</div>
+								</div>
+								<div class="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
+									<span>
+										{education.start} - {education.end}
+									</span>
+								</div>
+							</a>
+						</BlurFade>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section id="skills">
+			<div class="flex min-h-0 flex-col gap-y-4">
+				<BlurFade client:load delay={BLUR_FADE_DELAY * 9}>
+					<h2 class="text-xl font-bold">Skills</h2>
+				</BlurFade>
+				<SkillsSection client:load />
+			</div>
+		</section>
+
+		<section id="projects">
+			<BlurFade client:load delay={BLUR_FADE_DELAY * 11}>
+				<ProjectsSection client:load />
+			</BlurFade>
+		</section>
+
+		<section id="hackathons">
+			<BlurFade client:load delay={BLUR_FADE_DELAY * 13}>
+				<HackathonsSection client:load />
+			</BlurFade>
+		</section>
+
+		<section id="contact">
+			<BlurFade client:load delay={BLUR_FADE_DELAY * 16}>
+				<ContactSection client:load />
+			</BlurFade>
+		</section>
+	</div>
+</Layout>
