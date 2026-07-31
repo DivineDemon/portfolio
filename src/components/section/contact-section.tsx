@@ -21,7 +21,7 @@ export default function ContactSection() {
 		message: string;
 	}>({ type: null, message: "" });
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!formRef.current) return;
 
