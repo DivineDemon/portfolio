@@ -1,3 +1,4 @@
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,7 +11,9 @@ export default defineConfig({
 	},
 
 	markdown: {
-		remarkPlugins: [remarkCodeMeta],
+		processor: unified({
+			remarkPlugins: [remarkCodeMeta],
+		}),
 	},
 
 	integrations: [react(), mdx()],

@@ -104,6 +104,7 @@ export const DATA = {
 		{ href: "/", icon: HomeIcon, label: "Home" },
 		{ href: "/#services", icon: Bot, label: "Services" },
 		{ href: "/#case-studies", icon: Zap, label: "Case Studies" },
+		{ href: "/blog", icon: NotebookIcon, label: "Blog" },
 		{ href: "/#contact", icon: NotebookIcon, label: "Book Audit" },
 	],
 
@@ -145,7 +146,7 @@ export const DATA = {
 			badges: ["Enterprise AI Architecture"],
 			location: "Lahore, Pakistan",
 			title: "Senior AI Engineer",
-			logoUrl: "",
+			logoUrl: "/logos/afiniti.svg",
 			start: "Sep 2025",
 			end: "May 2026",
 			description:
@@ -157,7 +158,7 @@ export const DATA = {
 			badges: ["MLOps & High Throughput"],
 			location: "Lahore, Pakistan",
 			title: "AI Engineer",
-			logoUrl: "",
+			logoUrl: "/logos/afiniti.svg",
 			start: "Jul 2023",
 			end: "Aug 2025",
 			description:
@@ -169,7 +170,7 @@ export const DATA = {
 			badges: ["Bilingual NLP & RAG"],
 			location: "Lahore, Pakistan",
 			title: "Machine Learning Engineer",
-			logoUrl: "/company-logos/confiz.webp",
+			logoUrl: "/logos/confiz.png",
 			start: "Apr 2022",
 			end: "Jun 2023",
 			description:
@@ -181,7 +182,7 @@ export const DATA = {
 			badges: ["Active Learning"],
 			location: "Lahore, Pakistan",
 			title: "Junior Machine Learning Engineer",
-			logoUrl: "/company-logos/confiz.webp",
+			logoUrl: "/logos/confiz.png",
 			start: "Nov 2019",
 			end: "Mar 2022",
 			description:
@@ -194,7 +195,7 @@ export const DATA = {
 			school: "GIFT University",
 			href: "https://www.gift.edu.pk",
 			degree: "BS, Software Engineering (Hons.) — CGPA 3.0/4.0",
-			logoUrl: "",
+			logoUrl: "/logos/gift-university.ico",
 			start: "2014",
 			end: "2019",
 		},
@@ -202,13 +203,27 @@ export const DATA = {
 
 	projects: [
 		{
+			id: "adcp",
 			title: "Agentic Document Compliance Pipeline (ADCP)",
-			href: "#contact",
+			href: "https://github.com/DivineDemon/adcp",
+			githubUrl: "https://github.com/DivineDemon/adcp",
+			websiteUrl: "https://mushoodhanif.com/#contact",
 			dates: "2025 - 2026",
 			active: true,
 			impact: "92% Processing Time Reduction | $1.3M+ Annual Savings",
 			description:
 				"Enterprise 6-agent LangGraph orchestration pipeline for autonomous document extraction, regulatory compliance verification, citation grounding, and HITL review. Processes 1,000+ weekly logistics documents with zero unsupervised compliance failures.",
+			problem:
+				"Enterprise logistics client faced 3-day document processing backlogs and an 11% hallucination rate from third-party vendor OCR calls, resulting in compliance risks and $1.3M+ in annual overhead.",
+			architecture:
+				"6-Agent LangGraph orchestration architecture: Intake Agent → QLoRA Fine-Tuned Extraction Agent → Citation Grounding Verifier Agent → Compliance Engine → Confidence Router → Human-in-the-Loop Gate. Integrated via custom Model Context Protocol (MCP) exposing 9 enterprise APIs.",
+			keyFeatures: [
+				"Sub-4-Hour Processing (reduced from 3 days, ~92% faster)",
+				"Extraction Accuracy raised from 81% to 96.1% F1 on single A100 GPU",
+				"Hallucination Rate slashed from 11.0% to <1.8% via Citation Grounding",
+				"MCP Tool Routing Layer for tariff lookups, HS code validation, and Incoterms engine",
+				"Dynamic GPU request batching scheduler cutting idle time by 35%",
+			],
 			technologies: [
 				"Python",
 				"LangGraph",
@@ -218,25 +233,29 @@ export const DATA = {
 				"FastAPI",
 				"Docker",
 			],
-			links: [
-				{
-					type: "Case Study",
-					href: "#contact",
-					icon: <Icons.globe className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 		{
+			id: "rtfsp",
 			title: "Real-Time Streaming Fraud Scoring Engine (RTFSP)",
-			href: "#contact",
+			href: "https://github.com/DivineDemon/rtfsp",
+			githubUrl: "https://github.com/DivineDemon/rtfsp",
+			websiteUrl: "https://mushoodhanif.com/#contact",
 			dates: "2024 - 2025",
 			active: true,
 			impact: "1.2M+ Daily Transactions | <180ms p95 Latency",
 			description:
 				"High-throughput, low-latency streaming fraud detection system combining gradient-boosted trees, real-time Redis sliding window feature stores, and automated population drift monitoring. Reduced false alerts from 14% to 3.5%.",
+			problem:
+				"Legacy batch fraud scoring suffered 2.1-second latencies and a 14% false-alert rate across 1.2 million daily financial transactions, incurring huge operational review overhead.",
+			architecture:
+				"Async FastAPI streaming server with PyTorch dynamic tensor batching, Redis sub-5ms sliding-window feature store, LightGBM primary classifier, and secondary Random Forest ensemble for ambiguous score bands [0.45, 0.80]. Automated Population Stability Index (PSI) drift monitoring triggering weekly retraining.",
+			keyFeatures: [
+				"Sub-180ms p95 Latency (92% reduction from 2.1s batch pipeline)",
+				"64% Compute Cost Savings ($1,332/mo savings per 1M daily requests)",
+				"False Alerts Slashed from 14.0% to 3.5% while raising recall by +22%",
+				"Canary Deployment Framework cutting MTTR from 50m to <8m",
+				"Automated PSI Drift Detection triggering retraining when PSI > 0.25",
+			],
 			technologies: [
 				"Python",
 				"FastAPI",
@@ -246,25 +265,28 @@ export const DATA = {
 				"Azure AKS",
 				"Docker",
 			],
-			links: [
-				{
-					type: "Case Study",
-					href: "#contact",
-					icon: <Icons.globe className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 		{
+			id: "oplftsf",
 			title: "On-Prem LLM Fine-Tuning & Serving Framework (OPLFTSF)",
-			href: "#contact",
+			href: "https://github.com/DivineDemon/oplftsf",
+			githubUrl: "https://github.com/DivineDemon/oplftsf",
+			websiteUrl: "https://mushoodhanif.com/#contact",
 			dates: "2025",
 			active: true,
 			impact: "Deployment Time 6 Wks → 9 Days | 45% GPU Memory Savings",
 			description:
 				"Enterprise-grade framework for on-premise QLoRA fine-tuning and vLLM serving with dynamic 4-bit adapter swapping over a shared base model, ensuring complete data residency and privacy.",
+			problem:
+				"Internal product teams spent 6+ weeks setting up custom LLM deployments with massive GPU memory duplication, violating strict on-premise data residency rules.",
+			architecture:
+				"Centralized QLoRA fine-tuning pipeline (NF4 4-bit quantization) paired with high-performance vLLM serving. Dynamically swaps LoRA adapters over a shared 4-bit base model (Meta-Llama-3-8B-Instruct) using in-memory LRU caching.",
+			keyFeatures: [
+				"Model-to-Production Time Slashed from 6 weeks to 9 days (~78% faster)",
+				"45% GPU Memory Footprint Reduction via dynamic adapter swapping",
+				"Self-Serve CLI for internal engineering pods",
+				"Strict On-Premise Zero-Data-Retention Data Sovereignty Compliance",
+			],
 			technologies: [
 				"Python",
 				"QLoRA (NF4)",
@@ -274,25 +296,28 @@ export const DATA = {
 				"PyTorch",
 				"Docker",
 			],
-			links: [
-				{
-					type: "Case Study",
-					href: "#contact",
-					icon: <Icons.globe className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 		{
+			id: "haga",
 			title: "Haga Physical AI & Robotics Verification Suite",
 			href: "https://haga.mushoodhanif.com",
+			githubUrl: "https://github.com/DivineDemon/haga-core",
+			websiteUrl: "https://haga.mushoodhanif.com",
 			dates: "2025 - Present",
 			active: true,
 			impact: "Independent Trust & Physics Violation Verification Layer",
 			description:
 				"Core benchmark engine for robot learning policies and generative world models. Features mass/friction degradation stress curves in MuJoCo/MJX and automated physics violation detection across video data.",
+			problem:
+				"Generative world models and robotics policies suffer from unverified physics hallucinations (hovering, teleportation, interpenetration) that break physical AI stress tests in production environments.",
+			architecture:
+				"Python 3.12 core engine running MuJoCo/MJX parallel physics degradation simulation, CoTracker video motion analysis, CogVideoX consistency verifier, and Next.js public evidence browser.",
+			keyFeatures: [
+				"Pillar 1: Mass & Friction Policy Stress Curves on MuJoCo / Robosuite",
+				"Pillar 2: Automated Physics Violation Detector (Teleportation, Interpenetration)",
+				"100% Precision/Recall on Synthetic Physics Violations",
+				"Public Benchmarks & Private Investor Data Room",
+			],
 			technologies: [
 				"Python 3.12",
 				"MuJoCo",
@@ -303,25 +328,28 @@ export const DATA = {
 				"CogVideoX",
 				"Next.js",
 			],
-			links: [
-				{
-					type: "Live Platform",
-					href: "https://haga.mushoodhanif.com",
-					icon: <Icons.globe className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 		{
+			id: "brsc",
 			title: "Bilingual Enterprise RAG Support System (BRSC)",
-			href: "#contact",
+			href: "https://github.com/DivineDemon/brsc",
+			githubUrl: "https://github.com/DivineDemon/brsc",
+			websiteUrl: "https://mushoodhanif.com/#contact",
 			dates: "2022 - 2023",
 			active: true,
 			impact: "40,000+ Monthly Chats | 78% Ticket Resolution Acceleration",
 			description:
 				"Production RAG assistant for bilingual (Urdu & English) enterprise support. Features sub-60ms FAISS HNSW vector search, FP32 to INT8 quantization, and dual-threshold routing that cut hallucinations by 80%.",
+			problem:
+				"Customer support teams faced 42-minute average ticket resolution times across 40,000+ monthly bilingual conversations with heavy manual QA logging overhead.",
+			architecture:
+				"FastAPI + Celery async processing pipeline, paraphrase-multilingual embedding model quantized from FP32 to INT8 via ONNX, FAISS HNSW vector search index (sub-60ms O(log N) retrieval), and confidence-based escalation gates.",
+			keyFeatures: [
+				"Ticket Resolution Accelerated from 42 to 9 minutes (78% reduction)",
+				"Sustains 95+ req/s at p95 latency <400ms",
+				"Containment Rate raised from 48% to 71%",
+				"75% Memory Reduction via ONNX INT8 Quantization (470MB to 117MB)",
+			],
 			technologies: [
 				"FastAPI",
 				"Celery",
@@ -330,25 +358,28 @@ export const DATA = {
 				"ONNX Quantization",
 				"Docker",
 			],
-			links: [
-				{
-					type: "Case Study",
-					href: "#contact",
-					icon: <Icons.globe className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 		{
+			id: "ezra-bid-assistant",
 			title: "Ezra Bid Assistant & Freelance Automation Suite",
-			href: "https://github.com/DivineDemon/ezra-bid-assistant",
+			href: "https://eba.ezraglobal.co.za",
+			githubUrl: "https://github.com/DivineDemon/ezra-bid-assistant",
+			websiteUrl: "https://eba.ezraglobal.co.za",
 			dates: "2026",
 			active: true,
 			impact: "Private Chrome Extension & AI Proposal Generator",
 			description:
 				"Private Chrome Extension and backend service for Ezra Global drafting targeted, AI-grounded Freelancer.com proposals from live project pages with human review gates.",
+			problem:
+				"Freelance business operations spent hours manually reviewing project pages and drafting customized proposals for high-value client opportunities.",
+			architecture:
+				"TypeScript Chrome extension integrating with Next.js API route powered by Gemini API, Zod schema validation, and structured proposal evaluation criteria.",
+			keyFeatures: [
+				"Live Project Page Context Extraction & Parsing",
+				"AI-Grounded Custom Proposal Generation in Seconds",
+				"Human Review Gate (Never Auto-Submitted without verification)",
+				"Strict Client Privacy & Custom Prompt Rules",
+			],
 			technologies: [
 				"TypeScript",
 				"Chrome Extension",
@@ -357,16 +388,6 @@ export const DATA = {
 				"Tailwind CSS",
 				"Zod",
 			],
-			links: [
-				{
-					type: "Source",
-					href: "https://github.com/DivineDemon/ezra-bid-assistant",
-					icon: <Icons.github className="size-3" />,
-				},
-			],
-			image:
-				"https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
-			video: "",
 		},
 	],
 
@@ -377,7 +398,7 @@ export const DATA = {
 			location: "Coforge / HSBC Account",
 			description:
 				"Recognized for solving a critical voice analytics pipeline throughput bottleneck in 1 week, eliminating GIL thread locks with CPU-pinned parallel workers.",
-			image: "/company-logos/confiz.webp",
+			image: "/logos/confiz.png",
 			links: [],
 		},
 		{
@@ -395,7 +416,7 @@ export const DATA = {
 			location: "Enterprise Training",
 			description:
 				"Trained 130+ enterprise engineers on Java Spring AI & LLM integration across 5 intensive sessions.",
-			image: "",
+			image: "/logos/afiniti.svg",
 			links: [],
 		},
 	],
