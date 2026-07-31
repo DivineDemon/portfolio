@@ -1,0 +1,56 @@
+---
+"slug": "haga-technical-methodology-and-usage-flow"
+"title": "Haga: technical methodology and usage flow for independent physical-AI verification"
+"excerpt": "How Haga evaluates robot policies and world models: simulation stress tests, physics-consistency checks, reproducible reporting, and intake flow."
+"coverImage": "https://v3b.fal.media/files/b/0aa380e6/RJSBCe3A2OLZbRiAZluyC_UfKYbBce.png"
+"published": true
+"featured": false
+"seoTitle": "Haga: technical methodology and usage flow for independent physical-AI verification"
+"seoDescription": "How Haga verifies robot policies and world models with simulation stress testing, physics consistency checks, reproducible reporting, and intake flow."
+"keywords":
+  - "Haga"
+  - "physical AI"
+  - "world models"
+  - "robotics verification"
+  - "methodology"
+  - "reproducible benchmarks"
+  - "simulation"
+"createdAt": "2026-07-24T06:30:38.664Z"
+"updatedAt": "2026-07-24T06:41:19.727Z"
+"publishedAt": "2026-07-24T06:30:37.770Z"
+---
+
+# Haga: technical methodology and usage flow
+
+This post walks through how Haga verifies physical-AI systems today: the exact pipeline from candidate intake to published results, and what teams need to provide for a reproducible benchmark.
+
+## What counts as evidence
+
+Haga’s primary evidence comes from simulation-based evaluation, not hardware-only testing. That matters because simulation lets us run the same benchmark repeatedly with controlled perturbations, which is what reproducibility depends on.
+
+## Pipeline overview
+
+1. **Intake** — teams submit the policy/world-model bundle they want evaluated.
+2. **Environment selection** — we choose the task suite and simulation backend.
+3. **Stress passes** — randomized seeds, contact-model sweeps, and terrain/lighting perturbations.
+4. **Physics consistency checks** — we look for frame-to-frame plausibility violations.
+5. **Reporting** — numeric summaries with variance, not single-point scores.
+
+## What we expect from teams
+
+- Model load instructions or deterministic checkpoint
+- Task definitions in the agreed task format
+- Any simulator-specific assets required for rerun
+- Acceptance criteria if the project has safety thresholds
+
+The goal is that another team can take the published report and rerun the same benchmark without calling us.
+
+## Outputs
+
+- Pass/fail summary per task variant
+- Reproducibility notes on simulator version and seeds
+- Physics consistency score and common failure modes
+
+## How to start
+
+Evaluation intake is open at haga.mushoodhanif.com. If your benchmark numbers are used for funding, procurement, or safety reviews, independent verification should happen before those numbers become commitments.
