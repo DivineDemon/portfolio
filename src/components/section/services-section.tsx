@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
 
@@ -22,7 +22,8 @@ export default function ServicesSection() {
 						AI Systems & Enablement at Scale
 					</h2>
 					<p className="text-muted-foreground max-w-xl md:text-base text-balance">
-						From autonomous multi-agent pipelines to on-prem fine-tuned LLMs and high-throughput streaming microservices.
+						From autonomous multi-agent pipelines to on-prem fine-tuned LLMs and
+						high-throughput streaming microservices.
 					</p>
 				</div>
 
