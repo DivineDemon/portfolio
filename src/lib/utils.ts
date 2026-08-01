@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getImageSrc(img: unknown): string {
-  if (!img) return "";
+export function getImageSrc(img: unknown): string | undefined {
+  if (!img) return undefined;
   if (typeof img === "string") return img;
   if (typeof img === "object") {
     if ("src" in img && typeof (img as { src: unknown }).src === "string") {
@@ -25,5 +25,5 @@ export function getImageSrc(img: unknown): string {
       }
     }
   }
-  return "";
+  return undefined;
 }

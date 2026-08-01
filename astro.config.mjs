@@ -24,8 +24,17 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["astro/compiler-runtime"],
+    resolve: {
+      dedupe: ["react", "react-dom"],
+      alias: {
+        "react-dom/server": "react-dom/server.edge",
+      },
+    },
+    ssr: {
+      noExternal: true,
+      optimizeDeps: {
+        exclude: ["astro"],
+      },
     },
   },
 });
