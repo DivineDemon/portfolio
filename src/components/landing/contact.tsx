@@ -76,7 +76,9 @@ const Contact = () => {
     >
       <div className="flex w-full flex-col items-start justify-center gap-5">
         <SectionBadge label="get in touch" />
-        <h2 className="font-bold font-heading text-6xl md:text-7xl">Hard problems welcome.</h2>
+        <h2 className="font-bold font-heading text-4xl tracking-tight sm:text-6xl md:text-7xl">
+          Hard problems welcome.
+        </h2>
         <Quote text="Heads-down building right now - not looking for roles. But if you've got a hard problem, a wild idea, or just want to talk shop about LLMs, distributed systems, scientific ML, or why this site is unreasonably over-engineered for a portfolio, I'm always up for that." />
       </div>
 

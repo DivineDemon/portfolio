@@ -24,14 +24,16 @@ const Stack = () => {
     >
       <div className="flex w-full flex-col items-start justify-center gap-5">
         <SectionBadge label="stack" />
-        <h2 className="mb-5 w-full text-left font-bold text-7xl">What I run in production.</h2>
+        <h2 className="mb-2 w-full text-left font-bold text-4xl tracking-tight sm:text-5xl md:text-7xl">
+          What I run in production.
+        </h2>
         <Quote text="Profiled under load. Not just imported." />
       </div>
 
-      <div className="flex w-full flex-wrap items-center gap-2">
+      <div className="flex w-full items-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
         {categories.map((cat) => (
           <button
-            className={`rounded-full border px-4 py-2 font-medium text-xs transition-all ${
+            className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 font-medium text-xs transition-all ${
               activeCategory === cat.id
                 ? "border-primary bg-primary text-primary-foreground shadow-xs"
                 : "border-border/60 bg-card/60 text-muted-foreground hover:border-primary/40 hover:bg-card hover:text-foreground"

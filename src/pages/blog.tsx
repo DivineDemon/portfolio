@@ -12,7 +12,9 @@ const BlogPage = () => {
     <MaxWidthWrapper className="flex min-h-screen w-full flex-col items-center justify-start gap-10 pt-28 pb-20">
       <div className="flex w-full flex-col items-start justify-center gap-5">
         <SectionBadge label="writing & research" />
-        <h1 className="font-bold font-heading text-6xl md:text-7xl">Technical Publications.</h1>
+        <h1 className="font-bold font-heading text-4xl tracking-tight sm:text-6xl md:text-7xl">
+          Technical Publications.
+        </h1>
         <Quote
           text="In-depth analysis on agentic AI loop engineering, multi-agent orchestration, open-weight
           model fine-tuning, physical verification, and AI cost optimization."
@@ -22,7 +24,7 @@ const BlogPage = () => {
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {posts.map((post: BlogPost) => (
           <Link
-            className="group relative flex flex-col justify-between gap-5 rounded-3xl border border-border/80 bg-card/90 p-8 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-xl"
+            className="group relative flex flex-col justify-between gap-5 rounded-3xl border border-border/80 bg-card/90 p-5 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-xl sm:p-8"
             key={post.slug}
             to={`/blog/${post.slug}`}
           >
@@ -38,11 +40,11 @@ const BlogPage = () => {
                 </div>
               </div>
 
-              <h2 className="font-bold font-heading text-2xl text-foreground transition-colors group-hover:text-primary">
+              <h2 className="font-bold font-heading text-foreground text-xl transition-colors group-hover:text-primary sm:text-2xl">
                 {post.title}
               </h2>
 
-              <p className="line-clamp-3 text-muted-foreground text-xs leading-relaxed">
+              <p className="line-clamp-3 text-muted-foreground text-xs leading-relaxed sm:text-sm">
                 {post.description}
               </p>
             </div>

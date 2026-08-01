@@ -62,7 +62,7 @@ const Impact = () => {
 
     const hubs = nodesRef.current.filter((n) => n.type === "hub");
     const hubCount = hubs.length;
-    const radius = Math.min(width, height) * 0.4;
+    const radius = Math.min(width, height) * 0.38;
 
     hubs.forEach((hub, i) => {
       const angle = (i * 2 * Math.PI) / hubCount - Math.PI / 2;
@@ -81,7 +81,7 @@ const Impact = () => {
           const hub = nodesRef.current.find((n) => n.id === sourceId);
           if (hub && hub.x !== undefined && hub.y !== undefined) {
             const offsetAngle = Math.random() * 2 * Math.PI;
-            const offsetDist = 90 + Math.random() * 80;
+            const offsetDist = 70 + Math.random() * 70;
             node.x = hub.x + offsetDist * Math.cos(offsetAngle);
             node.y = hub.y + offsetDist * Math.sin(offsetAngle);
           }
@@ -131,7 +131,7 @@ const Impact = () => {
 
       const rect = container.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      const canvasHeight = Math.max(800, rect.width * 0.65);
+      const canvasHeight = Math.max(450, Math.min(800, rect.width * 0.75));
 
       canvas.width = rect.width * dpr;
       canvas.height = canvasHeight * dpr;
@@ -162,8 +162,8 @@ const Impact = () => {
       const width = canvas.width;
       const height = canvas.height;
 
-      const paddingX = 60 * dpr;
-      const paddingY = 40 * dpr;
+      const paddingX = 40 * dpr;
+      const paddingY = 30 * dpr;
       nodesRef.current.forEach((node) => {
         if (node.x !== undefined) {
           node.x = Math.max(paddingX, Math.min(width - paddingX, node.x));
@@ -299,24 +299,22 @@ const Impact = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [hoveredNode, isDark]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handlePointerCheck = (clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
-    const clientX = e.clientX - rect.left;
-    const clientY = e.clientY - rect.top;
-    const x = clientX * dpr;
-    const y = clientY * dpr;
+    const canvasX = (clientX - rect.left) * dpr;
+    const canvasY = (clientY - rect.top) * dpr;
 
     let foundNode: GraphNode | null = null;
 
     for (const node of nodesRef.current) {
       if (node.x === undefined || node.y === undefined) continue;
-      const hitRadius = (node.type === "hub" ? 22 : 18) * dpr;
-      const dx = node.x - x;
-      const dy = node.y - y;
+      const hitRadius = (node.type === "hub" ? 26 : 22) * dpr;
+      const dx = node.x - canvasX;
+      const dy = node.y - canvasY;
       if (Math.hypot(dx, dy) <= hitRadius) {
         foundNode = node;
         break;
@@ -325,40 +323,61 @@ const Impact = () => {
 
     setHoveredNode(foundNode);
     if (foundNode) {
-      setTooltipPos({ x: e.clientX, y: e.clientY });
+      setTooltipPos({ x: clientX, y: clientY });
     }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    handlePointerCheck(e.clientX, e.clientY);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (e.touches && e.touches.length > 0 && e.touches[0]) {
+      const touch = e.touches[0];
+      handlePointerCheck(touch.clientX, touch.clientY);
+    }
+  };
+
+  const getResponsiveTooltipLeft = () => {
+    if (typeof window === "undefined") return tooltipPos.x + 16;
+    const screenWidth = window.innerWidth;
+    const tooltipWidth = 280;
+
+    if (tooltipPos.x + tooltipWidth + 20 > screenWidth) {
+      return Math.max(12, screenWidth - tooltipWidth - 20);
+    }
+    return Math.max(12, tooltipPos.x + 12);
   };
 
   return (
     <MaxWidthWrapper
-      className="flex min-h-screen w-full flex-col items-center justify-center gap-6 py-12"
+      className="flex min-h-screen w-full flex-col items-center justify-center gap-6 py-16"
       id="impact"
     >
       <div className="flex w-full flex-col items-start justify-center gap-4">
         <SectionBadge label="impact & metrics" />
-        <h2 className="font-bold font-heading text-6xl md:text-7xl">Proof, not promises.</h2>
+        <h2 className="font-bold font-heading text-4xl tracking-tight sm:text-6xl md:text-7xl">
+          Proof, not promises.
+        </h2>
       </div>
 
       <div className="relative w-full select-none overflow-visible" ref={containerRef}>
         <canvas
-          className="block w-full cursor-default"
+          className="block w-full cursor-pointer touch-none"
           onMouseLeave={() => setHoveredNode(null)}
           onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
           ref={canvasRef}
         />
 
         {hoveredNode && (
           <div
-            className="pointer-events-none fixed z-50 flex max-w-sm flex-col gap-2 rounded-2xl border border-border bg-card/95 p-4 text-card-foreground shadow-2xl backdrop-blur-xl transition-all duration-150"
+            className="pointer-events-none fixed z-50 flex max-w-[280px] flex-col gap-2 rounded-2xl border border-border bg-card/95 p-4 text-card-foreground shadow-2xl backdrop-blur-xl transition-all duration-150 sm:max-w-sm"
             style={{
-              left: `${
-                tooltipPos.x + 360 > (typeof window !== "undefined" ? window.innerWidth : 1200)
-                  ? tooltipPos.x - 360
-                  : tooltipPos.x + 16
-              }px`,
+              left: `${getResponsiveTooltipLeft()}px`,
               top: `${
                 tooltipPos.y + 200 > (typeof window !== "undefined" ? window.innerHeight : 800)
-                  ? tooltipPos.y - 180
+                  ? Math.max(20, tooltipPos.y - 180)
                   : tooltipPos.y + 16
               }px`,
             }}
@@ -382,7 +401,7 @@ const Impact = () => {
             </div>
 
             <div className="flex flex-col gap-1 pt-1">
-              <h4 className="font-bold text-base text-foreground">
+              <h4 className="font-bold text-foreground text-sm sm:text-base">
                 {hoveredNode.title || hoveredNode.label}
               </h4>
               <p className="text-muted-foreground text-xs leading-relaxed">

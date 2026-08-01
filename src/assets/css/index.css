@@ -260,3 +260,49 @@
   animation: none;
   mix-blend-mode: normal;
 }
+
+/* Mermaid Diagram Beautification */
+.mermaid svg {
+  font-family: var(--font-sans);
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node polygon,
+.mermaid .node path {
+  rx: 10px;
+  ry: 10px;
+  stroke-width: 1.5px;
+  transition: all 0.25s ease-in-out;
+}
+
+.mermaid .node:hover rect,
+.mermaid .node:hover circle,
+.mermaid .node:hover polygon {
+  filter: drop-shadow(0 4px 12px rgba(220, 38, 38, 0.25));
+}
+
+.mermaid .cluster rect {
+  rx: 14px;
+  ry: 14px;
+  stroke-dasharray: 4 4;
+  stroke-width: 1.5px;
+}
+
+.mermaid .edgePath .path {
+  stroke-width: 2px;
+}
+
+.mermaid .edgeLabel {
+  background-color: var(--card);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
+
+.mermaid .label text {
+  font-family: var(--font-sans);
+  font-weight: 500;
+}

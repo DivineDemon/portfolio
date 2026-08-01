@@ -30,12 +30,14 @@ const Trajectory = () => {
 
   return (
     <MaxWidthWrapper
-      className="flex min-h-screen w-full flex-col items-center justify-center gap-10"
+      className="flex min-h-screen w-full flex-col items-center justify-center gap-10 py-16"
       id="experience"
     >
       <div className="flex w-full flex-col items-start justify-center gap-5">
         <SectionBadge label="experience & education" />
-        <h2 className="w-full text-left font-bold text-7xl">The Trajectory.</h2>
+        <h2 className="w-full text-left font-bold text-4xl tracking-tight sm:text-5xl md:text-7xl">
+          The Trajectory.
+        </h2>
       </div>
 
       <Accordion className="w-full border-dashed" collapsible defaultValue="haga" type="single">
@@ -45,18 +47,18 @@ const Trajectory = () => {
           return (
             <AccordionItem key={item.id} value={item.id}>
               <AccordionTrigger className="w-full">
-                <div className="flex w-full items-center gap-4 text-left">
+                <div className="flex w-full items-center gap-3 text-left sm:gap-4">
                   <img
                     alt={item.company}
-                    className="size-10 shrink-0 rounded-xl border bg-background object-contain shadow-xs"
+                    className="size-8 shrink-0 rounded-xl border bg-background object-contain shadow-xs sm:size-10"
                     src={logoSrc}
                   />
                   <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <div className="flex flex-wrap items-center justify-between gap-2 pr-2">
-                      <h3 className="font-semibold text-base text-foreground md:text-lg">
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base md:text-lg">
                         {item.role}
                       </h3>
-                      <span className="shrink-0 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-medium text-primary text-xs">
+                      <span className="hidden shrink-0 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 font-medium text-[11px] text-primary sm:px-3 sm:py-1 sm:text-xs md:flex">
                         {item.period}
                       </span>
                     </div>
@@ -67,23 +69,25 @@ const Trajectory = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-4 pr-2 pl-14">
-                  <p className="text-foreground text-sm leading-relaxed">{item.description}</p>
-                  <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
+                <div className="flex flex-col gap-4 pt-2 pr-2 pl-2 sm:pl-14">
+                  <p className="text-foreground text-xs leading-relaxed sm:text-sm">
+                    {item.description}
+                  </p>
+                  <p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider sm:text-xs">
                     {item.type}
                   </p>
-                  <ul className="flex flex-col gap-2 text-muted-foreground text-sm">
+                  <ul className="flex flex-col gap-2 text-muted-foreground text-xs sm:text-sm">
                     {item.achievements.map((ach) => (
                       <li className="flex items-start gap-2.5" key={ach}>
-                        <div className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
-                        <span>{ach}</span>
+                        <div className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                        <span className="leading-relaxed">{ach}</span>
                       </li>
                     ))}
                   </ul>
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {item.skills.map((skill) => (
                       <span
-                        className="rounded-md border border-border/80 bg-muted/50 px-2.5 py-1 font-medium text-muted-foreground text-xs"
+                        className="rounded-md border border-border/80 bg-muted/50 px-2.5 py-1 font-medium text-[11px] text-muted-foreground sm:text-xs"
                         key={skill}
                       >
                         {skill}

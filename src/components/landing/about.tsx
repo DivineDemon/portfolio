@@ -6,17 +6,17 @@ import SectionBadge from "../ui/section-badge";
 const About = () => {
   return (
     <MaxWidthWrapper
-      className="flex min-h-screen w-full flex-col items-center justify-center gap-10"
+      className="flex min-h-screen w-full flex-col items-center justify-center gap-10 py-16"
       id="about"
     >
       <div className="flex w-full flex-col items-start justify-center gap-5">
         <SectionBadge label="about" />
-        <h2 className="w-full text-left font-bold text-7xl">
+        <h2 className="w-full text-left font-bold text-4xl tracking-tight sm:text-5xl md:text-7xl">
           Inference is easy. Everything else isn't.
         </h2>
         <Quote text="Honest where it matters. Available when it's hard." />
       </div>
-      <p className="w-full text-left text-sm">
+      <p className="w-full text-left text-xs leading-relaxed sm:text-sm">
         As a Senior AI Engineer and Founder of&nbsp;
         <strong className="font-semibold text-primary">Haga</strong>, I specialize in building
         enterprise agentic systems, <strong className="font-semibold text-primary">LLM</strong>
@@ -28,7 +28,7 @@ const About = () => {
         &nbsp; model tuning to <strong className="font-semibold text-primary">sub-200ms</strong>
         &nbsp; real-time decision systems.
       </p>
-      <p className="w-full text-left text-sm">
+      <p className="w-full text-left text-xs leading-relaxed sm:text-sm">
         Across <strong className="font-semibold text-primary">7 years</strong> at Afiniti and
         Confiz, I architected a <strong className="font-semibold text-primary">6-agent</strong>
         &nbsp;
@@ -47,11 +47,11 @@ const About = () => {
         policies and generative world models.
       </p>
       <div className="grid w-full grid-cols-1 items-center justify-center gap-5 md:grid-cols-2">
-        <div className="flex h-full w-full flex-col items-start justify-start gap-2.5 rounded-2xl border p-5 shadow">
-          <h3 className="w-full text-left font-semibold text-primary text-xl">
+        <div className="flex h-full w-full flex-col items-start justify-start gap-2.5 rounded-2xl border p-5 shadow-xs">
+          <h3 className="w-full text-left font-semibold text-lg text-primary sm:text-xl">
             Inference as a System
           </h3>
-          <span className="w-full text-left text-sm">
+          <span className="w-full text-left text-muted-foreground text-xs leading-relaxed sm:text-sm">
             Most teams ship inference as a function call. The real questions -&nbsp;
             <strong className="font-semibold text-primary">p95 latency</strong>,&nbsp;
             <strong className="font-semibold text-primary">10x load</strong>, what happens when a
@@ -59,20 +59,22 @@ const About = () => {
             goes live.
           </span>
         </div>
-        <div className="flex h-full w-full flex-col items-start justify-start gap-2.5 rounded-2xl border p-5 shadow">
-          <h3 className="w-full text-left font-semibold text-primary text-xl">
+        <div className="flex h-full w-full flex-col items-start justify-start gap-2.5 rounded-2xl border p-5 shadow-xs">
+          <h3 className="w-full text-left font-semibold text-lg text-primary sm:text-xl">
             Physics-Informed Scientific ML
           </h3>
-          <span className="w-full text-left text-sm">
+          <span className="w-full text-left text-muted-foreground text-xs leading-relaxed sm:text-sm">
             Data-driven physics models aren't data problems - they're structure problems. Ignoring
             governing equations forces the model to rediscover physics from data it may never have
             enough of. Embedding <strong className="font-semibold text-primary">PDEs</strong> into
             the objective is what makes sparse data sufficient.
           </span>
         </div>
-        <div className="col-span-2 flex w-full flex-col items-center justify-center gap-3 rounded-2xl border p-5 shadow">
-          <h3 className="w-full text-left font-semibold text-primary text-xl">What I don't do</h3>
-          <ul className="flex w-full flex-col gap-2.5 text-sm">
+        <div className="col-span-1 flex w-full flex-col items-center justify-center gap-3 rounded-2xl border p-5 shadow-xs md:col-span-2">
+          <h3 className="w-full text-left font-semibold text-lg text-primary sm:text-xl">
+            What I don't do
+          </h3>
+          <ul className="flex w-full flex-col gap-2.5 text-xs sm:text-sm">
             <li className="flex items-start gap-2.5 rounded-xl border border-border/50 bg-muted/30 p-3 transition-colors hover:bg-muted/50">
               <X className="mt-0.5 size-4 shrink-0 text-primary" />
               <span>

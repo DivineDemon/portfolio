@@ -9,7 +9,7 @@ interface MaxWidthWrapperProps {
 
 const MaxWidthWrapper = ({ id, children, className }: MaxWidthWrapperProps) => {
   return (
-    <div className={cn("mx-auto max-w-3xl", className)} id={id}>
+    <div className={cn("mx-auto max-w-3xl px-4 sm:px-6 md:px-0", className)} id={id}>
       {children}
     </div>
   );
