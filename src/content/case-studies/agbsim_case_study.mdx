@@ -19,24 +19,24 @@ I architected a completely modernized inference pipeline that decoupled request 
 
 ```mermaid
 flowchart TD
-    Client[Client Application] --> Router[Blue-Green Ingress / Load Balancer]
+    Client["Client Application"] --> Router["Blue-Green Ingress / Load Balancer"]
     
-    subgraph Production Cluster (Azure AKS)
-        Router -->|100% Active Traffic| Blue[Blue Deployment: Streaming API v1.0]
-        Router -.->|Canary Traffic| Green[Green Deployment: Streaming API v1.1]
+    subgraph ProductionCluster["Production Cluster (Azure AKS)"]
+        Router -->|"100% Active Traffic"| Blue["Blue Deployment: Streaming API v1.0"]
+        Router -.->|"Canary Traffic"| Green["Green Deployment: Streaming API v1.1"]
         
-        Blue --> GPU1[Azure T4 GPU Nodes]
-        Green --> GPU2[Azure T4 GPU Nodes]
+        Blue --> GPU1["Azure T4 GPU Nodes"]
+        Green --> GPU2["Azure T4 GPU Nodes"]
     end
 
-    subgraph Monitoring & Automation
-        CB[Circuit Breaker Engine] -->|Monitors p95 Latency| Green
-        CB -->|Instant Rollback if Error > 2%| Router
+    subgraph MonitoringAutomation["Monitoring & Automation"]
+        CB["Circuit Breaker Engine"] -->|"Monitors p95 Latency"| Green
+        CB -->|"Instant Rollback if Error > 2%"| Router
     end
 
-    subgraph Async Brokering
-        Blue & Green <--> Redis[(Redis Async Queue)]
-        HPA[Queue Depth Autoscaler] -->|Scales Replicas| Blue
+    subgraph AsyncBrokering["Async Brokering"]
+        Blue & Green <--> Redis[("Redis Async Queue")]
+        HPA["Queue Depth Autoscaler"] -->|"Scales Replicas"| Blue
     end
 ```
 

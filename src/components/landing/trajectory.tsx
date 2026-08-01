@@ -58,7 +58,7 @@ const Trajectory = () => {
                       {item.role}
                     </span>
                     <span className="truncate font-medium text-muted-foreground text-xs sm:text-sm">
-                      {item.company} &bull;{" "}
+                      {item.company} &bull;&nbsp;
                       <span className="text-primary text-xs">{item.period}</span>
                     </span>
                   </div>

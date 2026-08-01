@@ -33,7 +33,13 @@ const contactSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-const Contact = () => {
+interface ContactProps {
+  serviceId?: string;
+  templateId?: string;
+  publicKey?: string;
+}
+
+const Contact = ({ serviceId, templateId, publicKey }: ContactProps) => {
   const {
     register,
     handleSubmit,
@@ -50,20 +56,22 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const serviceId =
-      import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || import.meta.env.EMAILJS_SERVICE_ID;
-    const templateId =
-      import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || import.meta.env.EMAILJS_TEMPLATE_ID;
-    const publicKey =
-      import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || import.meta.env.EMAILJS_PUBLIC_KEY;
+    const finalServiceId =
+      serviceId || import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || import.meta.env.EMAILJS_SERVICE_ID;
+    const finalTemplateId =
+      templateId ||
+      import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ||
+      import.meta.env.EMAILJS_TEMPLATE_ID;
+    const finalPublicKey =
+      publicKey || import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || import.meta.env.EMAILJS_PUBLIC_KEY;
 
-    if (!serviceId || !templateId || !publicKey) {
+    if (!finalServiceId || !finalTemplateId || !finalPublicKey) {
       toast.error("EmailJS configuration parameters missing in environment variables.");
       return;
     }
 
     try {
-      await emailjs.send(serviceId, templateId, data, publicKey);
+      await emailjs.send(finalServiceId, finalTemplateId, data, finalPublicKey);
       toast.success(
         "Message sent successfully! I will review your inquiry and get back to you shortly.",
       );

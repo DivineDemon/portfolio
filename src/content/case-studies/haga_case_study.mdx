@@ -15,26 +15,26 @@ Evaluating Physical AI policies and presenting benchmarking evidence presents a 
 
 ```mermaid
 graph TD
-    subgraph Haga Core (Physics Verification)
-        A[MuJoCo / Robosuite / CogVideoX] --> B[Benchmark Runner]
-        B --> C[Physics-Consistency Scorer]
-        C --> D[Sanitized Telemetry JSON]
+    subgraph HagaCore["Haga Core (Physics Verification)"]
+        A["MuJoCo / Robosuite / CogVideoX"] --> B["Benchmark Runner"]
+        B --> C["Physics-Consistency Scorer"]
+        C --> D["Sanitized Telemetry JSON"]
     end
 
-    subgraph Haga Web Monorepo
-        D -->|GitHub Releases API| E[@haga/metrics Shared Package]
+    subgraph HagaWebMonorepo["Haga Web Monorepo"]
+        D -->|"GitHub Releases API"| E["@haga/metrics Shared Package"]
         
-        subgraph Applications
-            F[apps/site - Public Lab]
-            G[apps/dataroom - Investor Dataroom]
+        subgraph Applications["Applications"]
+            F["apps/site - Public Lab"]
+            G["apps/dataroom - Investor Dataroom"]
         end
         
         E --> F
         E --> G
     end
 
-    F -->|Public Access| H[Researchers & Clients]
-    G -->|Auth.js Gated| I[Investors & Founders]
+    F -->|"Public Access"| H["Researchers & Clients"]
+    G -->|"Auth.js Gated"| I["Investors & Founders"]
 ```
 
 ### Core Technical Pillars:
