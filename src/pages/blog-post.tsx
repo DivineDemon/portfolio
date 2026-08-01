@@ -1,10 +1,20 @@
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, FolderX } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import Quote from "@/components/ui/quote";
 import { getBlogPostBySlug } from "@/lib/mdx";
+import { cn } from "@/lib/utils";
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -12,18 +22,32 @@ const BlogPostPage = () => {
 
   if (!post) {
     return (
-      <MaxWidthWrapper className="flex min-h-screen flex-col items-center justify-center gap-6 pt-32">
-        <h1 className="font-bold font-heading text-4xl">Article Not Found</h1>
-        <p className="text-muted-foreground text-sm">
-          The requested publication &ldquo;{slug}&rdquo; could not be located.
-        </p>
-        <Link
-          className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 font-semibold text-primary text-xs"
-          to="/blog"
-        >
-          <ArrowLeft className="size-4" />
-          <span>Back to All Articles</span>
-        </Link>
+      <MaxWidthWrapper className="flex min-h-[calc(100dvh-64px)] flex-col items-center justify-center gap-6 pt-32">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <FolderX />
+            </EmptyMedia>
+            <EmptyTitle>Article not Found.</EmptyTitle>
+            <EmptyDescription>
+              The requested publication &ldquo;{slug}&rdquo; could not be located.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent className="flex-row justify-center gap-2">
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                  size: "lg",
+                }),
+              )}
+              to="/blog"
+            >
+              <ArrowLeft />
+              Back to All Articles
+            </Link>
+          </EmptyContent>
+        </Empty>
       </MaxWidthWrapper>
     );
   }

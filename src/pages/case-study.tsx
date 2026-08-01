@@ -1,10 +1,20 @@
-import { ArrowLeft, Calendar, User } from "lucide-react";
+import { ArrowLeft, Calendar, FolderX, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import Quote from "@/components/ui/quote";
 import { getCaseStudyBySlug } from "@/lib/mdx";
+import { cn } from "@/lib/utils";
 
 const CaseStudyPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -12,18 +22,32 @@ const CaseStudyPage = () => {
 
   if (!caseStudy) {
     return (
-      <MaxWidthWrapper className="flex min-h-[60vh] flex-col items-center justify-center gap-6 pt-32">
-        <h1 className="font-bold font-heading text-4xl">Case Study Not Found</h1>
-        <p className="text-muted-foreground text-sm">
-          The requested case study &ldquo;{slug}&rdquo; could not be located.
-        </p>
-        <Link
-          className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-6 py-2.5 font-semibold text-primary text-xs"
-          to="/work"
-        >
-          <ArrowLeft className="size-4" />
-          <span>Back to All Projects</span>
-        </Link>
+      <MaxWidthWrapper className="flex min-h-[calc(100dvh-64px)] flex-col items-center justify-center gap-6 pt-32">
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <FolderX />
+            </EmptyMedia>
+            <EmptyTitle>Case Study not Found.</EmptyTitle>
+            <EmptyDescription>
+              The requested case study &ldquo;{slug}&rdquo; could not be located.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent className="flex-row justify-center gap-2">
+            <Link
+              className={cn(
+                buttonVariants({
+                  variant: "default",
+                  size: "lg",
+                }),
+              )}
+              to="/blog"
+            >
+              <ArrowLeft />
+              Back to All Projects
+            </Link>
+          </EmptyContent>
+        </Empty>
       </MaxWidthWrapper>
     );
   }
