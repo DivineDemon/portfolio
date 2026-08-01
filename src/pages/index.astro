@@ -1,0 +1,25 @@
+---
+import About from "@/components/landing/about";
+import BlogTeaser from "@/components/landing/blog-teaser";
+import Contact from "@/components/landing/contact";
+import Hero from "@/components/landing/hero";
+import Impact from "@/components/landing/impact";
+import Stack from "@/components/landing/stack";
+import Trajectory from "@/components/landing/trajectory";
+import WorkTeaser from "@/components/landing/work-teaser";
+import BaseLayout from "@/layouts/base-layout.astro";
+---
+
+<BaseLayout
+  title="Mushood Hanif — Founder & AI Systems Architect | Senior AI Engineer"
+  description="Founder of Haga Labs, Senior AI Engineer at Afiniti. Building multi-agent LLM orchestration, real-time streaming ML, and physical policy verification systems."
+>
+  <Hero client:load />
+  <About client:load />
+  <Trajectory client:load />
+  <Impact client:load />
+  <WorkTeaser client:load />
+  <BlogTeaser client:load />
+  <Stack client:load />
+  <Contact client:load />
+</BaseLayout>

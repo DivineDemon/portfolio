@@ -1,0 +1,130 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  tags?: string[];
+  canonicalUrl?: string;
+  type?: "website" | "article" | "profile";
+  schemaData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title = "Mushood Hanif — Founder & AI Systems Architect | Senior AI Engineer",
+  description = "Mushood Hanif is a Founder, AI Systems Architect, and Senior AI Engineer specializing in multi-agent LLM systems, real-time streaming ML pipelines, physical policy verification, and high-performance microservices.",
+  image = "/og-image.png",
+  article = false,
+  publishedTime,
+  modifiedTime,
+  tags = [],
+  canonicalUrl,
+  type = article ? "article" : "website",
+  schemaData,
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, "") : "https://mushood.com";
+const canonical = canonicalUrl || `${siteUrl}${Astro.url.pathname}`;
+const imageUrl = image.startsWith("http")
+  ? image
+  : `${siteUrl}${image.startsWith("/") ? "" : "/"}${image}`;
+
+const basePersonSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${siteUrl}/#person`,
+  name: "Mushood Hanif",
+  url: siteUrl,
+  jobTitle: "Founder & AI Systems Architect",
+  worksFor: [
+    {
+      "@type": "Organization",
+      name: "Haga Labs",
+      url: "https://hagalabs.ai",
+    },
+    {
+      "@type": "Organization",
+      name: "Afiniti",
+    },
+  ],
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "LLM Fine-Tuning",
+    "LangGraph Multi-Agent Systems",
+    "Physical Verification",
+    "vLLM",
+    "PyTorch",
+    "JAX",
+    "FastAPI",
+    "System Design",
+  ],
+  sameAs: [
+    "https://github.com/mushoodhanif",
+    "https://linkedin.com/in/mushoodhanif",
+    "https://x.com/mushoodhanif",
+  ],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  url: siteUrl,
+  name: "Mushood Hanif Portfolio",
+  description: description,
+  publisher: {
+    "@id": `${siteUrl}/#person`,
+  },
+  inLanguage: "en-US",
+};
+
+const schemas: Record<string, unknown>[] = [basePersonSchema, websiteSchema];
+if (schemaData) {
+  if (Array.isArray(schemaData)) {
+    schemas.push(...(schemaData as Record<string, unknown>[]));
+  } else {
+    schemas.push(schemaData as Record<string, unknown>);
+  }
+}
+---
+
+<!-- Core Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="author" content="Mushood Hanif" />
+<meta name="keywords" content={`Mushood Hanif, AI Engineer, AI Systems Architect, Haga Labs, Afiniti, LangGraph, LLM, MLOps, PyTorch, RAG, ${tags.join(", ")}`} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
+<meta property="og:site_name" content="Mushood Hanif Portfolio" />
+<meta property="og:locale" content="en_US" />
+
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonical} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:creator" content="@mushoodhanif" />
+<meta name="twitter:site" content="@mushoodhanif" />
+
+<!-- Structured Data / JSON-LD -->
+{schemas.map((s) => (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(s)} />
+))}

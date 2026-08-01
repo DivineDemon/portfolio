@@ -2,7 +2,7 @@ import { Eye, Mail, Sparkle } from "lucide-react";
 import Profile from "@/assets/img/profile.jpg";
 import { Github, LinkedIn } from "@/components/icons";
 import { FIRST_ROW } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
 import { buttonVariants } from "../ui/button";
 import { Marquee } from "../ui/marquee";
@@ -112,7 +112,7 @@ const Hero = () => {
         <img
           alt="profile"
           className="col-span-1 max-h-[360px] w-full rounded-xl border object-cover shadow sm:max-h-[460px] md:max-h-full"
-          src={Profile}
+          src={getImageSrc(Profile)}
         />
       </div>
       <div className="mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] relative flex w-full overflow-hidden pt-4">

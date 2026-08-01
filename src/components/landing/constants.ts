@@ -542,7 +542,7 @@ export const GRAPH_CONFIG = {
 
 export interface Skill {
   name: string;
-  icon: string;
+  icon: unknown;
   category: string;
   description: string;
 }

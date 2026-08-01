@@ -1,6 +1,5 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Link } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import { getAllCaseStudies } from "@/lib/mdx";
 import MaxWidthWrapper from "../max-width-wrapper";
@@ -21,22 +20,22 @@ const WorkTeaser = () => {
           <h2 className="font-bold font-heading text-4xl tracking-tight sm:text-5xl md:text-6xl">
             Systems in Production.
           </h2>
-          <Link
+          <a
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-primary text-sm hover:underline"
-            to="/work"
+            href="/work"
           >
             <span>View All Projects</span>
             <ArrowRight className="size-4" />
-          </Link>
+          </a>
         </div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {topProjects.map((project) => (
-          <Link
+          <a
             className="group relative flex flex-col justify-between gap-6 rounded-3xl border border-border/70 bg-card/80 p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg sm:p-7"
+            href={`/work/${project.slug}`}
             key={project.slug}
-            to={`/work/${project.slug}`}
           >
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between gap-2">
@@ -61,7 +60,7 @@ const WorkTeaser = () => {
                 </div>
               </div>
             </div>
-          </Link>
+          </a>
         ))}
       </div>
     </MaxWidthWrapper>

@@ -118,6 +118,27 @@
   },
   "overrides": [
     {
+      "includes": ["**/*.astro"],
+      "assist": {
+        "actions": {
+          "source": {
+            "organizeImports": "off"
+          }
+        }
+      },
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["src/components/ui/**"],
       "linter": {
         "rules": {

@@ -1,0 +1,94 @@
+# Mushood Hanif — Full Site Content Feed for LLMs & RAG
+
+This document contains the complete text of all technical case studies and blog posts by Mushood Hanif.
+
+---
+
+# CASE STUDY 1: Haga Physical Verification Layer
+- Slug: haga_case_study
+- Type: Personal / Startup
+- Client / Company: Haga Labs
+- Author: Mushood Hanif
+- Role: Founder & AI Systems Architect
+
+Executive Summary: Independent trust, benchmarking, and physics-consistency verification layer for robot policies and generative world models.
+Metrics:
+- 98.4% Physics Perturbation Pass Rate
+- 0% Data Drift Between Public & Dataroom
+- 85% Manual Review Time Saved
+
+---
+
+# CASE STUDY 2: Agentic Document Compliance Pipeline
+- Slug: adcp_case_study
+- Type: Company
+- Client / Company: Afiniti
+- Author: Mushood Hanif
+- Role: Senior AI Engineer
+
+Executive Summary: Multi-agent LLM orchestration system automating logistics document intake, extraction, and compliance review.
+Metrics:
+- 92% Document Processing Time Saved (3 days to <4 hours)
+- 96% F1 Extraction Accuracy with QLoRA
+- 6-Agent LangGraph Orchestration Layer
+
+---
+
+# CASE STUDY 3: On-Prem LLM Fine-Tuning & Serving
+- Slug: oplftsf_case_study
+- Type: Company
+- Client / Company: Afiniti
+- Author: Mushood Hanif
+- Role: Senior AI Engineer
+
+Executive Summary: Standardized self-serve QLoRA fine-tuning and vLLM serving framework for strict data residency.
+Metrics:
+- 4x Serving Throughput via vLLM
+- 70% VRAM Reduction via 4-bit QLoRA
+- 100% On-Premise Data Sovereignty
+
+---
+
+# CASE STUDY 4: Real-Time Fraud Scoring Pipeline
+- Slug: rtfsp_case_study
+- Type: Company
+- Client / Company: Afiniti
+- Author: Mushood Hanif
+- Role: Senior AI Engineer
+
+Executive Summary: High-throughput streaming fraud detection pipeline scoring over 1.2M daily financial transactions.
+Metrics:
+- < 20ms Real-Time Scoring Latency
+- 99.4% Fraud Detection Precision
+- 5k+ Transactions per Second
+
+---
+
+# CASE STUDY 5: Bilingual RAG Support Chatbot
+- Slug: brsc_case_study
+- Type: Client
+- Client / Company: Confiz / Retail Client
+- Author: Mushood Hanif
+- Role: Machine Learning Engineer
+
+Executive Summary: Urdu/English Retrieval-Augmented Generation chatbot handling 40,000+ monthly support conversations.
+Metrics:
+- 75% Memory Footprint Reduction (470MB → 117MB)
+- < 60ms Vector Retrieval Latency
+- 80% Factual Error Reduction
+
+---
+
+# ARTICLE 1: Loop Engineering in AI Systems
+- Slug: loop-engineering
+- Author: Mushood Hanif
+
+Designing robust feedback loops and automated evaluation harnesses for production AI agents. Building evaluation datasets, monitoring drift, and ensuring self-correcting agent execution.
+
+---
+
+# ARTICLE 2: Production Autonomous Agents
+- Slug: autonomous-agents
+- Author: Mushood Hanif
+
+Lessons learned architecting multi-agent state machines with LangGraph in production enterprise environments.

@@ -1,0 +1,15 @@
+# Mushood Hanif — Latest Content & Updates Index
+
+> Feed of recently published case studies, research notes, and AI systems articles.
+
+## Latest Case Studies (2026)
+
+- [Haga Physical Verification Layer](https://mushood.com/work/haga_case_study) — Physics-consistency verification layer for robot learning policies.
+- [Agentic Document Compliance](https://mushood.com/work/adcp_case_study) — 6-agent LangGraph system reducing review time by 92%.
+- [On-Prem Fine-Tuning & Serving](https://mushood.com/work/oplftsf_case_study) — QLoRA LLaMA-3 models with 4-bit quantization and vLLM serving.
+
+## Latest Articles
+
+- [Loop Engineering](https://mushood.com/blog/loop-engineering)
+- [Autonomous Agents in Production](https://mushood.com/blog/autonomous-agents)
+- [Open-Weight Models](https://mushood.com/blog/open-weight-models)

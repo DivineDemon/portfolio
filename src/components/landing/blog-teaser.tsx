@@ -1,5 +1,4 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { getAllBlogPosts } from "@/lib/mdx";
 import MaxWidthWrapper from "../max-width-wrapper";
 import SectionBadge from "../ui/section-badge";
@@ -17,22 +16,22 @@ const BlogTeaser = () => {
         <SectionBadge label="writing & thoughts" />
         <div className="flex w-full flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <h2 className="font-bold font-heading text-5xl md:text-6xl">Technical Insights.</h2>
-          <Link
+          <a
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-primary text-sm hover:underline"
-            to="/blog"
+            href="/blog"
           >
             <span>Read All Articles</span>
             <ArrowRight className="size-4" />
-          </Link>
+          </a>
         </div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {topPosts.map((post) => (
-          <Link
+          <a
             className="group relative flex flex-col justify-between gap-4 rounded-3xl border border-border/70 bg-card/80 p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg"
+            href={`/blog/${post.slug}`}
             key={post.slug}
-            to={`/blog/${post.slug}`}
           >
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between gap-2">
@@ -55,7 +54,7 @@ const BlogTeaser = () => {
               <span className="group-hover:underline">Read Article</span>
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-          </Link>
+          </a>
         ))}
       </div>
     </MaxWidthWrapper>

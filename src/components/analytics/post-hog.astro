@@ -1,0 +1,84 @@
+---
+const posthogHost =
+  import.meta.env.PUBLIC_POSTHOG_HOST || import.meta.env.POSTHOG_HOST || "https://us.i.posthog.com";
+const posthogToken =
+  import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN || import.meta.env.POSTHOG_PROJECT_TOKEN;
+const gaMeasurementId =
+  import.meta.env.PUBLIC_GA_MEASUREMENT_ID || import.meta.env.GA_MEASUREMENT_ID;
+---
+
+{posthogToken && (
+  <script is:inline define:vars={{ posthogHost, posthogToken }}>
+    !(function (t, e) {
+      var o = "posthog";
+      t[o] = t[o] || [];
+      var g = [
+        "init",
+        "capture",
+        "identify",
+        "alias",
+        "people.set",
+        "people.set_once",
+        "set_config",
+        "register",
+        "register_once",
+        "unregister",
+        "opt_out_capturing",
+        "has_opted_out_capturing",
+        "opt_in_capturing",
+        "reset",
+        "isFeatureEnabled",
+        "onFeatureFlags",
+        "getFeatureFlag",
+        "getFeatureFlagPayload",
+        "reloadFeatureFlags",
+        "group",
+        "updateEarlyAccessFeatureEnrollment",
+        "getEarlyAccessFeatures",
+        "getSurveys",
+        "getActiveMatchingSurveys",
+        "renderSurvey",
+        "canRenderSurvey",
+        "getNextSurveyStep",
+      ];
+      for (var s = 0; s < g.length; s++) {
+        !(function (e) {
+          t[o][e] = function () {
+            t[o].push([e].concat(Array.prototype.slice.call(arguments, 0)));
+          };
+        })(g[s]);
+      }
+      t[o].l = +new Date();
+      var n = e.createElement("script");
+      n.async = 1;
+      n.src = posthogHost + "/static/array.js";
+      n.crossOrigin = "anonymous";
+      var i = e.getElementsByTagName("script")[0];
+      if (i && i.parentNode) {
+        i.parentNode.insertBefore(n, i);
+      } else {
+        e.head.appendChild(n);
+      }
+    })(window, document);
+
+    if (window.posthog && typeof window.posthog.init === "function") {
+      window.posthog.init(posthogToken, {
+        api_host: posthogHost,
+        person_profiles: "identified_only",
+        capture_pageview: true,
+      });
+    }
+  </script>
+)}
+
+{gaMeasurementId && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+    <script is:inline define:vars={{ gaMeasurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', gaMeasurementId);
+    </script>
+  </>
+)}

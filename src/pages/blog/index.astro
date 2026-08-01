@@ -1,0 +1,85 @@
+---
+import { ArrowUpRight, Calendar, Clock } from "lucide-react";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
+import Quote from "@/components/ui/quote";
+import SectionBadge from "@/components/ui/section-badge";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { fetchBlogPostsFromD1 } from "@/lib/d1-content";
+
+const runtime = Astro.locals.runtime;
+const db = runtime?.env?.DB;
+const posts = await fetchBlogPostsFromD1(db);
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "Technical Publications & AI Insights — Mushood Hanif",
+  description:
+    "In-depth technical writing on agentic AI loop engineering, multi-agent orchestration, open-weight models, physical verification, and AI system design.",
+  url: `${Astro.site}blog`,
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    url: `${Astro.site}blog/${post.slug}`,
+    author: {
+      "@type": "Person",
+      name: post.author || "Mushood Hanif",
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Technical Publications & AI Insights — Mushood Hanif"
+  description="In-depth technical writing on agentic AI loop engineering, multi-agent orchestration, open-weight model fine-tuning, physical verification, and AI cost optimization."
+  schemaData={schemaData}
+>
+  <MaxWidthWrapper className="flex min-h-screen w-full flex-col items-center justify-start gap-10 pt-28 pb-20">
+    <div class="flex w-full flex-col items-start justify-center gap-5">
+      <SectionBadge label="writing & research" />
+      <h1 class="font-bold font-heading text-4xl tracking-tight sm:text-6xl md:text-7xl">
+        Technical Publications.
+      </h1>
+      <Quote
+        text="In-depth analysis on agentic AI loop engineering, multi-agent orchestration, open-weight model fine-tuning, physical verification, and AI cost optimization."
+      />
+    </div>
+
+    <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+      {posts.map((post) => (
+        <a
+          class="group relative flex flex-col justify-between gap-5 rounded-3xl border border-border/80 bg-card/90 p-5 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-xl sm:p-8"
+          href={`/blog/${post.slug}`}
+        >
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 text-muted-foreground text-xs">
+              <div class="flex items-center gap-1.5">
+                <Calendar className="size-3.5 text-primary" />
+                <span>{post.date}</span>
+              </div>
+              <div class="flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 font-medium text-[10px] text-primary">
+                <Clock className="size-3" />
+                <span>{post.readingTime}</span>
+              </div>
+            </div>
+
+            <h2 class="font-bold font-heading text-foreground text-xl transition-colors group-hover:text-primary sm:text-2xl">
+              {post.title}
+            </h2>
+
+            <p class="line-clamp-3 text-muted-foreground text-xs leading-relaxed sm:text-sm">
+              {post.description}
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between border-border/50 border-t pt-4 font-semibold text-primary text-xs">
+            <span class="group-hover:underline">Read Full Article</span>
+            <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </div>
+        </a>
+      ))}
+    </div>
+  </MaxWidthWrapper>
+</BaseLayout>

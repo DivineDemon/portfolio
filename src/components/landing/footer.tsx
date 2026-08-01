@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import LogoDark from "@/assets/img/logo-dark.svg";
 import LogoLight from "@/assets/img/logo-light.svg";
+import { getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
 
 const Footer = () => {
@@ -28,7 +29,7 @@ const Footer = () => {
   return (
     <footer className="h-16 w-full border-border/50 border-t">
       <MaxWidthWrapper className="flex h-full w-full items-center justify-center">
-        <img alt="Logo" className="size-8.5" src={isDark ? LogoDark : LogoLight} />
+        <img alt="Logo" className="size-8.5" src={getImageSrc(isDark ? LogoDark : LogoLight)} />
         <span className="flex-1 text-right text-primary text-xs">
           &copy; {new Date().getFullYear()} Mushood Hanif. All rights reserved.
         </span>

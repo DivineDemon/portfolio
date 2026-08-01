@@ -28,6 +28,7 @@ export interface BlogPost {
   tags: string[];
   readingTime: string;
   content: string;
+  author?: string;
 }
 
 function parseFrontmatter(rawContent: string): {

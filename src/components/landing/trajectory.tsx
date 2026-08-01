@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import LogoDark from "@/assets/img/logo-dark.svg";
 import LogoLight from "@/assets/img/logo-light.svg";
 import { TRAJECTORY_DATA } from "@/lib/constants";
+import { getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import SectionBadge from "../ui/section-badge";
@@ -30,19 +31,20 @@ const Trajectory = () => {
 
   return (
     <MaxWidthWrapper
-      className="flex min-h-screen w-full flex-col items-center justify-center gap-10 py-16"
-      id="experience"
+      className="flex w-full flex-col items-center justify-center gap-10 pt-16"
+      id="trajectory"
     >
       <div className="flex w-full flex-col items-start justify-center gap-5">
-        <SectionBadge label="experience & education" />
-        <h2 className="w-full text-left font-bold text-4xl tracking-tight sm:text-5xl md:text-7xl">
-          The Trajectory.
+        <SectionBadge label="experience & focus" />
+        <h2 className="font-bold font-heading text-3xl tracking-tight sm:text-5xl">
+          Trajectory & Impact.
         </h2>
       </div>
 
       <Accordion className="w-full border-dashed" collapsible defaultValue="haga" type="single">
         {TRAJECTORY_DATA.map((item) => {
-          const logoSrc = item.logo === "haga" ? (isDark ? LogoDark : LogoLight) : item.logo;
+          const logoObj = item.id === "haga" ? (isDark ? LogoDark : LogoLight) : item.logo;
+          const logoSrc = getImageSrc(logoObj);
 
           return (
             <AccordionItem key={item.id} value={item.id}>
@@ -50,44 +52,40 @@ const Trajectory = () => {
                 <div className="flex w-full items-center gap-3 text-left sm:gap-4">
                   <img
                     alt={item.company}
-                    className="size-8 shrink-0 rounded-xl border bg-background object-contain shadow-xs sm:size-10"
+                    className="size-8 shrink-0 rounded-lg object-contain sm:size-10"
                     src={logoSrc}
                   />
-                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <div className="flex flex-wrap items-center justify-between gap-2 pr-2">
-                      <h3 className="font-semibold text-foreground text-sm sm:text-base md:text-lg">
-                        {item.role}
-                      </h3>
-                      <span className="hidden shrink-0 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 font-medium text-[11px] text-primary sm:px-3 sm:py-1 sm:text-xs md:flex">
-                        {item.period}
-                      </span>
-                    </div>
-                    <p className="text-muted-foreground text-xs md:text-sm">
-                      {item.company} &bull; {item.location}
-                    </p>
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate font-bold font-heading text-foreground text-sm sm:text-base">
+                      {item.role}
+                    </span>
+                    <span className="truncate font-medium text-muted-foreground text-xs sm:text-sm">
+                      {item.company} &bull;{" "}
+                      <span className="text-primary text-xs">{item.period}</span>
+                    </span>
                   </div>
                 </div>
               </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col gap-4 pt-2 pr-2 pl-2 sm:pl-14">
-                  <p className="text-foreground text-xs leading-relaxed sm:text-sm">
+              <AccordionContent className="pt-2 pb-6">
+                <div className="flex flex-col gap-4 pl-11 sm:pl-14">
+                  <p className="text-muted-foreground text-xs leading-relaxed sm:text-sm">
                     {item.description}
                   </p>
-                  <p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider sm:text-xs">
-                    {item.type}
-                  </p>
-                  <ul className="flex flex-col gap-2 text-muted-foreground text-xs sm:text-sm">
-                    {item.achievements.map((ach) => (
-                      <li className="flex items-start gap-2.5" key={ach}>
-                        <div className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
-                        <span className="leading-relaxed">{ach}</span>
+                  <ul className="flex flex-col gap-2.5">
+                    {item.achievements.map((h: string) => (
+                      <li
+                        className="flex items-start gap-2 text-foreground/90 text-xs sm:text-sm"
+                        key={`${item.id}-${h.slice(0, 20)}`}
+                      >
+                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                        <span className="leading-relaxed">{h}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="flex flex-wrap gap-1.5 pt-2">
+                  <div className="flex flex-wrap items-center gap-2 pt-2">
                     {item.skills.map((skill) => (
                       <span
-                        className="rounded-md border border-border/80 bg-muted/50 px-2.5 py-1 font-medium text-[11px] text-muted-foreground sm:text-xs"
+                        className="rounded-md border border-border/80 bg-muted/60 px-2 py-0.5 font-medium text-[10px] text-muted-foreground sm:text-xs"
                         key={skill}
                       >
                         {skill}

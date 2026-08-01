@@ -17,7 +17,10 @@ const contactSchema = z.object({
     .string()
     .min(2, { message: "Name must be at least 2 characters long." })
     .max(100, { message: "Name cannot exceed 100 characters." }),
-  from_email: z.string().email({ message: "Please enter a valid email address." }),
+  from_email: z
+    .string()
+    .min(1, { message: "Email is required." })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: "Please enter a valid email address." }),
   subject: z
     .string()
     .min(3, { message: "Subject must be at least 3 characters long." })
@@ -47,10 +50,12 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const serviceId = import.meta.env.EMAILJS_SERVICE_ID || import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const serviceId =
+      import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || import.meta.env.EMAILJS_SERVICE_ID;
     const templateId =
-      import.meta.env.EMAILJS_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY || import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || import.meta.env.EMAILJS_TEMPLATE_ID;
+    const publicKey =
+      import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || import.meta.env.EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
       toast.error("EmailJS configuration parameters missing in environment variables.");

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemaps and AI standard files
+Sitemap: https://mushood.com/sitemap-index.xml
+Sitemap: https://mushood.com/sitemap-0.xml
+
+# LLM Markdown Index
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /llms-new.txt
