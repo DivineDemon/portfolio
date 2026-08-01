@@ -14,5 +14,12 @@
       "binding": "SESSION",
       "id": "3229c16682cc4e409a728297546886be"
     }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio_db",
+      "database_id": "c49195df69e24179bb8c7e27c30499b1"
+    }
   ]
 }
