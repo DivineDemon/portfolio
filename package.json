@@ -6,12 +6,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
     "format": "biome format --write .",
-    "lint": "biome check --write --unsafe .",
-    "seed:d1": "tsx scripts/seed-d1.ts"
+    "seed:d1": "tsx scripts/seed-d1.ts",
+    "build": "astro check && astro build",
+    "lint": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.1.7",
