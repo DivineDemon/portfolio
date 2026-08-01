@@ -32,6 +32,7 @@ const Navbar = () => {
   }, []);
 
   const isHome = location.pathname === "/";
+  const navItems = !isHome ? NAV_ITEMS.filter((item) => item.link.startsWith("/")) : NAV_ITEMS;
 
   return (
     <nav className="fixed top-0 z-50 w-full p-2.5">
@@ -46,7 +47,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center justify-center gap-2.5">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isRoute = item.link.startsWith("/");
             const targetHref = isRoute ? item.link : isHome ? item.link : `/${item.link}`;
 
