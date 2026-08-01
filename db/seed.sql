@@ -504,24 +504,24 @@ I architected a completely modernized inference pipeline that decoupled request 
 
 ```mermaid
 flowchart TD
-    Client[Client Application] --> Router[Blue-Green Ingress / Load Balancer]
+    Client["Client Application"] --> Router["Blue-Green Ingress / Load Balancer"]
     
-    subgraph Production Cluster (Azure AKS)
-        Router -->|100% Active Traffic| Blue[Blue Deployment: Streaming API v1.0]
-        Router -.->|Canary Traffic| Green[Green Deployment: Streaming API v1.1]
+    subgraph ProductionCluster["Production Cluster (Azure AKS)"]
+        Router -->|"100% Active Traffic"| Blue["Blue Deployment: Streaming API v1.0"]
+        Router -.->|"Canary Traffic"| Green["Green Deployment: Streaming API v1.1"]
         
-        Blue --> GPU1[Azure T4 GPU Nodes]
-        Green --> GPU2[Azure T4 GPU Nodes]
+        Blue --> GPU1["Azure T4 GPU Nodes"]
+        Green --> GPU2["Azure T4 GPU Nodes"]
     end
 
-    subgraph Monitoring & Automation
-        CB[Circuit Breaker Engine] -->|Monitors p95 Latency| Green
-        CB -->|Instant Rollback if Error > 2%| Router
+    subgraph MonitoringAutomation["Monitoring & Automation"]
+        CB["Circuit Breaker Engine"] -->|"Monitors p95 Latency"| Green
+        CB -->|"Instant Rollback if Error > 2%"| Router
     end
 
-    subgraph Async Brokering
-        Blue & Green <--> Redis[(Redis Async Queue)]
-        HPA[Queue Depth Autoscaler] -->|Scales Replicas| Blue
+    subgraph AsyncBrokering["Async Brokering"]
+        Blue & Green <--> Redis[("Redis Async Queue")]
+        HPA["Queue Depth Autoscaler"] -->|"Scales Replicas"| Blue
     end
 ```
 
@@ -970,26 +970,26 @@ Evaluating Physical AI policies and presenting benchmarking evidence presents a 
 
 ```mermaid
 graph TD
-    subgraph Haga Core (Physics Verification)
-        A[MuJoCo / Robosuite / CogVideoX] --> B[Benchmark Runner]
-        B --> C[Physics-Consistency Scorer]
-        C --> D[Sanitized Telemetry JSON]
+    subgraph HagaCore["Haga Core (Physics Verification)"]
+        A["MuJoCo / Robosuite / CogVideoX"] --> B["Benchmark Runner"]
+        B --> C["Physics-Consistency Scorer"]
+        C --> D["Sanitized Telemetry JSON"]
     end
 
-    subgraph Haga Web Monorepo
-        D -->|GitHub Releases API| E[@haga/metrics Shared Package]
+    subgraph HagaWebMonorepo["Haga Web Monorepo"]
+        D -->|"GitHub Releases API"| E["@haga/metrics Shared Package"]
         
-        subgraph Applications
-            F[apps/site - Public Lab]
-            G[apps/dataroom - Investor Dataroom]
+        subgraph Applications["Applications"]
+            F["apps/site - Public Lab"]
+            G["apps/dataroom - Investor Dataroom"]
         end
         
         E --> F
         E --> G
     end
 
-    F -->|Public Access| H[Researchers & Clients]
-    G -->|Auth.js Gated| I[Investors & Founders]
+    F -->|"Public Access"| H["Researchers & Clients"]
+    G -->|"Auth.js Gated"| I["Investors & Founders"]
 ```
 
 ### Core Technical Pillars:
