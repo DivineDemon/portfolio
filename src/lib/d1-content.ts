@@ -9,6 +9,22 @@ import {
 
 export type { BlogPost, CaseStudy };
 
+export interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+}
+
+export interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  all<T = unknown>(): Promise<D1Result<T>>;
+}
+
+export interface D1Result<T = unknown> {
+  results: T[];
+  success: boolean;
+  meta: unknown;
+  error?: string;
+}
+
 export interface D1ContentRow {
   slug: string;
   collection: string;
@@ -41,7 +57,7 @@ export async function fetchCaseStudiesFromD1(db?: D1Database): Promise<CaseStudy
       return getLocalCaseStudies();
     }
 
-    return results.map((row) => ({
+    return results.map((row: D1ContentRow) => ({
       slug: row.slug,
       title: row.title,
       description: row.description || "",
@@ -81,7 +97,7 @@ export async function fetchCaseStudyBySlugFromD1(
       return getLocalCaseStudyBySlug(slug);
     }
 
-    const row = results.find((r) => {
+    const row = results.find((r: D1ContentRow) => {
       const csLower = r.slug.toLowerCase();
       const cleanCsLower = csLower.replace("_case_study", "").replace(/-/g, "_");
       return (
@@ -128,7 +144,7 @@ export async function fetchBlogPostsFromD1(db?: D1Database): Promise<BlogPost[]>
       return getLocalBlogPosts();
     }
 
-    return results.map((row) => ({
+    return results.map((row: D1ContentRow) => ({
       slug: row.slug,
       title: row.title,
       description: row.description || "",
