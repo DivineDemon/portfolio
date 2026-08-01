@@ -4,6 +4,8 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Badge } from "@/components/ui/badge";
 import Quote from "@/components/ui/quote";
 import SectionBadge from "@/components/ui/section-badge";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { fetchCaseStudiesFromD1 } from "@/lib/d1-content";
 import { env } from "cloudflare:workers";
@@ -61,9 +63,9 @@ const schemaData = {
             {cs.title}
           </h2>
 
-          <p class="w-full text-left text-muted-foreground text-xs leading-relaxed sm:text-sm">
-            {cs.description}
-          </p>
+          <div class="line-clamp-3 w-full text-left text-muted-foreground text-xs leading-relaxed sm:text-sm [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_p]:inline [&_strong]:font-semibold [&_strong]:text-foreground">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{cs.description}</ReactMarkdown>
+          </div>
 
           {cs.tags && cs.tags.length > 0 && (
             <div class="flex w-full flex-wrap items-start justify-start gap-2">

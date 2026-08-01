@@ -1,4 +1,6 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getAllBlogPosts } from "@/lib/mdx";
 import MaxWidthWrapper from "../max-width-wrapper";
 import SectionBadge from "../ui/section-badge";
@@ -45,9 +47,9 @@ const BlogTeaser = () => {
                 {post.title}
               </h3>
 
-              <p className="line-clamp-3 text-muted-foreground text-xs leading-relaxed">
-                {post.description}
-              </p>
+              <div className="line-clamp-3 text-muted-foreground text-xs leading-relaxed [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_p]:inline [&_strong]:font-semibold [&_strong]:text-foreground">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.description}</ReactMarkdown>
+              </div>
             </div>
 
             <div className="flex items-center justify-between border-border/50 border-t pt-4 font-medium text-primary text-xs">
