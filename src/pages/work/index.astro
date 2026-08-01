@@ -6,9 +6,10 @@ import Quote from "@/components/ui/quote";
 import SectionBadge from "@/components/ui/section-badge";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { fetchCaseStudiesFromD1 } from "@/lib/d1-content";
+import { env } from "cloudflare:workers";
 
-const runtime = Astro.locals.runtime;
-const db = runtime?.env?.DB;
+// biome-ignore lint/suspicious/noExplicitAny: cloudflare types
+const db = (env as any).DB;
 const caseStudies = await fetchCaseStudiesFromD1(db);
 
 const schemaData = {

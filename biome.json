@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!!**/dist", "!!**/build", "!!**/coverage"]
+    "includes": ["**", "!!**/dist", "!!**/build", "!!**/coverage", "!worker-configuration.d.ts"]
   },
   "formatter": {
     "enabled": true,

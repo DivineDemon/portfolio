@@ -14,10 +14,11 @@ import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import Quote from "@/components/ui/quote";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { fetchCaseStudyBySlugFromD1 } from "@/lib/d1-content";
+import { env } from "cloudflare:workers";
 
 const { slug } = Astro.params;
-const runtime = Astro.locals.runtime;
-const db = runtime?.env?.DB;
+// biome-ignore lint/suspicious/noExplicitAny: cloudflare types
+const db = (env as any).DB;
 
 const caseStudy = slug ? await fetchCaseStudyBySlugFromD1(slug, db) : undefined;
 
