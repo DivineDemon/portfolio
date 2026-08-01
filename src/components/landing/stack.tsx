@@ -31,7 +31,7 @@ const Stack = () => {
         <Quote text="Profiled under load. Not just imported." />
       </div>
 
-      <div className="flex w-full items-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
+      <div className="scrollbar-none flex w-full items-center gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] sm:flex-wrap [&::-webkit-scrollbar]:hidden">
         {categories.map((cat) => (
           <button
             className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 font-medium text-xs transition-all ${

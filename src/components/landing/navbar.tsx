@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import LogoDark from "@/assets/img/logo-dark.svg";
-import LogoLight from "@/assets/img/logo-light.svg";
+import LogoDark from "@/assets/img/logo-dark.svg?url";
+import LogoLight from "@/assets/img/logo-light.svg?url";
 import { NAV_ITEMS } from "@/lib/constants";
 import { cn, getImageSrc } from "@/lib/utils";
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
@@ -9,10 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 
 const Navbar = () => {
   const [pathname, setPathname] = useState("/");
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return document.documentElement.classList.contains("dark");
-  });
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -45,6 +42,7 @@ const Navbar = () => {
             alt="Logo"
             className="size-7 sm:size-8"
             src={getImageSrc(isDark ? LogoDark : LogoLight)}
+            suppressHydrationWarning
           />
           <h1 className="xs:block hidden font-bold font-heading text-xs leading-tight sm:text-sm">
             Mushood

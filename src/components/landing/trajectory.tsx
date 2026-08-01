@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import LogoDark from "@/assets/img/logo-dark.svg";
-import LogoLight from "@/assets/img/logo-light.svg";
+import LogoDark from "@/assets/img/logo-dark.svg?url";
+import LogoLight from "@/assets/img/logo-light.svg?url";
 import { TRAJECTORY_DATA } from "@/lib/constants";
 import { getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
@@ -8,10 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import SectionBadge from "../ui/section-badge";
 
 const Trajectory = () => {
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return document.documentElement.classList.contains("dark");
-  });
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const updateTheme = () => {
@@ -54,6 +51,7 @@ const Trajectory = () => {
                     alt={item.company}
                     className="size-8 shrink-0 rounded-lg object-contain sm:size-10"
                     src={logoSrc}
+                    suppressHydrationWarning
                   />
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="truncate font-bold font-heading text-foreground text-sm sm:text-base">
