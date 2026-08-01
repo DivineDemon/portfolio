@@ -1,20 +1,18 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio",
   "main": "@astrojs/cloudflare/entrypoints/server",
-  "compatibility_date": "2026-07-31",
+  "compatibility_date": "2026-08-01",
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "assets": {
-    "binding": "ASSETS",
-    "directory": "./dist"
+    "directory": "./dist/client",
+    "binding": "ASSETS"
   },
-  "d1_databases": [
+  "kv_namespaces": [
     {
-      "binding": "DB",
-      "database_name": "portfolio_db",
-      "database_id": "c49195df-69e2-4179-bb8c-7e27c30499b1"
+      "binding": "SESSION",
+      "id": "3229c16682cc4e409a728297546886be"
     }
   ]
 }
