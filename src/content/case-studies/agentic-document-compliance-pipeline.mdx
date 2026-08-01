@@ -1,0 +1,62 @@
+---
+slug: "agentic-document-compliance-pipeline"
+title: "Agentic Document Compliance Pipeline"
+type: "Company"
+clientCompany: "Afiniti"
+date: "2024-04-15"
+author: "Mushood Hanif"
+description: "Multi-agent LLM orchestration system automating logistics document intake, field extraction, and compliance validation."
+tags: ["LangGraph", "Multi-Agent", "LLaMA-3", "FastAPI", "Compliance"]
+metrics:
+  - value: "92%"
+    label: "Turnaround Reduction"
+    subtext: "Cut processing time from 3 days to <4 hours"
+  - value: "55%"
+    label: "Per-Doc Cost Savings"
+    subtext: "Replaced vendor APIs with on-prem LLaMA-3"
+  - value: "0"
+    label: "Unsupervised Failures"
+    subtext: "Human-in-the-loop confidence gates"
+---
+
+## Executive Summary
+
+Enterprise logistics compliance required manual inspection of unstructured bills of lading, customs declarations, and compliance certificates. Batches required up to 3 days of human review, causing massive port demurrage costs and operational delays.
+
+We engineered a 6-agent **LangGraph** orchestration pipeline backed by on-premise fine-tuned LLaMA-3 models that reduced batch processing turnaround from 3 days to under 4 hours (92% reduction) with zero unsupervised compliance failures.
+
+---
+
+## The Problem
+
+1. **High Latency & Demurrage**: Manual verification of 1,000+ weekly logistics documents took 72 hours per batch.
+2. **Third-Party API Expenses**: Legacy OCR and cloud LLM APIs incurred high per-document costs without strict data privacy guarantees.
+3. **Complex Cross-Field Logic**: Compliance rules required cross-referencing values across multi-page tables, tax IDs, and regulatory databases.
+
+---
+
+## Technical Solution & Architecture
+
+```
+[Document Upload] ──> [Intake Agent] ──> [OCR & Layout Parsing Agent]
+                                                 │
+[Human Review Portal] <── [Compliance Gate] <── [Extraction & Logic Agent]
+```
+
+### 1. Multi-Agent LangGraph State Machine
+- **Intake Agent**: Classifies document type and validates visual DPI / formatting.
+- **Extraction Agent**: Extracts key-value entities using domain-fine-tuned LLaMA-3 with structured JSON outputs.
+- **Compliance Agent**: Validates cross-field business logic, tax ID formats, and regulatory requirements.
+- **Self-Correction Agent**: Re-prompts extraction if schema validation fails or entity confidence falls below threshold.
+- **Human-in-the-Loop Gate**: Routes low-confidence extractions (&lt; 85%) to an internal review portal.
+
+### 2. On-Prem Infrastructure
+- Served via **FastAPI** microservices with full OpenTelemetry request tracing.
+
+---
+
+## Quantified Impact
+
+- **92% Turnaround Time Reduction**: Reduced end-to-end review cycle from 3 days to under 4 hours.
+- **55% Cost Reduction**: Replaced external vendor APIs with self-hosted QLoRA LLaMA-3 instances.
+- **Zero Unsupervised Compliance Violations**: 100% precision maintained via confidence-based human routing.

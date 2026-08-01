@@ -1,63 +1,134 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
-	"files": {
-		"ignoreUnknown": true,
-		"includes": ["**", "!!dist", "!!public"]
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab"
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"preset": "recommended",
-			"suspicious": {
-				"noArrayIndexKey": "off"
-			},
-			"security": {
-				"noDangerouslySetInnerHtml": "off"
-			},
-			"a11y": {
-				"useMediaCaption": "off",
-				"noSvgWithoutTitle": "off"
-			}
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double"
-		}
-	},
-	"css": {
-		"parser": {
-			"tailwindDirectives": true
-		}
-	},
-	"assist": {
-		"enabled": true,
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
-		}
-	},
-	"overrides": [
-		{
-			"includes": ["**/*.astro"],
-			"linter": {
-				"rules": {
-					"correctness": {
-						"noUnusedImports": "off",
-						"noUnusedVariables": "off"
-					}
-				}
-			}
-		}
-	]
+  "$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!!**/dist", "!!**/build", "!!**/coverage"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always",
+      "bracketSpacing": true
+    },
+    "jsxRuntime": "transparent"
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": false,
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "double"
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "domains": {
+      "react": "recommended",
+      "project": "recommended"
+    },
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "recommended": true
+      },
+      "complexity": {
+        "recommended": true
+      },
+      "correctness": {
+        "recommended": true,
+        "useExhaustiveDependencies": "error",
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error"
+      },
+      "style": {
+        "recommended": true,
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "filenameCases": ["kebab-case"]
+          }
+        },
+        "useImportType": "error",
+        "useExportType": "error",
+        "useConsistentArrayType": "error",
+        "noNonNullAssertion": "warn"
+      },
+      "suspicious": {
+        "recommended": true,
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["warn", "error"]
+          }
+        },
+        "noExplicitAny": "warn"
+      },
+      "performance": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "unsafe",
+          "options": {
+            "attributes": ["className", "class"],
+            "functions": ["cn", "cva", "clsx", "tw", "twMerge"]
+          }
+        }
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "recommended": true,
+        "useSortedAttributes": "on",
+        "organizeImports": "on"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          },
+          "style": {
+            "useFilenamingConvention": "off"
+          }
+        }
+      }
+    }
+  ]
 }

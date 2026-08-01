@@ -1,0 +1,40 @@
+---
+slug: "faiss-faq-vector-retrieval-engine"
+title: "FAISS FAQ Vector Retrieval Engine"
+type: "Company"
+clientCompany: "Confiz"
+date: "2022-03-20"
+author: "Mushood Hanif"
+description: "Sub-100ms dense vector retrieval engine for enterprise FAQ and ticket resolution search."
+tags: ["FAISS", "HNSW", "Vector Search", "Python", "Confiz"]
+metrics:
+  - value: "60ms"
+    label: "Retrieval Latency"
+    subtext: "Down from 340ms keyword search"
+  - value: "+18 pts"
+    label: "Search Accuracy"
+    subtext: "Increased relevance precision"
+  - value: "500k+"
+    label: "Indexed Knowledge Base"
+    subtext: "Dense vector embeddings"
+---
+
+## Executive Summary
+
+Legacy SQL keyword search across a 500k+ enterprise knowledge base failed on semantic variations and synonyms, returning inaccurate support articles and incurring 340ms search latencies.
+
+We rebuilt the FAQ retrieval pipeline using a **FAISS HNSW (Hierarchical Navigable Small World)** vector index paired with TF-IDF reranking, cutting search latency from 340ms to 60ms while boosting top-3 retrieval precision by 18 points.
+
+---
+
+## Engineering Design
+
+1. **HNSW Vector Graph Index**: Implemented FAISS HNSW graph indexing for logarithmic-time approximate nearest neighbor search.
+2. **Hybrid Reranking**: Combined dense vector similarity scores with BM25/TF-IDF keyword matching to preserve exact product code matches.
+
+---
+
+## Results
+
+- **82% Latency Reduction**: Cut search query time from 340ms to 60ms.
+- **+18 Points Precision**: Dramatically improved answer relevance for non-exact user queries.
