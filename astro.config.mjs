@@ -48,6 +48,5 @@ export default defineConfig({
       PUBLIC_EMAILJS_TEMPLATE_ID: envField.string({ context: "client", access: "public" }),
       PUBLIC_POSTHOG_PROJECT_TOKEN: envField.string({ context: "client", access: "public" }),
     },
-    validateSecrets: true,
   },
 });
