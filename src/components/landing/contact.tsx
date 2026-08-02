@@ -1,3 +1,8 @@
+import {
+  PUBLIC_EMAILJS_PUBLIC_KEY,
+  PUBLIC_EMAILJS_SERVICE_ID,
+  PUBLIC_EMAILJS_TEMPLATE_ID,
+} from "astro:env/client";
 import emailjs from "@emailjs/browser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Send } from "lucide-react";
@@ -33,13 +38,7 @@ const contactSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-interface ContactProps {
-  serviceId?: string;
-  templateId?: string;
-  publicKey?: string;
-}
-
-const Contact = ({ serviceId, templateId, publicKey }: ContactProps) => {
+const Contact = () => {
   const {
     register,
     handleSubmit,
@@ -56,22 +55,17 @@ const Contact = ({ serviceId, templateId, publicKey }: ContactProps) => {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const finalServiceId =
-      serviceId || import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || import.meta.env.EMAILJS_SERVICE_ID;
-    const finalTemplateId =
-      templateId ||
-      import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ||
-      import.meta.env.EMAILJS_TEMPLATE_ID;
-    const finalPublicKey =
-      publicKey || import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || import.meta.env.EMAILJS_PUBLIC_KEY;
+    const serviceId = PUBLIC_EMAILJS_SERVICE_ID;
+    const publicKey = PUBLIC_EMAILJS_PUBLIC_KEY;
+    const templateId = PUBLIC_EMAILJS_TEMPLATE_ID;
 
-    if (!finalServiceId || !finalTemplateId || !finalPublicKey) {
+    if (!serviceId || !templateId || !publicKey) {
       toast.error("EmailJS configuration parameters missing in environment variables.");
       return;
     }
 
     try {
-      await emailjs.send(finalServiceId, finalTemplateId, data, finalPublicKey);
+      await emailjs.send(serviceId, templateId, data, publicKey);
       toast.success(
         "Message sent successfully! I will review your inquiry and get back to you shortly.",
       );

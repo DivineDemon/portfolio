@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import { ArrowUpRight } from "lucide-react";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +12,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import { fetchCaseStudiesFromD1 } from "@/lib/d1-content";
 import { env } from "cloudflare:workers";
 
-// biome-ignore lint/suspicious/noExplicitAny: cloudflare types
-const db = (env as any).DB;
+const db = env.DB;
 const caseStudies = await fetchCaseStudiesFromD1(db);
 
 const schemaData = {
