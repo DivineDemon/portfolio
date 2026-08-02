@@ -48,7 +48,7 @@ const BlogTeaser = () => {
               </h3>
 
               <div className="line-clamp-3 text-muted-foreground text-xs leading-relaxed [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_p]:inline [&_strong]:font-semibold [&_strong]:text-foreground">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.description}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.description ?? ""}</ReactMarkdown>
               </div>
             </div>
 

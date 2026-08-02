@@ -56,7 +56,9 @@ const WorkTeaser = () => {
                 </h3>
 
                 <div className="line-clamp-3 text-muted-foreground text-xs leading-relaxed sm:text-sm [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_p]:inline [&_strong]:font-semibold [&_strong]:text-foreground">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.description}</ReactMarkdown>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {project.description ?? ""}
+                  </ReactMarkdown>
                 </div>
               </div>
             </div>

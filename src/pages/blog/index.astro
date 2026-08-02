@@ -5,13 +5,12 @@ import { ArrowUpRight, Calendar, Clock } from "lucide-react";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import Quote from "@/components/ui/quote";
 import SectionBadge from "@/components/ui/section-badge";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { fetchBlogPostsFromD1 } from "@/lib/d1-content";
-import { env } from "cloudflare:workers";
+import { fetchBlogPostsFromD1, type D1Database } from "@/lib/d1-content";
 
-const db = env.DB;
+const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
+  ?.DB;
 const posts = await fetchBlogPostsFromD1(db);
 
 const schemaData = {
@@ -74,7 +73,7 @@ const schemaData = {
             </h2>
 
             <div class="line-clamp-3 text-muted-foreground text-xs leading-relaxed sm:text-sm [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_p]:inline [&_strong]:font-semibold [&_strong]:text-foreground">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.description}</ReactMarkdown>
+              <MarkdownRenderer content={typeof post.description === "string" ? post.description : ""} />
             </div>
           </div>
 

@@ -1,8 +1,3 @@
-import {
-  PUBLIC_EMAILJS_PUBLIC_KEY,
-  PUBLIC_EMAILJS_SERVICE_ID,
-  PUBLIC_EMAILJS_TEMPLATE_ID,
-} from "astro:env/client";
 import emailjs from "@emailjs/browser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Send } from "lucide-react";
@@ -55,9 +50,9 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const serviceId = PUBLIC_EMAILJS_SERVICE_ID;
-    const publicKey = PUBLIC_EMAILJS_PUBLIC_KEY;
-    const templateId = PUBLIC_EMAILJS_TEMPLATE_ID;
+    const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
+    const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
+    const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
 
     if (!serviceId || !templateId || !publicKey) {
       toast.error("EmailJS configuration parameters missing in environment variables.");

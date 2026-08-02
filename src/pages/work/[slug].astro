@@ -1,6 +1,4 @@
 ---
-export const prerender = false;
-
 import { ArrowLeft, Calendar, FolderX, User } from "lucide-react";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
@@ -15,10 +13,21 @@ import {
 import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import Quote from "@/components/ui/quote";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { fetchCaseStudyBySlugFromD1 } from "@/lib/d1-content";
-import { env } from "cloudflare:workers";
+import {
+  fetchCaseStudyBySlugFromD1,
+  fetchCaseStudiesFromD1,
+  type D1Database,
+} from "@/lib/d1-content";
 
-const db = env.DB;
+export async function getStaticPaths() {
+  const caseStudies = await fetchCaseStudiesFromD1();
+  return caseStudies.map((cs) => ({
+    params: { slug: cs.slug },
+  }));
+}
+
+const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
+  ?.DB;
 const { slug } = Astro.params;
 const caseStudy = slug ? await fetchCaseStudyBySlugFromD1(slug, db) : undefined;
 

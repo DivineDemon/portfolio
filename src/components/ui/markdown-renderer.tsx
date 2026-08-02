@@ -27,7 +27,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
       }}
       remarkPlugins={[remarkGfm]}
     >
-      {content}
+      {content ?? ""}
     </ReactMarkdown>
   );
 }
