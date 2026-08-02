@@ -7,6 +7,10 @@
     "directory": "./dist/client",
     "binding": "ASSETS"
   },
+  "routes": [
+    { "pattern": "mushoodhanif.com", "custom_domain": true },
+    { "pattern": "www.mushoodhanif.com", "custom_domain": true }
+  ],
 
   "observability": {
     "logs": {

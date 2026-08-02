@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
-const siteUrl = process.env.PUBLIC_SITE_URL || "https://mushood.com";
+const siteUrl = process.env.PUBLIC_SITE_URL || "https://mushoodhanif.com";
 
 export default defineConfig({
   site: siteUrl,
