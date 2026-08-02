@@ -13,23 +13,17 @@ import {
 import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import Quote from "@/components/ui/quote";
 import BaseLayout from "@/layouts/base-layout.astro";
-import {
-  fetchCaseStudyBySlugFromD1,
-  fetchCaseStudiesFromD1,
-  type D1Database,
-} from "@/lib/d1-content";
+import { getCaseStudyBySlug, getAllCaseStudies } from "@/lib/mdx";
 
 export async function getStaticPaths() {
-  const caseStudies = await fetchCaseStudiesFromD1();
+  const caseStudies = getAllCaseStudies();
   return caseStudies.map((cs) => ({
     params: { slug: cs.slug },
   }));
 }
 
-const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
-  ?.DB;
 const { slug } = Astro.params;
-const caseStudy = slug ? await fetchCaseStudyBySlugFromD1(slug, db) : undefined;
+const caseStudy = slug ? getCaseStudyBySlug(slug) : undefined;
 
 const pageTitle = caseStudy
   ? `${caseStudy.title} — Technical Case Study | Mushood Hanif`

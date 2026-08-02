@@ -13,19 +13,17 @@ import {
 import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import Quote from "@/components/ui/quote";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { fetchBlogPostBySlugFromD1, fetchBlogPostsFromD1, type D1Database } from "@/lib/d1-content";
+import { getBlogPostBySlug, getAllBlogPosts } from "@/lib/mdx";
 
 export async function getStaticPaths() {
-  const posts = await fetchBlogPostsFromD1();
+  const posts = getAllBlogPosts();
   return posts.map((post) => ({
     params: { slug: post.slug },
   }));
 }
 
-const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
-  ?.DB;
 const { slug } = Astro.params;
-const post = slug ? await fetchBlogPostBySlugFromD1(slug, db) : undefined;
+const post = slug ? getBlogPostBySlug(slug) : undefined;
 
 const pageTitle = post ? `${post.title} — Mushood Hanif` : "Article Not Found — Mushood Hanif";
 const pageDescription = post ? post.description : "Article could not be located.";

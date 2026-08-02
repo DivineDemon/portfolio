@@ -7,11 +7,9 @@ import Quote from "@/components/ui/quote";
 import SectionBadge from "@/components/ui/section-badge";
 import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { fetchBlogPostsFromD1, type D1Database } from "@/lib/d1-content";
+import { getAllBlogPosts } from "@/lib/mdx";
 
-const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
-  ?.DB;
-const posts = await fetchBlogPostsFromD1(db);
+const posts = getAllBlogPosts();
 
 const schemaData = {
   "@context": "https://schema.org",

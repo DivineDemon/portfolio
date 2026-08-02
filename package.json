@@ -9,7 +9,6 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "format": "biome format --write .",
-    "seed:d1": "tsx scripts/seed-d1.ts",
     "build": "astro check && astro build",
     "lint": "biome check --write --unsafe ."
   },

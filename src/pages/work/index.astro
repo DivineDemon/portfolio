@@ -8,11 +8,9 @@ import Quote from "@/components/ui/quote";
 import SectionBadge from "@/components/ui/section-badge";
 import MarkdownRenderer from "@/components/ui/markdown-renderer";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { fetchCaseStudiesFromD1, type D1Database } from "@/lib/d1-content";
+import { getAllCaseStudies } from "@/lib/mdx";
 
-const db = (Astro.locals as unknown as { runtime?: { env?: { DB?: D1Database } } })?.runtime?.env
-  ?.DB;
-const caseStudies = await fetchCaseStudiesFromD1(db);
+const caseStudies = getAllCaseStudies();
 
 const schemaData = {
   "@context": "https://schema.org",
