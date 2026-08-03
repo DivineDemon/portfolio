@@ -1,0 +1,113 @@
+---
+import "@/assets/css/index.css";
+import LogoDark from "@/assets/img/logo-dark.svg";
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Graph Poster Generator — Mushood Hanif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-[#050507] text-foreground flex flex-col items-center justify-center p-8 selection:bg-primary/20 selection:text-primary">
+    <!-- Notice Banner for User -->
+    <div class="mb-6 flex flex-col items-center gap-2 text-center">
+      <h1 class="text-2xl font-bold font-heading text-white">
+        Open Graph Poster Preview (1200px × 630px)
+      </h1>
+      <p class="text-sm text-zinc-400 max-w-xl">
+        This card is rendered at exact 1200×630 dimensions using your brand colors, Fraunces/Inter fonts, logo, and metrics. Screenshot the box below to update <code class="text-primary font-mono">/public/og-image.png</code>.
+      </p>
+    </div>
+
+    <!-- Exact 1200x630 OG Card Container -->
+    <div
+      id="og-card"
+      style="width: 1200px; height: 630px;"
+      class="relative overflow-hidden rounded- border border-zinc-800 bg-[#0c0c0f] p-12 shadow-2xl flex flex-col justify-between select-none"
+    >
+      <!-- Background Ambient Glow & Mesh Gradients -->
+      <div class="pointer-events-none absolute -top-32 -left-32 size-96 rounded-full bg-[#c23030]/20 blur-[120px]"></div>
+      <div class="pointer-events-none absolute -bottom-32 -right-32 size-96 rounded-full bg-[#c23030]/15 blur-[120px]"></div>
+      <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] rounded-full bg-red-950/10 blur-[150px]"></div>
+
+      <!-- Top Header Row -->
+      <div class="relative z-10 flex items-center justify-between border-b border-zinc-800/80 pb-6">
+        <!-- Logo & Name -->
+        <div class="flex items-center gap-4">
+          <div class="flex size-14 items-center justify-center rounded-2xl border border-zinc-700/80 bg-zinc-900/90 p-2.5 shadow-md">
+            <img src={LogoDark.src} alt="Mushood Hanif Logo" class="size-full object-contain" />
+          </div>
+          <div class="flex flex-col">
+            <div class="font-bold text-3xl font-heading tracking-tight text-white">
+              Mushood <span class="text-[#c23030]">Hanif</span>
+            </div>
+            <div class="text-xs font-mono tracking-widest text-zinc-400 uppercase mt-0.5">
+              AI Systems Architect & Senior AI Engineer
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Badge -->
+        <div class="flex items-center gap-2 rounded-full border border-[#c23030]/40 bg-[#c23030]/10 px-5 py-2">
+          <div class="size-2.5 rounded-full bg-[#c23030] animate-pulse"></div>
+          <span class="font-semibold text-xs text-[#e53838] uppercase tracking-wider font-mono">
+            Founder @ Haga Labs
+          </span>
+        </div>
+      </div>
+
+      <!-- Center Headline Content -->
+      <div class="relative z-10 my-auto flex flex-col gap-4 py-4">
+        <div class="w-fit rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-1 font-mono text-xs text-zinc-400 uppercase tracking-widest">
+          Production AI & Physical Systems
+        </div>
+
+        <h2 class="font-extrabold text-5xl font-heading text-white leading-[1.18] max-w-5xl tracking-tight">
+          Building Multi-Agent Systems, High-Throughput ML Pipelines & Physical AI.
+        </h2>
+
+        <p class="text-lg text-zinc-400 max-w-3xl leading-relaxed">
+          Specializing in LangGraph orchestration, on-prem QLoRA LLM fine-tuning, real-time streaming fraud scoring, and robot policy verification.
+        </p>
+      </div>
+
+      <!-- Bottom Metrics & Footer Row -->
+      <div class="relative z-10 grid grid-cols-3 gap-6 border-t border-zinc-800/80 pt-6">
+        <div class="flex flex-col gap-1 rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4 backdrop-blur-md">
+          <div class="font-bold text-3xl font-heading text-[#c23030]">
+            92% Processing Cut
+          </div>
+          <div class="text-xs text-zinc-400 font-medium">
+            Multi-Agent LangGraph System
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1 rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4 backdrop-blur-md">
+          <div class="font-bold text-3xl font-heading text-white">
+            1.2M+ Daily Events
+          </div>
+          <div class="text-xs text-zinc-400 font-medium">
+            Real-Time Streaming (&lt;180ms Latency)
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1 rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4 backdrop-blur-md">
+          <div class="font-bold text-3xl font-heading text-[#c23030]">
+            100% Physics Precision
+          </div>
+          <div class="text-xs text-zinc-400 font-medium">
+            MuJoCo World Model Verifier
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
