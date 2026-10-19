@@ -1,4 +1,5 @@
-import emailjs from "@emailjs/browser";
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -8,7 +9,6 @@ import MaxWidthWrapper from "../max-width-wrapper";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import Quote from "../ui/quote";
 import SectionBadge from "../ui/section-badge";
 import { Textarea } from "../ui/textarea";
 
@@ -50,9 +50,9 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
-    const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
-    const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 
     if (!serviceId || !templateId || !publicKey) {
       toast.error("EmailJS configuration parameters missing in environment variables.");
@@ -60,6 +60,7 @@ const Contact = () => {
     }
 
     try {
+      const { default: emailjs } = await import("@emailjs/browser");
       await emailjs.send(serviceId, templateId, data, publicKey);
       toast.success(
         "Message sent successfully! I will review your inquiry and get back to you shortly.",
@@ -81,7 +82,11 @@ const Contact = () => {
         <h2 className="font-bold font-heading text-4xl tracking-tight sm:text-6xl md:text-7xl">
           Hard problems welcome.
         </h2>
-        <Quote text="Heads-down building right now - not looking for roles. But if you've got a hard problem, a wild idea, or just want to talk shop about LLMs, distributed systems, scientific ML, or why this site is unreasonably over-engineered for a portfolio, I'm always up for that." />
+        <p className="w-full text-pretty border-primary border-l-2 pl-4 text-muted-foreground text-xs italic leading-relaxed sm:text-sm">
+          Heads-down building right now - not looking for roles. But if you've got a hard problem, a
+          wild idea, or just want to talk shop about LLMs, distributed systems, scientific ML, or
+          why this site is unreasonably over-engineered for a portfolio, I'm always up for that.
+        </p>
       </div>
 
       <form className="flex w-full flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>

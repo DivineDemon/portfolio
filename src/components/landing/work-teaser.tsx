@@ -1,12 +1,13 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllCaseStudies } from "@/lib/mdx";
 import MaxWidthWrapper from "../max-width-wrapper";
 import SectionBadge from "../ui/section-badge";
 
-const WorkTeaser = () => {
-  const allCaseStudies = getAllCaseStudies();
+const WorkTeaser = async () => {
+  const allCaseStudies = await getAllCaseStudies();
   const topProjects = allCaseStudies.slice(0, 2);
 
   return (
@@ -20,19 +21,19 @@ const WorkTeaser = () => {
           <h2 className="font-bold font-heading text-4xl tracking-tight sm:text-5xl md:text-6xl">
             Systems in Production.
           </h2>
-          <a
+          <Link
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-primary text-sm hover:underline"
             href="/work"
           >
             <span>View All Projects</span>
             <ArrowRight className="size-4" />
-          </a>
+          </Link>
         </div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {topProjects.map((project) => (
-          <a
+          <Link
             className="group relative flex flex-col justify-between gap-6 rounded-3xl border border-border/70 bg-card/80 p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg sm:p-7"
             href={`/work/${project.slug}`}
             key={project.slug}
@@ -62,7 +63,7 @@ const WorkTeaser = () => {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </MaxWidthWrapper>

@@ -1,34 +1,62 @@
-# React + TypeScript + Vite
+# Mushood Hanif — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio and technical archive of Mushood Hanif: Founder & AI Systems Architect at Haga Labs, Senior AI Engineer at Afiniti. Built with Next.js 16 (App Router), React 19, Tailwind CSS v4, and MDX content stored in-repo.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework:** Next.js 16 (App Router, React Compiler, Cache Components)
+- **Language:** TypeScript (strict)
+- **Styling:** Tailwind CSS v4, shadcn/ui primitives, `next-themes`
+- **Content:** MDX via `gray-matter` + `react-markdown` / `remark-gfm`, rendered on the server
+- **Motion & viz:** Mermaid diagrams, d3-force
+- **Forms:** React Hook Form + Zod + EmailJS
+- **Linting/formatting:** Biome
 
-## React Compiler
+## Development
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+pnpm install
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts
+
+| Script | Description |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm build` | Production build |
+| `pnpm start` | Serve the production build |
+| `pnpm lint` | Biome check with safe + unsafe autofixes |
+| `pnpm format` | Biome format |
+| `pnpm check` | Biome check without writing |
+| `pnpm typecheck` | TypeScript project check (`tsc --noEmit`) |
+
+## Environment
+
+Copy `.env.example` to `.env` and fill in the values. All client-exposed variables use the `NEXT_PUBLIC_` prefix:
+
+- `NEXT_PUBLIC_SITE_URL` — canonical site origin
+- `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` — PostHog analytics
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` — Google Analytics
+- `NEXT_PUBLIC_EMAILJS_SERVICE_ID`, `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`, `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` — contact form delivery
+
+Analytics and the contact form are disabled gracefully when their variables are absent.
+
+## Content
+
+Content lives in `src/content`:
+
+- `src/content/blogs/*.mdx` — blog posts with frontmatter (`title`, `slug`, `date`, `description`, `keywords`, `readingTime`, `author`)
+- `src/content/case-studies/*.mdx` — case studies parsed from markdown headers (`Project`, `Role`, `Technologies`, `Domain`) with curated metrics
+
+Adding or editing an MDX file is all that is needed; routes, sitemap, and JSON-LD are generated from the content directory.
+
+> Note: `next.config.ts` includes `outputFileTracingIncludes` for `src/content/**` so content files are bundled in serverless deployments.
+
+## Routes
+
+- `/` — landing page (hero, about, trajectory, impact, work & blog teasers, stack, contact)
+- `/blog`, `/blog/[slug]` — article index and detail pages
+- `/work`, `/work/[slug]` — case study index and detail pages
+- `/og-poster` — internal 1200×630 card preview for screenshotting `public/og-image.png`
+- `/sitemap.xml`, `/robots.txt` — generated metadata routes

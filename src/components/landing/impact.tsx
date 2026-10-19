@@ -1,3 +1,5 @@
+"use client";
+
 import type * as d3Force from "d3-force";
 import {
   forceCenter,
@@ -8,6 +10,7 @@ import {
   forceX,
   forceY,
 } from "d3-force";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import MaxWidthWrapper from "../max-width-wrapper";
 import SectionBadge from "../ui/section-badge";
@@ -28,26 +31,8 @@ const Impact = () => {
     y: 0,
   });
 
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return document.documentElement.classList.contains("dark");
-  });
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
 
   const nodesRef = useRef<GraphNode[]>(JSON.parse(JSON.stringify(GRAPH_NODES)));
   const linksRef = useRef<GraphLink[]>(JSON.parse(JSON.stringify(GRAPH_LINKS)));

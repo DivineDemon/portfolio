@@ -10,12 +10,24 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
   return (
     <ReactMarkdown
       components={{
+        pre({ children }) {
+          return <>{children}</>;
+        },
         code({ className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");
-          const isMermaid = match && match[1] === "mermaid";
 
-          if (isMermaid) {
+          if (match?.[1] === "mermaid") {
             return <Mermaid chart={String(children).replace(/\n$/, "")} />;
+          }
+
+          if (match) {
+            return (
+              <pre>
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              </pre>
+            );
           }
 
           return (

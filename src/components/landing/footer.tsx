@@ -1,21 +1,24 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import LogoDark from "@/assets/img/logo-dark.svg?url";
-import LogoLight from "@/assets/img/logo-light.svg?url";
-import { getImageSrc } from "@/lib/utils";
+import LogoDark from "@/assets/img/logo-dark.svg";
+import LogoLight from "@/assets/img/logo-light.svg";
 import MaxWidthWrapper from "../max-width-wrapper";
 
 const Footer = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [year, setYear] = useState<number | null>(null);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
+    setYear(new Date().getFullYear());
+
+    const root = document.documentElement;
+    const updateTheme = () => setIsDark(root.classList.contains("dark"));
 
     updateTheme();
 
     const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
+    observer.observe(root, {
       attributes: true,
       attributeFilter: ["class"],
     });
@@ -27,13 +30,15 @@ const Footer = () => {
     <footer className="h-16 w-full border-border/50 border-t">
       <MaxWidthWrapper className="flex h-full w-full items-center justify-center">
         <img
-          alt="Logo"
+          alt="Mushood Hanif logo"
           className="size-8.5"
-          src={getImageSrc(isDark ? LogoDark : LogoLight)}
+          height={34}
+          src={(isDark ? LogoDark : LogoLight).src}
           suppressHydrationWarning
+          width={34}
         />
-        <span className="flex-1 text-right text-primary text-xs">
-          &copy; {new Date().getFullYear()} Mushood Hanif. All rights reserved.
+        <span className="flex-1 text-right text-primary text-xs" suppressHydrationWarning>
+          &copy; {year ?? ""} Mushood Hanif. All rights reserved.
         </span>
       </MaxWidthWrapper>
     </footer>

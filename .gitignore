@@ -1,14 +1,12 @@
 # Dependencies
 node_modules/
 
-# Production build outputs
-dist/
-dist-ssr/
+# Next.js build outputs
+.next/
+out/
 
-# Astro & Cloudflare build artifacts
-.astro/
-.wrangler/
-.dev.vars
+# Vercel
+.vercel/
 
 # Environment variables & secrets
 .env
@@ -22,6 +20,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# TypeScript
+next-env.d.ts
+*.tsbuildinfo
 
 # OS & Editor files
 .DS_Store

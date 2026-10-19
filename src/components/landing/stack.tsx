@@ -1,5 +1,6 @@
+"use client";
+
 import { useState } from "react";
-import { getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
 import Quote from "../ui/quote";
 import SectionBadge from "../ui/section-badge";
@@ -59,7 +60,9 @@ const Stack = () => {
                 <img
                   alt={skill.name}
                   className="size-7 object-contain transition-transform duration-300 group-hover:scale-110"
-                  src={getImageSrc(skill.icon)}
+                  height={28}
+                  src={skill.icon.src}
+                  width={28}
                 />
               </div>
               <div className="flex min-w-0 flex-col">

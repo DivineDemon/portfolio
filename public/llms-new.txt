@@ -4,12 +4,12 @@
 
 ## Latest Case Studies (2026)
 
-- [Haga Physical Verification Layer](https://mushood.com/work/haga_case_study) — Physics-consistency verification layer for robot learning policies.
-- [Agentic Document Compliance](https://mushood.com/work/adcp_case_study) — 6-agent LangGraph system reducing review time by 92%.
-- [On-Prem Fine-Tuning & Serving](https://mushood.com/work/oplftsf_case_study) — QLoRA LLaMA-3 models with 4-bit quantization and vLLM serving.
+- [Haga Physical Verification Layer](https://mushoodhanif.com/work/haga_case_study) — Physics-consistency verification layer for robot learning policies.
+- [Agentic Document Compliance](https://mushoodhanif.com/work/adcp_case_study) — 6-agent LangGraph system reducing review time by 92%.
+- [On-Prem Fine-Tuning & Serving](https://mushoodhanif.com/work/oplftsf_case_study) — QLoRA LLaMA-3 models with 4-bit quantization and vLLM serving.
 
 ## Latest Articles
 
-- [Loop Engineering](https://mushood.com/blog/loop-engineering)
-- [Autonomous Agents in Production](https://mushood.com/blog/autonomous-agents)
-- [Open-Weight Models](https://mushood.com/blog/open-weight-models)
+- [Loop Engineering Explained](https://mushoodhanif.com/blog/loop-engineering-explained-2026)
+- [Agentic AI in 2026](https://mushoodhanif.com/blog/agentic-ai-autonomous-agents-2026)
+- [Open-Weight Models Have Won 2026](https://mushoodhanif.com/blog/open-weight-models-2026)

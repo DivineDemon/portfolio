@@ -1,5 +1,5 @@
 import { Briefcase, BriefcaseBusiness, Info, Mail, Medal, Package, Rss } from "lucide-react";
-import AfinitiLogo from "@/assets/img/afiniti.svg?url";
+import AfinitiLogo from "@/assets/img/afiniti.svg";
 import ConfizLogo from "@/assets/img/confiz.png";
 import UniversityLogo from "@/assets/img/gift-university.png";
 import HagaLogo from "@/assets/img/haga.png";

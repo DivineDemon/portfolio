@@ -1,12 +1,13 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getAllBlogPosts } from "@/lib/mdx";
 import MaxWidthWrapper from "../max-width-wrapper";
 import SectionBadge from "../ui/section-badge";
 
-const BlogTeaser = () => {
-  const allPosts = getAllBlogPosts();
+const BlogTeaser = async () => {
+  const allPosts = await getAllBlogPosts();
   const topPosts = allPosts.slice(0, 2);
 
   return (
@@ -18,19 +19,19 @@ const BlogTeaser = () => {
         <SectionBadge label="writing & thoughts" />
         <div className="flex w-full flex-col items-start justify-between gap-4 md:flex-row md:items-end">
           <h2 className="font-bold font-heading text-5xl md:text-6xl">Technical Insights.</h2>
-          <a
+          <Link
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-primary text-sm hover:underline"
             href="/blog"
           >
             <span>Read All Articles</span>
             <ArrowRight className="size-4" />
-          </a>
+          </Link>
         </div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         {topPosts.map((post) => (
-          <a
+          <Link
             className="group relative flex flex-col justify-between gap-4 rounded-3xl border border-border/70 bg-card/80 p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg"
             href={`/blog/${post.slug}`}
             key={post.slug}
@@ -56,7 +57,7 @@ const BlogTeaser = () => {
               <span className="group-hover:underline">Read Article</span>
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </MaxWidthWrapper>

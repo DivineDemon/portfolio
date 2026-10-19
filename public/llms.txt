@@ -11,20 +11,20 @@ Mushood Hanif is a Founder and AI Engineer with extensive experience leading pro
 
 ## Primary Sections
 
-- [Work / Case Studies](https://mushood.com/work): Comprehensive technical case studies covering system architecture, metrics, and outcomes.
-- [Blog Posts](https://mushood.com/blog): Technical writing on autonomous agents, loop engineering, open-weight models, and AI systems.
-- [Full Text Feed](https://mushood.com/llms-full.txt): Complete aggregated text format of all case studies and blog posts for RAG and AI synthesis.
+- [Work / Case Studies](https://mushoodhanif.com/work): Comprehensive technical case studies covering system architecture, metrics, and outcomes.
+- [Blog Posts](https://mushoodhanif.com/blog): Technical writing on autonomous agents, loop engineering, open-weight models, and AI systems.
+- [Full Text Feed](https://mushoodhanif.com/llms-full.txt): Complete aggregated text format of all case studies and blog posts for RAG and AI synthesis.
 
 ## Key Technical Case Studies
 
-- [Haga Physical Verification Layer](https://mushood.com/work/haga_case_study): Physics perturbation benchmarking and violation detection on MuJoCo/Robosuite.
-- [Agentic Document Compliance](https://mushood.com/work/adcp_case_study): LangGraph 6-agent orchestration state machine cutting logistics review from 3 days to <4 hours.
-- [On-Prem Fine-Tuning & Serving](https://mushood.com/work/oplftsf_case_study): Self-serve QLoRA LLaMA-3 fine-tuning and vLLM serving framework on single A100 GPU.
-- [Real-Time Fraud Scoring](https://mushood.com/work/rtfsp_case_study): High-throughput streaming pipeline processing 1.2M+ daily transactions at <180ms p95 latency.
-- [Bilingual RAG Chatbot](https://mushood.com/work/brsc_case_study): Urdu/English RAG chatbot with FAISS vector search handling 40,000+ monthly conversations.
+- [Haga Physical Verification Layer](https://mushoodhanif.com/work/haga_case_study): Physics perturbation benchmarking and violation detection on MuJoCo/Robosuite.
+- [Agentic Document Compliance](https://mushoodhanif.com/work/adcp_case_study): LangGraph 6-agent orchestration state machine cutting logistics review from 3 days to <4 hours.
+- [On-Prem Fine-Tuning & Serving](https://mushoodhanif.com/work/oplftsf_case_study): Self-serve QLoRA LLaMA-3 fine-tuning and vLLM serving framework on single A100 GPU.
+- [Real-Time Fraud Scoring](https://mushoodhanif.com/work/rtfsp_case_study): High-throughput streaming pipeline processing 1.2M+ daily transactions at <180ms p95 latency.
+- [Bilingual RAG Chatbot](https://mushoodhanif.com/work/brsc_case_study): Urdu/English RAG chatbot with FAISS vector search handling 40,000+ monthly conversations.
 
 ## Selected Articles
 
-- [Loop Engineering](https://mushood.com/blog/loop-engineering): Designing robust feedback loops and evaluation harnesses for AI agents.
-- [Autonomous Agents in Production](https://mushood.com/blog/autonomous-agents): Lessons learned deploying multi-agent LangGraph workflows in production.
-- [Open-Weight Models](https://mushood.com/blog/open-weight-models): Strategic trade-offs between open weights vs proprietary LLM APIs.
+- [Loop Engineering Explained](https://mushoodhanif.com/blog/loop-engineering-explained-2026): Designing robust feedback loops and evaluation harnesses for AI agents.
+- [Agentic AI in 2026](https://mushoodhanif.com/blog/agentic-ai-autonomous-agents-2026): Lessons learned deploying multi-agent LangGraph workflows in production.
+- [Open-Weight Models Have Won 2026](https://mushoodhanif.com/blog/open-weight-models-2026): Strategic trade-offs between open weights vs proprietary LLM APIs.

@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
-import LogoDark from "@/assets/img/logo-dark.svg?url";
-import LogoLight from "@/assets/img/logo-light.svg?url";
+"use client";
+
+import { useTheme } from "next-themes";
+import LogoDark from "@/assets/img/logo-dark.svg";
+import LogoLight from "@/assets/img/logo-light.svg";
 import { TRAJECTORY_DATA } from "@/lib/constants";
-import { getImageSrc } from "@/lib/utils";
 import MaxWidthWrapper from "../max-width-wrapper";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import SectionBadge from "../ui/section-badge";
 
 const Trajectory = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
 
   return (
     <MaxWidthWrapper
@@ -40,8 +26,7 @@ const Trajectory = () => {
 
       <Accordion className="w-full border-dashed" collapsible defaultValue="haga" type="single">
         {TRAJECTORY_DATA.map((item) => {
-          const logoObj = item.id === "haga" ? (isDark ? LogoDark : LogoLight) : item.logo;
-          const logoSrc = getImageSrc(logoObj);
+          const logo = item.id === "haga" ? (isDark ? LogoDark : LogoLight) : item.logo;
 
           return (
             <AccordionItem key={item.id} value={item.id}>
@@ -50,8 +35,10 @@ const Trajectory = () => {
                   <img
                     alt={item.company}
                     className="size-8 shrink-0 rounded-lg object-contain sm:size-10"
-                    src={logoSrc}
+                    height={40}
+                    src={logo.src}
                     suppressHydrationWarning
+                    width={40}
                   />
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="truncate font-bold font-heading text-foreground text-sm sm:text-base">
